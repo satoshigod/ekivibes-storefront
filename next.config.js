@@ -25,32 +25,16 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
+    unoptimized: true, // Evita que Next.js colapse con un Error 500 al procesar fotos externas
     remotePatterns: [
       {
+        protocol: "https",
+        hostname: "**", // Permite cargar fotos de Railway, GitHub, Cloudinary o S3
+      },
+      {
         protocol: "http",
-        hostname: "localhost",
+        hostname: "**",
       },
-      {
-        protocol: "https",
-        hostname: "medusa-public-images.s3.eu-west-1.amazonaws.com",
-      },
-      {
-        protocol: "https",
-        hostname: "medusa-server-testing.s3.amazonaws.com",
-      },
-      {
-        protocol: "https",
-        hostname: "medusa-server-testing.s3.us-east-1.amazonaws.com",
-      },
-      ...(S3_HOSTNAME && S3_PATHNAME
-        ? [
-            {
-              protocol: "https",
-              hostname: S3_HOSTNAME,
-              pathname: S3_PATHNAME,
-            },
-          ]
-        : []),
     ],
   },
 }
