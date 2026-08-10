@@ -1,4 +1,5 @@
 import { Suspense } from "react"
+import Link from "next/link"
 
 import { listRegions } from "@lib/data/regions"
 import { listLocales } from "@lib/data/locales"
@@ -25,7 +26,7 @@ export default async function Nav() {
             </div>
           </div>
 
-          {/* MARCA Y CATEGORÍAS VINCULADAS */}
+          {/* MARCA Y ENLACES DIRECTOS */}
           <div className="flex items-center gap-x-8 h-full">
             <LocalizedClientLink
               href="/"
@@ -42,18 +43,21 @@ export default async function Nav() {
               >
                 Tienda
               </LocalizedClientLink>
-              <LocalizedClientLink
-                href="/categories/chalecos-airbag"
+
+              {/* Uso de Link nativo con la ruta completa /co/categories/... */}
+              <Link
+                href="/co/categories/chalecos-airbag"
                 className="hover:text-ui-fg-base transition-colors"
               >
                 Airbags
-              </LocalizedClientLink>
-              <LocalizedClientLink
-                href="/categories/repuestos-y-accesorios-hit-air"
+              </Link>
+
+              <Link
+                href="/co/categories/repuestos-y-accesorios-hit-air"
                 className="hover:text-ui-fg-base transition-colors"
               >
                 Accesorios
-              </LocalizedClientLink>
+              </Link>
             </div>
           </div>
 
