@@ -25,7 +25,7 @@ export default async function Nav() {
             </div>
           </div>
 
-          {/* MARCA Y ENLACES DIRECTOS A CATEGORÍAS */}
+          {/* MARCA Y FILTROS POR CATEGORÍA EN TIENDA */}
           <div className="flex items-center gap-x-8 h-full">
             <LocalizedClientLink
               href="/"
@@ -43,20 +43,20 @@ export default async function Nav() {
                 Tienda
               </LocalizedClientLink>
 
-              {/* Enlaces nativos para forzar la navegación correcta a categorías */}
-              <a
-                href="/co/categories/chalecos-airbag"
+              {/* Filtro directo por Query Parameter que no activa el middleware */}
+              <LocalizedClientLink
+                href="/store?category=chalecos-airbag"
                 className="hover:text-ui-fg-base transition-colors"
               >
                 Airbags
-              </a>
+              </LocalizedClientLink>
 
-              <a
-                href="/co/categories/repuestos-y-accesorios-hit-air"
+              <LocalizedClientLink
+                href="/store?category=repuestos-y-accesorios-hit-air"
                 className="hover:text-ui-fg-base transition-colors"
               >
                 Accesorios
-              </a>
+              </LocalizedClientLink>
             </div>
           </div>
 
