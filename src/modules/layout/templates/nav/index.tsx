@@ -25,7 +25,7 @@ export default async function Nav() {
             </div>
           </div>
 
-          {/* MENÚ CENTRAL CON MARCA Y CATEGORÍAS */}
+          {/* MARCA Y CATEGORÍAS VINCULADAS */}
           <div className="flex items-center gap-x-8 h-full">
             <LocalizedClientLink
               href="/"
