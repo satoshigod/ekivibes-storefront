@@ -25,14 +25,36 @@ export default async function Nav() {
             </div>
           </div>
 
-          <div className="flex items-center h-full">
+          {/* MENÚ CENTRAL CON MARCA Y CATEGORÍAS */}
+          <div className="flex items-center gap-x-8 h-full">
             <LocalizedClientLink
               href="/"
-              className="txt-compact-xlarge-plus hover:text-ui-fg-base uppercase"
+              className="txt-compact-xlarge-plus hover:text-ui-fg-base uppercase font-bold tracking-wider"
               data-testid="nav-store-link"
             >
-              Medusa Store
+              EKIVIBES
             </LocalizedClientLink>
+
+            <div className="hidden small:flex items-center gap-x-6 text-ui-fg-subtle">
+              <LocalizedClientLink
+                href="/store"
+                className="hover:text-ui-fg-base transition-colors"
+              >
+                Tienda
+              </LocalizedClientLink>
+              <LocalizedClientLink
+                href="/categories/chalecos-airbag"
+                className="hover:text-ui-fg-base transition-colors"
+              >
+                Airbags
+              </LocalizedClientLink>
+              <LocalizedClientLink
+                href="/categories/repuestos-y-accesorios-hit-air"
+                className="hover:text-ui-fg-base transition-colors"
+              >
+                Accesorios
+              </LocalizedClientLink>
+            </div>
           </div>
 
           <div className="flex items-center gap-x-6 h-full flex-1 basis-0 justify-end">
@@ -42,7 +64,7 @@ export default async function Nav() {
                 href="/account"
                 data-testid="nav-account-link"
               >
-                Account
+                Cuenta
               </LocalizedClientLink>
             </div>
             <Suspense
@@ -52,7 +74,7 @@ export default async function Nav() {
                   href="/cart"
                   data-testid="nav-cart-link"
                 >
-                  Cart (0)
+                  Carrito (0)
                 </LocalizedClientLink>
               }
             >
