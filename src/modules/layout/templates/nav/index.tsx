@@ -25,7 +25,7 @@ export default async function Nav() {
             </div>
           </div>
 
-          {/* MARCA Y CATEGORÍAS */}
+          {/* MARCA Y ENLACES CONFIRMADOS */}
           <div className="flex items-center gap-x-8 h-full">
             <LocalizedClientLink
               href="/"
@@ -43,19 +43,21 @@ export default async function Nav() {
                 Tienda
               </LocalizedClientLink>
 
-              <LocalizedClientLink
-                href="/store?category=chalecos-airbag"
+              {/* 1. Airbags - Ruta comprobada */}
+              <a
+                href="/co/categories/chalecos-airbag"
                 className="hover:text-ui-fg-base transition-colors"
               >
                 Airbags
-              </LocalizedClientLink>
+              </a>
 
-              <LocalizedClientLink
-                href="/store?category=repuestos-y-accesorios-hit-air"
+              {/* 2. Accesorios - Ruta comprobada */}
+              <a
+                href="/co/categories/repuestos-y-accesorios-hit-air"
                 className="hover:text-ui-fg-base transition-colors"
               >
                 Accesorios
-              </LocalizedClientLink>
+              </a>
             </div>
           </div>
 
