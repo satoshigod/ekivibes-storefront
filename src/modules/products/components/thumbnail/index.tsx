@@ -1,20 +1,18 @@
-"use client"
 import { Container, clx } from "@medusajs/ui"
 import React from "react"
 import PlaceholderImage from "@modules/common/icons/placeholder-image"
 import { PRODUCT_IMAGES } from "@modules/ekivibes/product-images-data"
+import ThumbnailImage from "./thumbnail-image"
 
 function getBestUrl(
   thumbnail?: string | null,
   images?: any[] | null,
   handle?: string | null
 ): string | undefined {
-  // 1. Medusa URL válida (no localhost)
   const medusa = thumbnail || images?.[0]?.url
   if (medusa && !medusa.includes("localhost") && medusa.startsWith("http")) {
     return medusa
   }
-  // 2. Imagen local por handle
   if (handle) {
     const local = PRODUCT_IMAGES[handle]
     if (local) return local.thumbnail || local.images[0]
@@ -37,7 +35,6 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   "data-testid": dataTestid,
 }) => {
   const src = getBestUrl(thumbnail, images, handle)
-  const [broken, setBroken] = React.useState(false)
 
   return (
     <Container
@@ -56,15 +53,8 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
       )}
       data-testid={dataTestid}
     >
-      {src && !broken ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={src}
-          alt=""
-          className="absolute inset-0 w-full h-full object-contain object-center"
-          draggable={false}
-          onError={() => setBroken(true)}
-        />
+      {src ? (
+        <ThumbnailImage src={src} />
       ) : (
         <div className="w-full h-full absolute inset-0 flex items-center justify-center">
           <PlaceholderImage size={size === "small" ? 16 : 24} />
