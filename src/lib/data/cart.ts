@@ -53,9 +53,12 @@ export async function retrieveCart(cartId?: string, fields?: string) {
 }
 
 export async function getOrSetCart(countryCode: string) {
+  console.log("[getOrSetCart] countryCode:", countryCode)
   const region = await getRegion(countryCode)
+  console.log("[getOrSetCart] region:", region?.id, region?.name)
 
   if (!region) {
+    console.error("[getOrSetCart] ERROR: No region for countryCode:", countryCode)
     throw new Error(`Region not found for country code: ${countryCode}`)
   }
 

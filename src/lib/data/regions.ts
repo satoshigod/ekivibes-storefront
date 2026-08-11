@@ -44,6 +44,8 @@ export const getRegion = async (countryCode: string) => {
     }
 
     const regions = await listRegions()
+    console.log("[getRegion] countryCode:", countryCode, "regions count:", regions?.length)
+    regions?.forEach(r => console.log("  region:", r.name, "countries:", r.countries?.map(c => c.iso_2)))
 
     if (!regions) {
       return null
