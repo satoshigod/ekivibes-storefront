@@ -1,5 +1,6 @@
 import { getBaseURL } from "@lib/util/env"
 import { Metadata } from "next"
+import Script from "next/script"
 import "styles/globals.css"
 import "styles/ekivibes.css"
 
@@ -28,6 +29,10 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       </head>
       <body>
         <main className="relative">{props.children}</main>
+        <Script
+          src="https://checkout.wompi.co/widget.js"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   )
