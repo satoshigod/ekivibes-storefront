@@ -9,9 +9,9 @@ import {
   getAuthHeaders,
   getCacheOptions,
   getCacheTag,
-  getCarritoId,
+  getCartId,
   removeAuthToken,
-  removeCarritoId,
+  removeCartId,
   setAuthToken,
 } from "./cookies"
 
@@ -135,7 +135,7 @@ export async function signout(countryCode: string) {
   const customerCacheTag = await getCacheTag("customers")
   revalidateTag(customerCacheTag)
 
-  await removeCarritoId()
+  await removeCartId()
 
   const cartCacheTag = await getCacheTag("carts")
   revalidateTag(cartCacheTag)
@@ -144,7 +144,7 @@ export async function signout(countryCode: string) {
 }
 
 export async function transferCart() {
-  const cartId = await getCarritoId()
+  const cartId = await getCartId()
 
   if (!cartId) {
     return

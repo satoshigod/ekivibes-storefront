@@ -8,7 +8,7 @@ import compareAddresses from "@lib/util/compare-addresses"
 import { HttpTypes } from "@medusajs/types"
 
 type DirecciónSelectProps = {
-  addresses: HttpTypes.StoreCustomerDirección[]
+  addresses: HttpTypes.StoreCustomerAddress[]
   addressInput: HttpTypes.StoreCartDirección | null
   onSelect: (
     address: HttpTypes.StoreCartDirección | undefined,

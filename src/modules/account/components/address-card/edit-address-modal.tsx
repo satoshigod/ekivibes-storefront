@@ -18,7 +18,7 @@ import {
 
 type EditarDirecciónProps = {
   region: HttpTypes.StoreRegion
-  address: HttpTypes.StoreCustomerDirección
+  address: HttpTypes.StoreCustomerAddress
   isActive?: boolean
 }
 
