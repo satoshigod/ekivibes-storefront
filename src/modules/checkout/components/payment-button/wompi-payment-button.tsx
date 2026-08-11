@@ -36,7 +36,7 @@ export const WompiPaymentButton: React.FC<WompiPaymentButtonProps> = ({
     setSubmitting(true)
 
     const sessionData = session?.data
-    const amountInCents = Math.round((sessionData?.amount || 0) * 100)
+    const amountInCents = sessionData?.amount || 0  // ya viene en centavos desde Medusa
 
     const checkout = new window.WidgetCheckout({
       currency: (sessionData?.currency_code || "COP").toUpperCase(),
