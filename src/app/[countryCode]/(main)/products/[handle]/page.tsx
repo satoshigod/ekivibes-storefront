@@ -54,20 +54,24 @@ export async function generateStaticParams() {
 }
 
 function getImagesForVariant(
-  product: HttpTypes.StoreProduct,
+  product?: HttpTypes.StoreProduct,
   selectedVariantId?: string
 ) {
-  if (!selectedVariantId || !product.variants) {
-    return product.images
+  if (!product) {
+    return []
   }
 
-  const variant = product.variants!.find((v) => v.id === selectedVariantId)
-  if (!variant || !variant.images.length) {
-    return product.images
+  if (!selectedVariantId || !product.variants) {
+    return product.images ?? []
+  }
+
+  const variant = product.variants.find((v) => v.id === selectedVariantId)
+  if (!variant || !variant.images?.length) {
+    return product.images ?? []
   }
 
   const imageIdsMap = new Map(variant.images.map((i) => [i.id, true]))
-  return product.images!.filter((i) => imageIdsMap.has(i.id))
+  return (product.images ?? []).filter((i) => imageIdsMap.has(i.id))
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
@@ -82,17 +86,20 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const product = await listProducts({
     countryCode: params.countryCode,
     queryParams: { handle },
-  }).then(({ response }) => response.products[0])
+  }).then(({ response }) => response?.products?.[0])
 
   if (!product) {
-    notFound()
+    return {
+      title: "Producto no encontrado | Ekivibes",
+      description: "El producto no existe o fue movido.",
+    }
   }
 
   return {
-    title: `${product.title} | Medusa Store`,
+    title: `${product.title} | Ekivibes`,
     description: `${product.title}`,
     openGraph: {
-      title: `${product.title} | Medusa Store`,
+      title: `${product.title} | Ekivibes`,
       description: `${product.title}`,
       images: product.thumbnail ? [product.thumbnail] : [],
     },
@@ -113,13 +120,14 @@ export default async function ProductPage(props: Props) {
   const pricedProduct = await listProducts({
     countryCode: params.countryCode,
     queryParams: { handle: params.handle },
-  }).then(({ response }) => response.products[0])
+  }).then(({ response }) => response?.products?.[0])
 
-  const images = getImagesForVariant(pricedProduct, selectedVariantId)
-
+  // Se evalúa si existe el producto antes de procesar sus imágenes
   if (!pricedProduct) {
     notFound()
   }
+
+  const images = getImagesForVariant(pricedProduct, selectedVariantId)
 
   return (
     <ProductTemplate
