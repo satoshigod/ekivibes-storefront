@@ -11,7 +11,6 @@ import { notFound } from "next/navigation"
 import { HttpTypes } from "@medusajs/types"
 
 import ProductActionsWrapper from "./product-actions-wrapper"
-import EkivibesProductDetails from "@modules/ekivibes/product-details"
 
 type ProductTemplateProps = {
   product: HttpTypes.StoreProduct
@@ -58,7 +57,6 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
           </Suspense>
         </div>
       </div>
-      <EkivibesProductDetails handle={product.handle} />
       <div
         className="content-container my-16 small:my-32"
         data-testid="related-products-container"
