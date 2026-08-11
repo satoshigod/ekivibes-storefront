@@ -40,7 +40,9 @@ export default function ProductActions({
   const [isAdding, setIsAdding] = useState(false)
   const countryCode = useParams().countryCode as string
 
-  // If there is only 1 variant, preselect the options
+  // Preselect: if only 1 variant, select it directly
+  const [quantity, setQuantity] = useState(1)
+
   useEffect(() => {
     if (product.variants?.length === 1) {
       const variantOptions = optionsAsKeymap(product.variants[0].options)
@@ -49,10 +51,8 @@ export default function ProductActions({
   }, [product.variants])
 
   const selectedVariant = useMemo(() => {
-    if (!product.variants || product.variants.length === 0) {
-      return
-    }
-
+    if (!product.variants || product.variants.length === 0) return undefined
+    if (product.variants.length === 1) return product.variants[0]
     return product.variants.find((v) => {
       const variantOptions = optionsAsKeymap(v.options)
       return isEqual(variantOptions, options)
@@ -132,7 +132,7 @@ export default function ProductActions({
 
     await addToCart({
       variantId: selectedVariant.id,
-      quantity: 1,
+      quantity: quantity,
       countryCode,
     })
 
@@ -165,6 +165,23 @@ export default function ProductActions({
         </div>
 
         <ProductPrice product={product} variant={selectedVariant} />
+
+        <div className="flex items-center gap-3 mb-2">
+          <span className="text-sm text-gray-600">Cantidad:</span>
+          <div className="flex items-center border border-gray-300 rounded-md">
+            <button
+              type="button"
+              onClick={() => setQuantity(q => Math.max(1, q - 1))}
+              className="px-3 py-1 text-lg text-gray-600 hover:bg-gray-100"
+            >−</button>
+            <span className="px-4 py-1 text-sm font-medium min-w-[2rem] text-center">{quantity}</span>
+            <button
+              type="button"
+              onClick={() => setQuantity(q => q + 1)}
+              className="px-3 py-1 text-lg text-gray-600 hover:bg-gray-100"
+            >+</button>
+          </div>
+        </div>
 
         <Button
           onClick={handleAddToCarrito}
