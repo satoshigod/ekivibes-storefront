@@ -19,7 +19,7 @@ const SideMenuItems = {
 }
 
 type SideMenuProps = {
-  regions: HttpTypes.TiendaRegion[] | null
+  regions: HttpTypes.StoreRegion[] | null
   locales: Locale[] | null
   currentLocale: string | null
 }

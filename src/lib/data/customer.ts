@@ -16,7 +16,7 @@ import {
 } from "./cookies"
 
 export const retrieveCustomer =
-  async (): Promise<HttpTypes.TiendaCustomer | null> => {
+  async (): Promise<HttpTypes.StoreCustomer | null> => {
     const authHeaders = await getAuthHeaders()
 
     if (!authHeaders) return null
@@ -30,7 +30,7 @@ export const retrieveCustomer =
     }
 
     return await sdk.client
-      .fetch<{ customer: HttpTypes.TiendaCustomer }>(`/store/customers/me`, {
+      .fetch<{ customer: HttpTypes.StoreCustomer }>(`/store/customers/me`, {
         method: "GET",
         query: {
           fields: "*orders",
@@ -96,7 +96,7 @@ export async function signup(_currentState: unknown, formData: FormData) {
     const customerCacheTag = await getCacheTag("customers")
     revalidateTag(customerCacheTag)
 
-    await transferCarrito()
+    await transferCart()
 
     return createdCustomer
   } catch (error: any) {
@@ -121,7 +121,7 @@ export async function login(_currentState: unknown, formData: FormData) {
   }
 
   try {
-    await transferCarrito()
+    await transferCart()
   } catch (error: any) {
     return error.toString()
   }
@@ -143,7 +143,7 @@ export async function signout(countryCode: string) {
   redirect(`/${countryCode}/account`)
 }
 
-export async function transferCarrito() {
+export async function transferCart() {
   const cartId = await getCarritoId()
 
   if (!cartId) {
@@ -152,7 +152,7 @@ export async function transferCarrito() {
 
   const headers = await getAuthHeaders()
 
-  await sdk.store.cart.transferCarrito(cartId, {}, headers)
+  await sdk.store.cart.transferCart(cartId, {}, headers)
 
   const cartCacheTag = await getCacheTag("carts")
   revalidateTag(cartCacheTag)
@@ -185,7 +185,7 @@ export const addCustomerAddress = async (
   }
 
   return sdk.store.customer
-    .createDirección(address, {}, headers)
+    .createAddress(address, {}, headers)
     .then(async ({ customer }) => {
       const customerCacheTag = await getCacheTag("customers")
       revalidateTag(customerCacheTag)
@@ -204,7 +204,7 @@ export const deleteCustomerDirección = async (
   }
 
   await sdk.store.customer
-    .deleteDirección(addressId, headers)
+    .deleteAddress(addressId, headers)
     .then(async () => {
       const customerCacheTag = await getCacheTag("customers")
       revalidateTag(customerCacheTag)
@@ -249,7 +249,7 @@ export const updateCustomerAddress = async (
   }
 
   return sdk.store.customer
-    .updateDirección(addressId, address, {}, headers)
+    .updateAddress(addressId, address, {}, headers)
     .then(async () => {
       const customerCacheTag = await getCacheTag("customers")
       revalidateTag(customerCacheTag)

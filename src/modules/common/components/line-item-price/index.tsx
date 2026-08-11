@@ -4,7 +4,7 @@ import { HttpTypes } from "@medusajs/types"
 import { clx } from "@medusajs/ui"
 
 type LineItemPriceProps = {
-  item: HttpTypes.TiendaCarritoLineItem | HttpTypes.TiendaOrderLineItem
+  item: HttpTypes.StoreCartLineItem | HttpTypes.StoreOrderLineItem
   style?: "default" | "tight"
   currencyCode: string
 }

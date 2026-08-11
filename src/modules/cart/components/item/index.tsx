@@ -1,7 +1,7 @@
 "use client"
 
 import { Table, Text, clx } from "@medusajs/ui"
-import { updateLineProducto } from "@lib/data/cart"
+import { updateLineItem } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
 import CarritoProductoSelect from "@modules/cart/components/cart-item-select"
 import ErrorMessage from "@modules/checkout/components/error-message"
@@ -15,7 +15,7 @@ import Thumbnail from "@modules/products/components/thumbnail"
 import { useState } from "react"
 
 type ProductoProps = {
-  item: HttpTypes.TiendaCarritoLineProducto
+  item: HttpTypes.StoreCartLineProducto
   type?: "full" | "preview"
   currencyCode: string
 }
@@ -28,7 +28,7 @@ const Producto = ({ item, type = "full", currencyCode }: ProductoProps) => {
     setError(null)
     setUpdating(true)
 
-    await updateLineProducto({
+    await updateLineItem({
       lineId: item.id,
       quantity,
     })

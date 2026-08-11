@@ -16,8 +16,8 @@ const AddDirección = ({
   region,
   addresses,
 }: {
-  region: HttpTypes.TiendaRegion
-  addresses: HttpTypes.TiendaCustomerDirección[]
+  region: HttpTypes.StoreRegion
+  addresses: HttpTypes.StoreCustomerDirección[]
 }) => {
   const [successState, setSuccessState] = useState(false)
   const { state, open, close: closeModal } = useToggleState(false)

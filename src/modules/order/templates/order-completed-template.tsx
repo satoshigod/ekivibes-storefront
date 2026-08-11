@@ -11,7 +11,7 @@ import PaymentDetails from "@modules/order/components/payment-details"
 import { HttpTypes } from "@medusajs/types"
 
 type OrderCompletadoTemplateProps = {
-  order: HttpTypes.TiendaOrder
+  order: HttpTypes.StoreOrder
 }
 
 export default async function OrderCompletadoTemplate({

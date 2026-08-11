@@ -3,7 +3,7 @@ import { Heading, Text } from "@medusajs/ui"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 type ProductInfoProps = {
-  product: HttpTypes.TiendaProduct
+  product: HttpTypes.StoreProduct
 }
 
 const ProductInfo = ({ product }: ProductInfoProps) => {

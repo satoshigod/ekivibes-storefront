@@ -2,7 +2,7 @@
 
 import { RadioGroup } from "@headlessui/react"
 import { isStripeLike, paymentInfoMap } from "@lib/constants"
-import { initiatePagoSession } from "@lib/data/cart"
+import { initiatePaymentSession } from "@lib/data/cart"
 import { CheckCircleSolid, CreditCard } from "@medusajs/icons"
 import { Button, Container, Heading, Text, clx } from "@medusajs/ui"
 import ErrorMessage from "@modules/checkout/components/error-message"
@@ -10,7 +10,7 @@ import PagoContainer, {
   StripeCardContainer,
 } from "@modules/checkout/components/payment-container"
 import Divider from "@modules/common/components/divider"
-import { usePathname, useRouter, useBuscarParams } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
 
 const Pago = ({
@@ -32,7 +32,7 @@ const Pago = ({
     activeSession?.provider_id ?? ""
   )
 
-  const searchParams = useBuscarParams()
+  const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
 
@@ -42,7 +42,7 @@ const Pago = ({
     setError(null)
     setSelectedPagoMethod(method)
     if (isStripeLike(method)) {
-      await initiatePagoSession(cart, {
+      await initiatePaymentSession(cart, {
         provider_id: method,
       })
     }
@@ -56,7 +56,7 @@ const Pago = ({
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
-      const params = new URLBuscarParams(searchParams)
+      const params = new URLSearchParams(searchParams)
       params.set(name, value)
 
       return params.toString()
@@ -80,7 +80,7 @@ const Pago = ({
         activeSession?.provider_id === selectedPagoMethod
 
       if (!checkActiveSession) {
-        await initiatePagoSession(cart, {
+        await initiatePaymentSession(cart, {
           provider_id: selectedPagoMethod,
         })
       }

@@ -11,9 +11,9 @@ export default async function ProductPreview({
   isFeatured,
   region,
 }: {
-  product: HttpTypes.TiendaProduct
+  product: HttpTypes.StoreProduct
   isFeatured?: boolean
-  region: HttpTypes.TiendaRegion
+  region: HttpTypes.StoreRegion
 }) {
   // const pricedProduct = await listProducts({
   //   regionId: region.id,

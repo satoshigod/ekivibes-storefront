@@ -8,7 +8,7 @@ import Producto from "@modules/cart/components/item"
 import SkeletonLineProducto from "@modules/skeletons/components/skeleton-line-item"
 
 type ProductosTemplateProps = {
-  cart: HttpTypes.TiendaCarrito
+  cart: HttpTypes.StoreCart
 }
 
 const ProductosPreviewTemplate = ({ cart }: ProductosTemplateProps) => {

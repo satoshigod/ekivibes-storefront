@@ -2,9 +2,9 @@ import { HttpTypes } from "@medusajs/types"
 import { Text } from "@medusajs/ui"
 
 type LineItemOptionsProps = {
-  variant: HttpTypes.TiendaProductVariant | undefined
+  variant: HttpTypes.StoreProductVariant | undefined
   "data-testid"?: string
-  "data-value"?: HttpTypes.TiendaProductVariant
+  "data-value"?: HttpTypes.StoreProductVariant
 }
 
 const LineItemOptions = ({

@@ -1,4 +1,4 @@
-import { retrieveCarrito } from "@lib/data/cart"
+import { retrieveCart } from "@lib/data/cart"
 import { retrieveCustomer } from "@lib/data/customer"
 import CarritoTemplate from "@modules/cart/templates"
 import { Metadata } from "next"
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Carrito() {
-  const cart = await retrieveCarrito().catch((error) => {
+  const cart = await retrieveCart().catch((error) => {
     console.error(error)
     return notFound()
   })

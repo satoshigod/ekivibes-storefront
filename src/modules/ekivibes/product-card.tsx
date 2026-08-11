@@ -6,7 +6,7 @@ import Thumbnail from "@modules/products/components/thumbnail"
 export default function EkivibesProductCard({
   product,
 }: {
-  product: HttpTypes.TiendaProduct
+  product: HttpTypes.StoreProduct
 }) {
   const { cheapestPrice } = getProductPrice({ product })
   const brand = product.metadata?.brand as string | undefined

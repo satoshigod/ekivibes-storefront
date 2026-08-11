@@ -5,7 +5,7 @@ import { Heading, Text } from "@medusajs/ui"
 import Divider from "@modules/common/components/divider"
 
 type ShippingDetailsProps = {
-  order: HttpTypes.TiendaOrder
+  order: HttpTypes.StoreOrder
 }
 
 const ShippingDetails = ({ order }: ShippingDetailsProps) => {

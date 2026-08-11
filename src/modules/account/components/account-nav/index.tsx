@@ -15,7 +15,7 @@ import { signout } from "@lib/data/customer"
 const CuentaNav = ({
   customer,
 }: {
-  customer: HttpTypes.TiendaCustomer | null
+  customer: HttpTypes.StoreCustomer | null
 }) => {
   const route = usePathname()
   const { countryCode } = useParams() as { countryCode: string }

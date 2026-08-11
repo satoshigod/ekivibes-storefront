@@ -17,8 +17,8 @@ import {
 } from "@lib/data/customer"
 
 type EditarDirecciónProps = {
-  region: HttpTypes.TiendaRegion
-  address: HttpTypes.TiendaCustomerDirección
+  region: HttpTypes.StoreRegion
+  address: HttpTypes.StoreCustomerDirección
   isActive?: boolean
 }
 

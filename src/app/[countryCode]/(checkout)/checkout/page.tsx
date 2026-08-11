@@ -1,4 +1,4 @@
-import { retrieveCarrito } from "@lib/data/cart"
+import { retrieveCart } from "@lib/data/cart"
 import { retrieveCustomer } from "@lib/data/customer"
 import PagoWrapper from "@modules/checkout/components/payment-wrapper"
 import CheckoutForm from "@modules/checkout/templates/checkout-form"
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Checkout() {
-  const cart = await retrieveCarrito()
+  const cart = await retrieveCart()
 
   if (!cart) {
     return notFound()

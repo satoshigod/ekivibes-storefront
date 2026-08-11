@@ -7,7 +7,7 @@ import { HttpTypes } from "@medusajs/types"
 import { toast } from "@medusajs/ui"
 
 type MyInformationProps = {
-  customer: HttpTypes.TiendaCustomer
+  customer: HttpTypes.StoreCustomer
 }
 
 const ProfilePassword: React.FC<MyInformationProps> = ({ customer }) => {

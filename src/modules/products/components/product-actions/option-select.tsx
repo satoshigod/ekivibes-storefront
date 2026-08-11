@@ -3,7 +3,7 @@ import { clx } from "@medusajs/ui"
 import React from "react"
 
 type OptionSelectProps = {
-  option: HttpTypes.TiendaProductOption
+  option: HttpTypes.StoreProductOption
   current: string | undefined
   updateOption: (title: string, value: string) => void
   title: string

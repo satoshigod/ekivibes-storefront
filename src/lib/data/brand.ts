@@ -7,13 +7,13 @@ import { listProducts } from "./products"
 // Soporta la arquitectura multi-tienda Ekivibes / Hit-Air Colombia.
 const BRAND_KEY = "brand"
 
-const brandOf = (p: HttpTypes.TiendaProduct): string | undefined =>
+const brandOf = (p: HttpTypes.StoreProduct): string | undefined =>
   (p.metadata?.[BRAND_KEY] as string | undefined)?.toString()
 
 const filterByBrand = (
-  products: HttpTypes.TiendaProduct[],
+  products: HttpTypes.StoreProduct[],
   brand: string
-): HttpTypes.TiendaProduct[] =>
+): HttpTypes.StoreProduct[] =>
   products.filter((p) => brandOf(p)?.toLowerCase() === brand.toLowerCase())
 
 // Solo productos Hit-Air (chalecos airbag, cartuchos CO2, repuestos).
@@ -23,7 +23,7 @@ export const getHitAirProducts = async ({
 }: {
   countryCode: string
   limit?: number
-}): Promise<HttpTypes.TiendaProduct[]> => {
+}): Promise<HttpTypes.StoreProduct[]> => {
   const { response } = await listProducts({ countryCode, queryParams: { limit } })
   return filterByBrand(response.products, "Hit-Air")
 }
@@ -37,7 +37,7 @@ export const getEkivibesProducts = async ({
 }: {
   countryCode: string
   limit?: number
-}): Promise<HttpTypes.TiendaProduct[]> => {
+}): Promise<HttpTypes.StoreProduct[]> => {
   const { response } = await listProducts({ countryCode, queryParams: { limit } })
   const brand = process.env.NEXT_PUBLIC_BRAND_FILTER
   return brand ? filterByBrand(response.products, brand) : response.products

@@ -9,12 +9,12 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import { HttpTypes } from "@medusajs/types"
 
 type ResumenProps = {
-  cart: HttpTypes.TiendaCarrito & {
+  cart: HttpTypes.StoreCart & {
     promotions: HttpTypes.TiendaPromotion[]
   }
 }
 
-function getCheckoutStep(cart: HttpTypes.TiendaCarrito) {
+function getCheckoutStep(cart: HttpTypes.StoreCart) {
   if (!cart?.shipping_address?.address_1 || !cart.email) {
     return "address"
   } else if (cart?.shipping_methods?.length === 0) {

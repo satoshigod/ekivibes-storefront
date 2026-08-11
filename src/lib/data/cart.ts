@@ -21,7 +21,7 @@ import { getLocale } from "@lib/data/locale-actions"
  * @param cartId - optional - The ID of the cart to retrieve.
  * @returns The cart object if found, or null if not found.
  */
-export async function retrieveCarrito(cartId?: string, fields?: string) {
+export async function retrieveCart(cartId?: string, fields?: string) {
   const id = cartId || (await getCarritoId())
   fields ??=
     "*items, *region, *items.product, *items.variant, *items.thumbnail, *items.metadata, +items.total, *promotions, +shipping_methods.name"
@@ -39,7 +39,7 @@ export async function retrieveCarrito(cartId?: string, fields?: string) {
   }
 
   return await sdk.client
-    .fetch<HttpTypes.TiendaCarritoResponse>(`/store/carts/${id}`, {
+    .fetch<HttpTypes.StoreCartResponse>(`/store/carts/${id}`, {
       method: "GET",
       query: {
         fields,
@@ -48,7 +48,7 @@ export async function retrieveCarrito(cartId?: string, fields?: string) {
       next,
       cache: "force-cache",
     })
-    .then(({ cart }: { cart: HttpTypes.TiendaCarrito }) => cart)
+    .then(({ cart }: { cart: HttpTypes.StoreCart }) => cart)
     .catch(() => null)
 }
 
@@ -59,7 +59,7 @@ export async function getOrSetCarrito(countryCode: string) {
     throw new Error(`Region not found for country code: ${countryCode}`)
   }
 
-  let cart = await retrieveCarrito(undefined, "id,region_id")
+  let cart = await retrieveCart(undefined, "id,region_id")
 
   const headers = {
     ...(await getAuthHeaders()),
@@ -89,7 +89,7 @@ export async function getOrSetCarrito(countryCode: string) {
   return cart
 }
 
-export async function updateCarrito(data: HttpTypes.TiendaUpdateCarrito) {
+export async function updateCart(data: HttpTypes.TiendaUpdateCarrito) {
   const cartId = await getCarritoId()
 
   if (!cartId) {
@@ -102,7 +102,7 @@ export async function updateCarrito(data: HttpTypes.TiendaUpdateCarrito) {
 
   return sdk.store.cart
     .update(cartId, data, {}, headers)
-    .then(async ({ cart }: { cart: HttpTypes.TiendaCarrito }) => {
+    .then(async ({ cart }: { cart: HttpTypes.StoreCart }) => {
       const cartCacheTag = await getCacheTag("carts")
       revalidateTag(cartCacheTag)
 
@@ -114,7 +114,7 @@ export async function updateCarrito(data: HttpTypes.TiendaUpdateCarrito) {
     .catch(medusaError)
 }
 
-export async function addToCarrito({
+export async function addToCart({
   variantId,
   quantity,
   countryCode,
@@ -238,7 +238,7 @@ export async function setShippingMethod({
 }
 
 export async function initiatePaymentSession(
-  cart: HttpTypes.TiendaCarrito,
+  cart: HttpTypes.StoreCart,
   data: HttpTypes.TiendaInitializePaymentSession
 ) {
   const headers = {
@@ -282,7 +282,7 @@ export async function applyGiftCard(code: string) {
   //   const cartId = getCarritoId()
   //   if (!cartId) return "No cartId cookie found"
   //   try {
-  //     await updateCarrito(cartId, { gift_cards: [{ code }] }).then(() => {
+  //     await updateCart(cartId, { gift_cards: [{ code }] }).then(() => {
   //       revalidateTag("cart")
   //     })
   //   } catch (error: any) {
@@ -309,7 +309,7 @@ export async function removeGiftCard(
   //   const cartId = getCarritoId()
   //   if (!cartId) return "No cartId cookie found"
   //   try {
-  //     await updateCarrito(cartId, {
+  //     await updateCart(cartId, {
   //       gift_cards: [...giftCards]
   //         .filter((gc) => gc.code !== codeToEliminar)
   //         .map((gc) => ({ code: gc.code })),
@@ -376,7 +376,7 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
         province: formData.get("billing_address.province"),
         phone: formData.get("billing_address.phone"),
       }
-    await updateCarrito(data)
+    await updateCart(data)
   } catch (e: any) {
     return e.message
   }
@@ -439,7 +439,7 @@ export async function updateRegion(countryCode: string, currentPath: string) {
   }
 
   if (cartId) {
-    await updateCarrito({ region_id: region.id })
+    await updateCart({ region_id: region.id })
     const cartCacheTag = await getCacheTag("carts")
     revalidateTag(cartCacheTag)
   }
@@ -463,7 +463,7 @@ export async function listCarritoOptions() {
   }
 
   return await sdk.client.fetch<{
-    shipping_options: HttpTypes.TiendaCarritoShippingOption[]
+    shipping_options: HttpTypes.StoreCartShippingOption[]
   }>("/store/shipping-options", {
     query: { cart_id: cartId },
     next,

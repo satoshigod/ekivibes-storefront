@@ -1,5 +1,5 @@
-import { listCarritoEnvíoMethods } from "@lib/data/fulfillment"
-import { listCarritoPagoMethods } from "@lib/data/payment"
+import { listCartShippingMethods } from "@lib/data/fulfillment"
+import { listCartPaymentMethods } from "@lib/data/payment"
 import { HttpTypes } from "@medusajs/types"
 import Addresses from "@modules/checkout/components/addresses"
 import Pago from "@modules/checkout/components/payment"
@@ -10,15 +10,15 @@ export default async function CheckoutForm({
   cart,
   customer,
 }: {
-  cart: HttpTypes.TiendaCarrito | null
-  customer: HttpTypes.TiendaCustomer | null
+  cart: HttpTypes.StoreCart | null
+  customer: HttpTypes.StoreCustomer | null
 }) {
   if (!cart) {
     return null
   }
 
-  const shippingMethods = await listCarritoEnvíoMethods(cart.id)
-  const paymentMethods = await listCarritoPagoMethods(cart.region?.id ?? "")
+  const shippingMethods = await listCartShippingMethods(cart.id)
+  const paymentMethods = await listCartPaymentMethods(cart.region?.id ?? "")
 
   if (!shippingMethods || !paymentMethods) {
     return null

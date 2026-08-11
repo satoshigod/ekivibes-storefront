@@ -8,10 +8,10 @@ import compareAddresses from "@lib/util/compare-addresses"
 import { HttpTypes } from "@medusajs/types"
 
 type DirecciónSelectProps = {
-  addresses: HttpTypes.TiendaCustomerDirección[]
-  addressInput: HttpTypes.TiendaCarritoDirección | null
+  addresses: HttpTypes.StoreCustomerDirección[]
+  addressInput: HttpTypes.StoreCartDirección | null
   onSelect: (
-    address: HttpTypes.TiendaCarritoDirección | undefined,
+    address: HttpTypes.StoreCartDirección | undefined,
     email?: string
   ) => void
 }
@@ -24,7 +24,7 @@ const DirecciónSelect = ({
   const handleSelect = (id: string) => {
     const savedDirección = addresses.find((a) => a.id === id)
     if (savedDirección) {
-      onSelect(savedDirección as HttpTypes.TiendaCarritoDirección)
+      onSelect(savedDirección as HttpTypes.StoreCartDirección)
     }
   }
 

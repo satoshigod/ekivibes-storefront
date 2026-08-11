@@ -9,7 +9,7 @@ import { HttpTypes } from "@medusajs/types"
 import { updateCustomer } from "@lib/data/customer"
 
 type MyInformationProps = {
-  customer: HttpTypes.TiendaCustomer
+  customer: HttpTypes.StoreCustomer
 }
 
 const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {

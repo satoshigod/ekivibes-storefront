@@ -54,7 +54,7 @@ export async function generateStaticParams() {
 }
 
 function getImagesForVariant(
-  product?: HttpTypes.TiendaProduct,
+  product?: HttpTypes.StoreProduct,
   selectedVariantId?: string
 ) {
   if (!product) {

@@ -10,7 +10,7 @@ import ErrorMessage from "../error-message"
 import { WompiPagoButton } from "./wompi-payment-button"
 
 type PagoButtonProps = {
-  cart: HttpTypes.TiendaCarrito
+  cart: HttpTypes.StoreCart
   "data-testid": string
 }
 
@@ -59,7 +59,7 @@ const WompiPagoButtonWrapper = ({
   notReady,
   session,
 }: {
-  cart: HttpTypes.TiendaCarrito
+  cart: HttpTypes.StoreCart
   notReady: boolean
   session: any
 }) => {
@@ -95,7 +95,7 @@ const StripePagoButton = ({
   notReady,
   "data-testid": dataTestId,
 }: {
-  cart: HttpTypes.TiendaCarrito
+  cart: HttpTypes.StoreCart
   notReady: boolean
   "data-testid"?: string
 }) => {
@@ -131,7 +131,7 @@ const StripePagoButton = ({
     }
 
     await stripe
-      .confirmCardPago(session?.data.client_secret as string, {
+      .confirmCardPayment(session?.data.client_secret as string, {
         payment_method: {
           card: card,
           billing_details: {

@@ -10,8 +10,8 @@ import { HttpTypes } from "@medusajs/types"
 import { addCustomerAddress, updateCustomerAddress } from "@lib/data/customer"
 
 type MyInformationProps = {
-  customer: HttpTypes.TiendaCustomer
-  regions: HttpTypes.TiendaRegion[]
+  customer: HttpTypes.StoreCustomer
+  regions: HttpTypes.StoreRegion[]
 }
 
 const ProfileBillingAddress: React.FC<MyInformationProps> = ({

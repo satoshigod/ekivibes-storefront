@@ -9,8 +9,8 @@ export default async function ProductRail({
   collection,
   region,
 }: {
-  collection: HttpTypes.TiendaCollection
-  region: HttpTypes.TiendaRegion
+  collection: HttpTypes.StoreCollection
+  region: HttpTypes.StoreRegion
 }) {
   const {
     response: { products: pricedProducts },

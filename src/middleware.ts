@@ -1,12 +1,12 @@
 import { HttpTypes } from "@medusajs/types"
-import { SiguienteRequest, SiguienteResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 
 const BACKEND_URL = process.env.MEDUSA_BACKEND_URL
 const PUBLISHABLE_API_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
 const DEFAULT_REGION = process.env.NEXT_PUBLIC_DEFAULT_REGION || "us"
 
 const regionMapCache = {
-  regionMap: new Map<string, HttpTypes.TiendaRegion>(),
+  regionMap: new Map<string, HttpTypes.StoreRegion>(),
   regionMapUpdated: Date.now(),
 }
 
@@ -50,7 +50,7 @@ async function getRegionMap(cacheId: string) {
     }
 
     // Create a map of country codes to regions.
-    regions.forEach((region: HttpTypes.TiendaRegion) => {
+    regions.forEach((region: HttpTypes.StoreRegion) => {
       region.countries?.forEach((c) => {
         regionMapCache.regionMap.set(c.iso_2 ?? "", region)
       })
@@ -68,8 +68,8 @@ async function getRegionMap(cacheId: string) {
  * @param response
  */
 async function getPaísCode(
-  request: SiguienteRequest,
-  regionMap: Map<string, HttpTypes.TiendaRegion | number>
+  request: NextRequest,
+  regionMap: Map<string, HttpTypes.StoreRegion | number>
 ) {
   try {
     let countryCode
@@ -103,10 +103,10 @@ async function getPaísCode(
 /**
  * Middleware to handle region selection and onboarding status.
  */
-export async function middleware(request: SiguienteRequest) {
+export async function middleware(request: NextRequest) {
   let redirectUrl = request.nextUrl.href
 
-  let response = SiguienteResponse.redirect(redirectUrl, 307)
+  let response = NextResponse.redirect(redirectUrl, 307)
 
   let cacheIdCookie = request.cookies.get("_medusa_cache_id")
 
@@ -121,7 +121,7 @@ export async function middleware(request: SiguienteRequest) {
 
   // if one of the country codes is in the url and the cache id is set, return next
   if (urlHasPaísCode && cacheIdCookie) {
-    return SiguienteResponse.next()
+    return NextResponse.next()
   }
 
   // if one of the country codes is in the url and the cache id is not set, set the cache id and redirect
@@ -135,7 +135,7 @@ export async function middleware(request: SiguienteRequest) {
 
   // check if the url is a static asset
   if (request.nextUrl.pathname.includes(".")) {
-    return SiguienteResponse.next()
+    return NextResponse.next()
   }
 
   const redirectPath =
@@ -146,10 +146,10 @@ export async function middleware(request: SiguienteRequest) {
   // If no country code is set, we redirect to the relevant region.
   if (!urlHasPaísCode && countryCode) {
     redirectUrl = `${request.nextUrl.origin}/${countryCode}${redirectPath}${queryString}`
-    response = SiguienteResponse.redirect(`${redirectUrl}`, 307)
+    response = NextResponse.redirect(`${redirectUrl}`, 307)
   } else if (!urlHasPaísCode && !countryCode) {
     // Handle case where no valid country code exists (empty regions)
-    return new SiguienteResponse(
+    return new NextResponse(
       "No valid regions configured. Please set up regions with countries in your Medusa Admin.",
       { status: 500 }
     )

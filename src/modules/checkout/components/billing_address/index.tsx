@@ -3,7 +3,7 @@ import Input from "@modules/common/components/input"
 import React, { useState } from "react"
 import CountrySelect from "../country-select"
 
-const BillingDirección = ({ cart }: { cart: HttpTypes.TiendaCarrito | null }) => {
+const BillingDirección = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
   const [formData, setFormData] = useState<any>({
     "billing_address.first_name": cart?.billing_address?.first_name || "",
     "billing_address.last_name": cart?.billing_address?.last_name || "",

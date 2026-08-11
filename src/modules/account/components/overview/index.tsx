@@ -6,8 +6,8 @@ import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
 
 type OverviewProps = {
-  customer: HttpTypes.TiendaCustomer | null
-  orders: HttpTypes.TiendaOrder[] | null
+  customer: HttpTypes.StoreCustomer | null
+  orders: HttpTypes.StoreOrder[] | null
 }
 
 const Overview = ({ customer, orders }: OverviewProps) => {
@@ -135,7 +135,7 @@ const Overview = ({ customer, orders }: OverviewProps) => {
   )
 }
 
-const getPerfilCompletion = (customer: HttpTypes.TiendaCustomer | null) => {
+const getPerfilCompletion = (customer: HttpTypes.StoreCustomer | null) => {
   let count = 0
 
   if (!customer) {

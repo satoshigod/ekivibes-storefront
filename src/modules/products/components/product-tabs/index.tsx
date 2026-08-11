@@ -8,7 +8,7 @@ import Accordion from "./accordion"
 import { HttpTypes } from "@medusajs/types"
 
 type ProductTabsProps = {
-  product: HttpTypes.TiendaProduct
+  product: HttpTypes.StoreProduct
 }
 
 const ProductTabs = ({ product }: ProductTabsProps) => {

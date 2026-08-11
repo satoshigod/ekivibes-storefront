@@ -7,7 +7,7 @@ import Item from "@modules/order/components/item"
 import SkeletonLineItem from "@modules/skeletons/components/skeleton-line-item"
 
 type ItemsProps = {
-  order: HttpTypes.TiendaOrder
+  order: HttpTypes.StoreOrder
 }
 
 const Items = ({ order }: ItemsProps) => {

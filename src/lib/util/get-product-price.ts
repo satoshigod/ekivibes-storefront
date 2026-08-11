@@ -31,7 +31,7 @@ export function getProductPrice({
   product,
   variantId,
 }: {
-  product: HttpTypes.TiendaProduct
+  product: HttpTypes.StoreProduct
   variantId?: string
 }) {
   if (!product || !product.id) {

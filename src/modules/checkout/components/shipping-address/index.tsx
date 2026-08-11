@@ -13,8 +13,8 @@ const EnvíoDirección = ({
   checked,
   onChange,
 }: {
-  customer: HttpTypes.TiendaCustomer | null
-  cart: HttpTypes.TiendaCarrito | null
+  customer: HttpTypes.StoreCustomer | null
+  cart: HttpTypes.StoreCart | null
   checked: boolean
   onChange: () => void
 }) => {
@@ -46,7 +46,7 @@ const EnvíoDirección = ({
   )
 
   const setFormDirección = (
-    address?: HttpTypes.TiendaCarritoDirección,
+    address?: HttpTypes.StoreCartDirección,
     email?: string
   ) => {
     address &&
@@ -104,7 +104,7 @@ const EnvíoDirección = ({
             addressInput={
               mapKeys(formData, (_, key) =>
                 key.replace("shipping_address.", "")
-              ) as HttpTypes.TiendaCarritoDirección
+              ) as HttpTypes.StoreCartDirección
             }
             onSelect={setFormDirección}
           />

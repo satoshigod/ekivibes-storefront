@@ -4,8 +4,8 @@ import { convertToLocale } from "@lib/util/money"
 import { CheckCircleSolid, XMark } from "@medusajs/icons"
 import {
   HttpTypes,
-  TiendaCarrito,
-  TiendaCarritoShippingOption,
+  StoreCart,
+  StoreCartShippingOption,
   TiendaPrice,
 } from "@medusajs/types"
 import { Button, clx } from "@medusajs/ui"
@@ -14,7 +14,7 @@ import { useState } from "react"
 import { TiendaFreeShippingPrice } from "types/global"
 
 const computeTarget = (
-  cart: HttpTypes.TiendaCarrito,
+  cart: HttpTypes.StoreCart,
   price: HttpTypes.TiendaPrice
 ) => {
   const priceRule = (price.price_rules || []).find(
@@ -78,8 +78,8 @@ export default function ShippingPriceNudge({
   shippingOptions,
 }: {
   variant?: "popup" | "inline"
-  cart: TiendaCarrito
-  shippingOptions: TiendaCarritoShippingOption[]
+  cart: StoreCart
+  shippingOptions: StoreCartShippingOption[]
 }) {
   if (!cart || !shippingOptions?.length) {
     return
@@ -134,7 +134,7 @@ function FreeShippingInline({
   cart,
   price,
 }: {
-  cart: TiendaCarrito
+  cart: StoreCart
   price: TiendaPrice & {
     target_reached: boolean
     target_remaining: number
@@ -192,7 +192,7 @@ function FreeShippingPopup({
   cart,
   price,
 }: {
-  cart: TiendaCarrito
+  cart: StoreCart
   price: TiendaFreeShippingPrice
 }) {
   const [isClosed, setIsClosed] = useState(false)

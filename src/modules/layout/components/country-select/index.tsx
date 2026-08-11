@@ -23,7 +23,7 @@ type PaísOption = {
 
 type PaísSelectProps = {
   toggleState: StateType
-  regions: HttpTypes.TiendaRegion[]
+  regions: HttpTypes.StoreRegion[]
 }
 
 const PaísSelect = ({ toggleState, regions }: PaísSelectProps) => {

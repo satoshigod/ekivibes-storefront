@@ -1,8 +1,8 @@
 "use client"
 
 import { Radio, RadioGroup } from "@headlessui/react"
-import { setEnvíoMethod } from "@lib/data/cart"
-import { calculatePrecioForEnvíoOption } from "@lib/data/fulfillment"
+import { setShippingMethod } from "@lib/data/cart"
+import { calculatePriceForShippingOption } from "@lib/data/fulfillment"
 import { convertToLocale } from "@lib/util/money"
 import { CheckCircleSolid, Loader } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
@@ -10,18 +10,18 @@ import { Button, clx, Heading, Text } from "@medusajs/ui"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import Divider from "@modules/common/components/divider"
 import MedusaRadio from "@modules/common/components/radio"
-import { usePathname, useRouter, useBuscarParams } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
 const PICKUP_OPTION_ON = "__PICKUP_ON"
 const PICKUP_OPTION_OFF = "__PICKUP_OFF"
 
 type EnvíoProps = {
-  cart: HttpTypes.TiendaCarrito
-  availableEnvíoMethods: HttpTypes.TiendaCarritoEnvíoOption[] | null
+  cart: HttpTypes.StoreCart
+  availableEnvíoMethods: HttpTypes.StoreCartEnvíoOption[] | null
 }
 
-function formatDirección(address: HttpTypes.TiendaCarritoDirección) {
+function formatDirección(address: HttpTypes.StoreCartDirección) {
   if (!address) {
     return ""
   }
@@ -60,11 +60,11 @@ const Envío: React.FC<EnvíoProps> = ({
     Record<string, number>
   >({})
   const [error, setError] = useState<string | null>(null)
-  const [shippingMethodId, setEnvíoMethodId] = useState<string | null>(
+  const [shippingMethodId, setShippingMethodId] = useState<string | null>(
     cart.shipping_methods?.at(-1)?.shipping_option_id || null
   )
 
-  const searchParams = useBuscarParams()
+  const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
 
@@ -86,7 +86,7 @@ const Envío: React.FC<EnvíoProps> = ({
     if (_shippingMethods?.length) {
       const promises = _shippingMethods
         .filter((sm) => sm.price_type === "calculated")
-        .map((sm) => calculatePrecioForEnvíoOption(sm.id, cart.id))
+        .map((sm) => calculatePriceForShippingOption(sm.id, cart.id))
 
       if (promises.length) {
         Promise.allSettled(promises).then((res) => {
@@ -128,14 +128,14 @@ const Envío: React.FC<EnvíoProps> = ({
 
     let currentId: string | null = null
     setIsLoading(true)
-    setEnvíoMethodId((prev) => {
+    setShippingMethodId((prev) => {
       currentId = prev
       return id
     })
 
-    await setEnvíoMethod({ cartId: cart.id, shippingMethodId: id })
+    await setShippingMethod({ cartId: cart.id, shippingMethodId: id })
       .catch((err) => {
-        setEnvíoMethodId(currentId)
+        setShippingMethodId(currentId)
 
         setError(err.message)
       })

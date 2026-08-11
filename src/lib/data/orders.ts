@@ -15,7 +15,7 @@ export const retrieveOrder = async (id: string) => {
   }
 
   return sdk.client
-    .fetch<HttpTypes.TiendaOrderResponse>(`/store/orders/${id}`, {
+    .fetch<HttpTypes.StoreOrderResponse>(`/store/orders/${id}`, {
       method: "GET",
       query: {
         fields:
@@ -43,7 +43,7 @@ export const listPedidos = async (
   }
 
   return sdk.client
-    .fetch<HttpTypes.TiendaOrderListResponse>(`/store/orders`, {
+    .fetch<HttpTypes.StoreOrderListResponse>(`/store/orders`, {
       method: "GET",
       query: {
         limit,
@@ -64,13 +64,13 @@ export const createTransferRequest = async (
   state: {
     success: boolean
     error: string | null
-    order: HttpTypes.TiendaOrder | null
+    order: HttpTypes.StoreOrder | null
   },
   formData: FormData
 ): Promise<{
   success: boolean
   error: string | null
-  order: HttpTypes.TiendaOrder | null
+  order: HttpTypes.StoreOrder | null
 }> => {
   const id = formData.get("order_id") as string
 

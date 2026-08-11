@@ -9,8 +9,8 @@ const CarritoTemplate = ({
   cart,
   customer,
 }: {
-  cart: HttpTypes.TiendaCarrito | null
-  customer: HttpTypes.TiendaCustomer | null
+  cart: HttpTypes.StoreCart | null
+  customer: HttpTypes.StoreCustomer | null
 }) => {
   return (
     <div className="py-12">

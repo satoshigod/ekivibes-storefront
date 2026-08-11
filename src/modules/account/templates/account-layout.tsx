@@ -6,7 +6,7 @@ import CuentaNav from "../components/account-nav"
 import { HttpTypes } from "@medusajs/types"
 
 interface CuentaLayoutProps {
-  customer: HttpTypes.TiendaCustomer | null
+  customer: HttpTypes.StoreCustomer | null
   children: React.ReactNode
 }
 

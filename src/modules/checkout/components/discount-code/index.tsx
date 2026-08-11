@@ -11,7 +11,7 @@ import ErrorMessage from "../error-message"
 import { SubmitButton } from "../submit-button"
 
 type DiscountCodeProps = {
-  cart: HttpTypes.TiendaCarrito & {
+  cart: HttpTypes.StoreCart & {
     promotions: HttpTypes.TiendaPromotion[]
   }
 }

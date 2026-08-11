@@ -7,7 +7,7 @@ import { HttpTypes } from "@medusajs/types"
 import { isStripeLike } from "@lib/constants"
 
 type PagoWrapperProps = {
-  cart: HttpTypes.TiendaCarrito
+  cart: HttpTypes.StoreCart
   children: React.ReactNode
 }
 
@@ -19,7 +19,7 @@ const medusaCuentaId = process.env.NEXT_PUBLIC_MEDUSA_PAYMENTS_ACCOUNT_ID
 const stripePromise = stripeKey
   ? loadStripe(
       stripeKey,
-      medusaCuentaId ? { stripeCuenta: medusaCuentaId } : undefined
+      medusaCuentaId ? { stripeAccount: medusaCuentaId } : undefined
     )
   : null
 

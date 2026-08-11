@@ -12,8 +12,8 @@ import { HttpTypes } from "@medusajs/types"
 import { isSimpleProduct } from "@lib/util/product"
 
 type MobileActionsProps = {
-  product: HttpTypes.TiendaProduct
-  variant?: HttpTypes.TiendaProductVariant
+  product: HttpTypes.StoreProduct
+  variant?: HttpTypes.StoreProductVariant
   options: Record<string, string | undefined>
   updateOptions: (title: string, value: string) => void
   inStock?: boolean

@@ -5,8 +5,8 @@ import EditAddress from "../address-card/edit-address-modal"
 import { HttpTypes } from "@medusajs/types"
 
 type DirecciónBookProps = {
-  customer: HttpTypes.TiendaCustomer
-  region: HttpTypes.TiendaRegion
+  customer: HttpTypes.StoreCustomer
+  region: HttpTypes.StoreRegion
 }
 
 const DirecciónBook: React.FC<DirecciónBookProps> = ({ customer, region }) => {

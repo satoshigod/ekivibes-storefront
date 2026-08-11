@@ -3,7 +3,7 @@ import { Container } from "@medusajs/ui"
 import { PRODUCT_IMAGES } from "@modules/ekivibes/product-images-data"
 
 type ImageGalleryProps = {
-  images: HttpTypes.TiendaProductImage[]
+  images: HttpTypes.StoreProductImage[]
   handle?: string | null
 }
 

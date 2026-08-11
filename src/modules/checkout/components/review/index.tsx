@@ -3,10 +3,10 @@
 import { Heading, Text, clx } from "@medusajs/ui"
 
 import PagoButton from "../payment-button"
-import { useBuscarParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 
 const Revisión = ({ cart }: { cart: any }) => {
-  const searchParams = useBuscarParams()
+  const searchParams = useSearchParams()
 
   const isOpen = searchParams.get("step") === "review"
 

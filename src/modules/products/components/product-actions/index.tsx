@@ -1,26 +1,26 @@
 "use client"
 
-import { addToCarrito } from "@lib/data/cart"
+import { addToCart } from "@lib/data/cart"
 import { useIntersection } from "@lib/hooks/use-in-view"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
 import Divider from "@modules/common/components/divider"
 import OptionSelect from "@modules/products/components/product-actions/option-select"
 import { isEqual } from "lodash"
-import { useParams, usePathname, useBuscarParams } from "next/navigation"
+import { useParams, usePathname, useSearchParams } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
 import ProductPrice from "../product-price"
 import MobileActions from "./mobile-actions"
 import { useRouter } from "next/navigation"
 
 type ProductActionsProps = {
-  product: HttpTypes.TiendaProduct
-  region: HttpTypes.TiendaRegion
+  product: HttpTypes.StoreProduct
+  region: HttpTypes.StoreRegion
   disabled?: boolean
 }
 
 const optionsAsKeymap = (
-  variantOptions: HttpTypes.TiendaProductVariant["options"]
+  variantOptions: HttpTypes.StoreProductVariant["options"]
 ) => {
   return variantOptions?.reduce((acc: Record<string, string>, varopt: any) => {
     acc[varopt.option_id] = varopt.value
@@ -34,7 +34,7 @@ export default function ProductActions({
 }: ProductActionsProps) {
   const router = useRouter()
   const pathname = usePathname()
-  const searchParams = useBuscarParams()
+  const searchParams = useSearchParams()
 
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
   const [isAdding, setIsAdding] = useState(false)
@@ -76,7 +76,7 @@ export default function ProductActions({
   }, [product.variants, options])
 
   useEffect(() => {
-    const params = new URLBuscarParams(searchParams.toString())
+    const params = new URLSearchParams(searchParams.toString())
     const value = isValidVariant ? selectedVariant?.id : null
 
     if (params.get("v_id") === value) {
@@ -130,7 +130,7 @@ export default function ProductActions({
 
     setIsAdding(true)
 
-    await addToCarrito({
+    await addToCart({
       variantId: selectedVariant.id,
       quantity: 1,
       countryCode,

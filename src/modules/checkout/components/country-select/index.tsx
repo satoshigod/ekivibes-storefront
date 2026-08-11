@@ -8,7 +8,7 @@ import { HttpTypes } from "@medusajs/types"
 const PaísSelect = forwardRef<
   HTMLSelectElement,
   NativeSelectProps & {
-    region?: HttpTypes.TiendaRegion
+    region?: HttpTypes.StoreRegion
   }
 >(({ placeholder = "País", region, defaultValue, ...props }, ref) => {
   const innerRef = useRef<HTMLSelectElement>(null)

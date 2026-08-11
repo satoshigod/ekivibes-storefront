@@ -11,7 +11,7 @@ import ShippingDetails from "@modules/order/components/shipping-details"
 import React from "react"
 
 type OrderDetailsTemplateProps = {
-  order: HttpTypes.TiendaOrder
+  order: HttpTypes.StoreOrder
 }
 
 const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({

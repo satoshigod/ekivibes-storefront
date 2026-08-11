@@ -20,7 +20,7 @@ import { Fragment, useEffect, useRef, useState } from "react"
 const CarritoDropdown = ({
   cart: cartState,
 }: {
-  cart?: HttpTypes.TiendaCarrito | null
+  cart?: HttpTypes.StoreCart | null
 }) => {
   const [activeTimer, setActiveTimer] = useState<NodeJS.Timer | undefined>(
     undefined

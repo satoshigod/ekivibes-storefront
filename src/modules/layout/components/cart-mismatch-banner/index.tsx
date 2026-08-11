@@ -1,14 +1,14 @@
 "use client"
 
-import { transferCarrito } from "@lib/data/customer"
+import { transferCart } from "@lib/data/customer"
 import { ExclamationCircleSolid } from "@medusajs/icons"
-import { TiendaCarrito, TiendaCustomer } from "@medusajs/types"
+import { StoreCart, StoreCustomer } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
 import { useState } from "react"
 
 function CarritoMismatchBanner(props: {
-  customer: TiendaCustomer
-  cart: TiendaCarrito
+  customer: StoreCustomer
+  cart: StoreCart
 }) {
   const { customer, cart } = props
   const [isPendiente, setIsPendiente] = useState(false)
@@ -23,7 +23,7 @@ function CarritoMismatchBanner(props: {
       setIsPendiente(true)
       setActionText("Transferring..")
 
-      await transferCarrito()
+      await transferCart()
     } catch {
       setActionText("Run transfer again")
       setIsPendiente(false)
