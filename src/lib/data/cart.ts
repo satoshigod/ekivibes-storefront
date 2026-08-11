@@ -71,7 +71,11 @@ export async function getOrSetCart(countryCode: string) {
   if (!cart) {
     const locale = await getLocale()
     const cartResp = await sdk.store.cart.create(
-      { region_id: region.id, locale: locale || undefined },
+      {
+        region_id: region.id,
+        locale: locale || undefined,
+        sales_channel_id: process.env.NEXT_PUBLIC_MEDUSA_SALES_CHANNEL_ID || "sc_01KZPAP849X2E6DFPE4GDAG7MC",
+      },
       {},
       headers
     )
