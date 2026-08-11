@@ -1,22 +1,23 @@
+"use client"
 import { Container, clx } from "@medusajs/ui"
 import React from "react"
 import PlaceholderImage from "@modules/common/icons/placeholder-image"
 import { PRODUCT_IMAGES } from "@modules/ekivibes/product-images-data"
 
-// Devuelve la URL correcta: si la de Medusa es válida la usa,
-// si no (localhost o vacía) usa la imagen local de /public/imgs/
-function resolveImage(
+function getBestUrl(
   thumbnail?: string | null,
   images?: any[] | null,
   handle?: string | null
 ): string | undefined {
-  // Intentar URL de Medusa primero
-  const medusaUrl = thumbnail || images?.[0]?.url
-  if (medusaUrl && !medusaUrl.includes("localhost")) return medusaUrl
-
-  // Fallback: imagen local por handle
-  if (handle && PRODUCT_IMAGES[handle]) {
-    return PRODUCT_IMAGES[handle].thumbnail || PRODUCT_IMAGES[handle].images[0]
+  // 1. Medusa URL válida (no localhost)
+  const medusa = thumbnail || images?.[0]?.url
+  if (medusa && !medusa.includes("localhost") && medusa.startsWith("http")) {
+    return medusa
+  }
+  // 2. Imagen local por handle
+  if (handle) {
+    const local = PRODUCT_IMAGES[handle]
+    if (local) return local.thumbnail || local.images[0]
   }
   return undefined
 }
@@ -35,7 +36,8 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   thumbnail, images, size = "small", isFeatured, className, handle,
   "data-testid": dataTestid,
 }) => {
-  const src = resolveImage(thumbnail, images, handle)
+  const src = getBestUrl(thumbnail, images, handle)
+  const [broken, setBroken] = React.useState(false)
 
   return (
     <Container
@@ -54,13 +56,14 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
       )}
       data-testid={dataTestid}
     >
-      {src ? (
+      {src && !broken ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={src}
-          alt="Thumbnail"
+          alt=""
           className="absolute inset-0 w-full h-full object-contain object-center"
           draggable={false}
+          onError={() => setBroken(true)}
         />
       ) : (
         <div className="w-full h-full absolute inset-0 flex items-center justify-center">

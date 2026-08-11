@@ -1,16 +1,7 @@
 import { HttpTypes } from "@medusajs/types"
 import { getProductPrice } from "@lib/util/get-product-price"
-
-// Reemplaza localhost:9000 por el backend real de Railway en URLs de imagenes
-function fixImageUrl(url?: string | null): string | undefined {
-  if (!url) return undefined
-  return url.replace(
-    /https?:\/\/localhost:9000/g,
-    process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "https://ekivibes-production.up.railway.app"
-  )
-}
-
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import Thumbnail from "@modules/products/components/thumbnail"
 
 export default function EkivibesProductCard({
   product,
@@ -21,15 +12,13 @@ export default function EkivibesProductCard({
   const brand = product.metadata?.brand as string | undefined
 
   return (
-    <LocalizedClientLink href={`/products/${product.handle}`} className="card">
-      <div className="card-img">
-        {product.thumbnail ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={fixImageUrl(product.thumbnail)} alt={product.title} />
-        ) : (
-          <span>🦺</span>
-        )}
-      </div>
+    <LocalizedClientLink href={`/products/${product.handle}`} className="card group">
+      <Thumbnail
+        thumbnail={product.thumbnail}
+        images={product.images}
+        handle={product.handle}
+        size="full"
+      />
       <div className="card-body">
         {brand && <div className="card-brand">{brand}</div>}
         <div className="card-name">{product.title}</div>
