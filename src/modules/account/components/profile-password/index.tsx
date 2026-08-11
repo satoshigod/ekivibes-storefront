@@ -2,20 +2,20 @@
 
 import React, { useEffect, useActionState } from "react"
 import Input from "@modules/common/components/input"
-import AccountInfo from "../account-info"
+import CuentaInfo from "../account-info"
 import { HttpTypes } from "@medusajs/types"
 import { toast } from "@medusajs/ui"
 
 type MyInformationProps = {
-  customer: HttpTypes.StoreCustomer
+  customer: HttpTypes.TiendaCustomer
 }
 
-const ProfilePassword: React.FC<MyInformationProps> = ({ customer }) => {
+const PerfilContraseña: React.FC<MyInformationProps> = ({ customer }) => {
   const [successState, setSuccessState] = React.useState(false)
 
   // TODO: Add support for password updates
-  const updatePassword = async () => {
-    toast.info("Password update is not implemented")
+  const updateContraseña = async () => {
+    toast.info("Contraseña update is not implemented")
   }
 
   const clearState = () => {
@@ -24,12 +24,12 @@ const ProfilePassword: React.FC<MyInformationProps> = ({ customer }) => {
 
   return (
     <form
-      action={updatePassword}
+      action={updateContraseña}
       onReset={() => clearState()}
       className="w-full"
     >
-      <AccountInfo
-        label="Password"
+      <CuentaInfo
+        label="Contraseña"
         currentInfo={
           <span>The password is not shown for security reasons</span>
         }
@@ -62,9 +62,9 @@ const ProfilePassword: React.FC<MyInformationProps> = ({ customer }) => {
             data-testid="confirm-password-input"
           />
         </div>
-      </AccountInfo>
+      </CuentaInfo>
     </form>
   )
 }
 
-export default ProfilePassword
+export default PerfilContraseña

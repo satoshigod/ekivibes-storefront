@@ -4,18 +4,18 @@ import React, { useEffect, useActionState } from "react";
 
 import Input from "@modules/common/components/input"
 
-import AccountInfo from "../account-info"
+import CuentaInfo from "../account-info"
 import { HttpTypes } from "@medusajs/types"
 import { updateCustomer } from "@lib/data/customer"
 
 type MyInformationProps = {
-  customer: HttpTypes.StoreCustomer
+  customer: HttpTypes.TiendaCustomer
 }
 
-const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
+const PerfilCorreo electrónico: React.FC<MyInformationProps> = ({ customer }) => {
   const [successState, setSuccessState] = React.useState(false)
 
-  const updateCustomerPhone = async (
+  const updateCustomerTeléfono = async (
     _currentState: Record<string, unknown>,
     formData: FormData
   ) => {
@@ -31,7 +31,7 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
     }
   }
 
-  const [state, formAction] = useActionState(updateCustomerPhone, {
+  const [state, formAction] = useActionState(updateCustomerTeléfono, {
     error: false,
     success: false,
   })
@@ -46,8 +46,8 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
 
   return (
     <form action={formAction} className="w-full">
-      <AccountInfo
-        label="Phone"
+      <CuentaInfo
+        label="Teléfono"
         currentInfo={`${customer.phone}`}
         isSuccess={successState}
         isError={!!state.error}
@@ -57,7 +57,7 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
       >
         <div className="grid grid-cols-1 gap-y-2">
           <Input
-            label="Phone"
+            label="Teléfono"
             name="phone"
             type="phone"
             autoComplete="phone"
@@ -66,9 +66,9 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
             data-testid="phone-input"
           />
         </div>
-      </AccountInfo>
+      </CuentaInfo>
     </form>
   )
 }
 
-export default ProfileEmail
+export default PerfilCorreo electrónico

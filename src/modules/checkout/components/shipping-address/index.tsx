@@ -4,17 +4,17 @@ import Checkbox from "@modules/common/components/checkbox"
 import Input from "@modules/common/components/input"
 import { mapKeys } from "lodash"
 import React, { useEffect, useMemo, useState } from "react"
-import AddressSelect from "../address-select"
-import CountrySelect from "../country-select"
+import DirecciónSelect from "../address-select"
+import PaísSelect from "../country-select"
 
-const ShippingAddress = ({
+const EnvíoDirección = ({
   customer,
   cart,
   checked,
   onChange,
 }: {
-  customer: HttpTypes.StoreCustomer | null
-  cart: HttpTypes.StoreCart | null
+  customer: HttpTypes.TiendaCustomer | null
+  cart: HttpTypes.TiendaCarrito | null
   checked: boolean
   onChange: () => void
 }) => {
@@ -45,8 +45,8 @@ const ShippingAddress = ({
     [customer?.addresses, countriesInRegion]
   )
 
-  const setFormAddress = (
-    address?: HttpTypes.StoreCartAddress,
+  const setFormDirección = (
+    address?: HttpTypes.TiendaCarritoDirección,
     email?: string
   ) => {
     address &&
@@ -73,11 +73,11 @@ const ShippingAddress = ({
   useEffect(() => {
     // Ensure cart is not null and has a shipping_address before setting form data
     if (cart && cart.shipping_address) {
-      setFormAddress(cart?.shipping_address, cart?.email)
+      setFormDirección(cart?.shipping_address, cart?.email)
     }
 
     if (cart && !cart.email && customer?.email) {
-      setFormAddress(undefined, customer.email)
+      setFormDirección(undefined, customer.email)
     }
   }, [cart]) // Add cart as a dependency
 
@@ -99,20 +99,20 @@ const ShippingAddress = ({
           <p className="text-small-regular">
             {`Hi ${customer.first_name}, do you want to use one of your saved addresses?`}
           </p>
-          <AddressSelect
+          <DirecciónSelect
             addresses={customer.addresses}
             addressInput={
               mapKeys(formData, (_, key) =>
                 key.replace("shipping_address.", "")
-              ) as HttpTypes.StoreCartAddress
+              ) as HttpTypes.TiendaCarritoDirección
             }
-            onSelect={setFormAddress}
+            onSelect={setFormDirección}
           />
         </Container>
       )}
       <div className="grid grid-cols-2 gap-4">
         <Input
-          label="First name"
+          label="Nombre"
           name="shipping_address.first_name"
           autoComplete="given-name"
           value={formData["shipping_address.first_name"]}
@@ -121,7 +121,7 @@ const ShippingAddress = ({
           data-testid="shipping-first-name-input"
         />
         <Input
-          label="Last name"
+          label="Apellido"
           name="shipping_address.last_name"
           autoComplete="family-name"
           value={formData["shipping_address.last_name"]}
@@ -130,7 +130,7 @@ const ShippingAddress = ({
           data-testid="shipping-last-name-input"
         />
         <Input
-          label="Address"
+          label="Dirección"
           name="shipping_address.address_1"
           autoComplete="address-line1"
           value={formData["shipping_address.address_1"]}
@@ -147,7 +147,7 @@ const ShippingAddress = ({
           data-testid="shipping-company-input"
         />
         <Input
-          label="Postal code"
+          label="Código postal"
           name="shipping_address.postal_code"
           autoComplete="postal-code"
           value={formData["shipping_address.postal_code"]}
@@ -156,7 +156,7 @@ const ShippingAddress = ({
           data-testid="shipping-postal-code-input"
         />
         <Input
-          label="City"
+          label="Ciudad"
           name="shipping_address.city"
           autoComplete="address-level2"
           value={formData["shipping_address.city"]}
@@ -164,7 +164,7 @@ const ShippingAddress = ({
           required
           data-testid="shipping-city-input"
         />
-        <CountrySelect
+        <PaísSelect
           name="shipping_address.country_code"
           autoComplete="country"
           region={cart?.region}
@@ -174,7 +174,7 @@ const ShippingAddress = ({
           data-testid="shipping-country-select"
         />
         <Input
-          label="State / Province"
+          label="State / Departamento"
           name="shipping_address.province"
           autoComplete="address-level1"
           value={formData["shipping_address.province"]}
@@ -193,7 +193,7 @@ const ShippingAddress = ({
       </div>
       <div className="grid grid-cols-2 gap-4 mb-4">
         <Input
-          label="Email"
+          label="Correo electrónico"
           name="email"
           type="email"
           title="Enter a valid email address."
@@ -204,7 +204,7 @@ const ShippingAddress = ({
           data-testid="shipping-email-input"
         />
         <Input
-          label="Phone"
+          label="Teléfono"
           name="shipping_address.phone"
           autoComplete="tel"
           value={formData["shipping_address.phone"]}
@@ -216,4 +216,4 @@ const ShippingAddress = ({
   )
 }
 
-export default ShippingAddress
+export default EnvíoDirección

@@ -1,8 +1,8 @@
 import { retrieveCustomer } from "@lib/data/customer"
 import { Toaster } from "@medusajs/ui"
-import AccountLayout from "@modules/account/templates/account-layout"
+import CuentaLayout from "@modules/account/templates/account-layout"
 
-export default async function AccountPageLayout({
+export default async function CuentaPageLayout({
   dashboard,
   login,
 }: {
@@ -12,9 +12,9 @@ export default async function AccountPageLayout({
   const customer = await retrieveCustomer().catch(() => null)
 
   return (
-    <AccountLayout customer={customer}>
+    <CuentaLayout customer={customer}>
       {customer ? dashboard : login}
       <Toaster />
-    </AccountLayout>
+    </CuentaLayout>
   )
 }

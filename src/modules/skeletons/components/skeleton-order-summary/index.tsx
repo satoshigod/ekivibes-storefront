@@ -1,10 +1,10 @@
 import SkeletonButton from "@modules/skeletons/components/skeleton-button"
-import SkeletonCartTotals from "@modules/skeletons/components/skeleton-cart-totals"
+import SkeletonCarritoTotals from "@modules/skeletons/components/skeleton-cart-totals"
 
 const SkeletonOrderSummary = () => {
   return (
     <div className="grid-cols-1">
-      <SkeletonCartTotals header={false} />
+      <SkeletonCarritoTotals header={false} />
       <div className="mt-4">
         <SkeletonButton />
       </div>

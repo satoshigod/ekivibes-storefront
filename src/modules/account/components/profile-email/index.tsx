@@ -4,19 +4,19 @@ import React, { useEffect, useActionState } from "react";
 
 import Input from "@modules/common/components/input"
 
-import AccountInfo from "../account-info"
+import CuentaInfo from "../account-info"
 import { HttpTypes } from "@medusajs/types"
 // import { updateCustomer } from "@lib/data/customer"
 
 type MyInformationProps = {
-  customer: HttpTypes.StoreCustomer
+  customer: HttpTypes.TiendaCustomer
 }
 
-const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
+const PerfilCorreo electrónico: React.FC<MyInformationProps> = ({ customer }) => {
   const [successState, setSuccessState] = React.useState(false)
 
   // TODO: It seems we don't support updating emails now?
-  const updateCustomerEmail = (
+  const updateCustomerCorreo electrónico = (
     _currentState: Record<string, unknown>,
     formData: FormData
   ) => {
@@ -32,7 +32,7 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
     }
   }
 
-  const [state, formAction] = useActionState(updateCustomerEmail, {
+  const [state, formAction] = useActionState(updateCustomerCorreo electrónico, {
     error: false,
     success: false,
   })
@@ -47,8 +47,8 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
 
   return (
     <form action={formAction} className="w-full">
-      <AccountInfo
-        label="Email"
+      <CuentaInfo
+        label="Correo electrónico"
         currentInfo={`${customer.email}`}
         isSuccess={successState}
         isError={!!state.error}
@@ -58,7 +58,7 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
       >
         <div className="grid grid-cols-1 gap-y-2">
           <Input
-            label="Email"
+            label="Correo electrónico"
             name="email"
             type="email"
             autoComplete="email"
@@ -67,9 +67,9 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
             data-testid="email-input"
           />
         </div>
-      </AccountInfo>
+      </CuentaInfo>
     </form>
   )
 }
 
-export default ProfileEmail
+export default PerfilCorreo electrónico

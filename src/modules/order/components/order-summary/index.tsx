@@ -2,7 +2,7 @@ import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
 
 type OrderSummaryProps = {
-  order: HttpTypes.StoreOrder
+  order: HttpTypes.TiendaOrder
 }
 
 const OrderSummary = ({ order }: OrderSummaryProps) => {

@@ -5,24 +5,24 @@ import { Button, Heading } from "@medusajs/ui"
 import { useEffect, useState, useActionState } from "react"
 
 import useToggleState from "@lib/hooks/use-toggle-state"
-import CountrySelect from "@modules/checkout/components/country-select"
+import PaísSelect from "@modules/checkout/components/country-select"
 import Input from "@modules/common/components/input"
 import Modal from "@modules/common/components/modal"
 import { SubmitButton } from "@modules/checkout/components/submit-button"
 import { HttpTypes } from "@medusajs/types"
-import { addCustomerAddress } from "@lib/data/customer"
+import { addCustomerDirección } from "@lib/data/customer"
 
-const AddAddress = ({
+const AddDirección = ({
   region,
   addresses,
 }: {
-  region: HttpTypes.StoreRegion
-  addresses: HttpTypes.StoreCustomerAddress[]
+  region: HttpTypes.TiendaRegion
+  addresses: HttpTypes.TiendaCustomerDirección[]
 }) => {
   const [successState, setSuccessState] = useState(false)
   const { state, open, close: closeModal } = useToggleState(false)
 
-  const [formState, formAction] = useActionState(addCustomerAddress, {
+  const [formState, formAction] = useActionState(addCustomerDirección, {
     isDefaultShipping: addresses.length === 0,
     success: false,
     error: null,
@@ -66,14 +66,14 @@ const AddAddress = ({
             <div className="flex flex-col gap-y-2">
               <div className="grid grid-cols-2 gap-x-2">
                 <Input
-                  label="First name"
+                  label="Nombre"
                   name="first_name"
                   required
                   autoComplete="given-name"
                   data-testid="first-name-input"
                 />
                 <Input
-                  label="Last name"
+                  label="Apellido"
                   name="last_name"
                   required
                   autoComplete="family-name"
@@ -87,7 +87,7 @@ const AddAddress = ({
                 data-testid="company-input"
               />
               <Input
-                label="Address"
+                label="Dirección"
                 name="address_1"
                 required
                 autoComplete="address-line1"
@@ -101,14 +101,14 @@ const AddAddress = ({
               />
               <div className="grid grid-cols-[144px_1fr] gap-x-2">
                 <Input
-                  label="Postal code"
+                  label="Código postal"
                   name="postal_code"
                   required
                   autoComplete="postal-code"
                   data-testid="postal-code-input"
                 />
                 <Input
-                  label="City"
+                  label="Ciudad"
                   name="city"
                   required
                   autoComplete="locality"
@@ -116,12 +116,12 @@ const AddAddress = ({
                 />
               </div>
               <Input
-                label="Province / State"
+                label="Departamento / State"
                 name="province"
                 autoComplete="address-level1"
                 data-testid="state-input"
               />
-              <CountrySelect
+              <PaísSelect
                 region={region}
                 name="country_code"
                 required
@@ -129,7 +129,7 @@ const AddAddress = ({
                 data-testid="country-select"
               />
               <Input
-                label="Phone"
+                label="Teléfono"
                 name="phone"
                 autoComplete="phone"
                 data-testid="phone-input"
@@ -153,9 +153,9 @@ const AddAddress = ({
                 className="h-10"
                 data-testid="cancel-button"
               >
-                Cancel
+                Cancelar
               </Button>
-              <SubmitButton data-testid="save-button">Save</SubmitButton>
+              <SubmitButton data-testid="save-button">Guardar</SubmitButton>
             </div>
           </Modal.Footer>
         </form>
@@ -164,4 +164,4 @@ const AddAddress = ({
   )
 }
 
-export default AddAddress
+export default AddDirección

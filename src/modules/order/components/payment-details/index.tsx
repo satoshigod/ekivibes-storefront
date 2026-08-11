@@ -6,7 +6,7 @@ import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
 
 type PaymentDetailsProps = {
-  order: HttpTypes.StoreOrder
+  order: HttpTypes.TiendaOrder
 }
 
 const PaymentDetails = ({ order }: PaymentDetailsProps) => {

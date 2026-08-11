@@ -4,14 +4,14 @@ import repeat from "@lib/util/repeat"
 import { HttpTypes } from "@medusajs/types"
 import { Table, clx } from "@medusajs/ui"
 
-import Item from "@modules/cart/components/item"
-import SkeletonLineItem from "@modules/skeletons/components/skeleton-line-item"
+import Producto from "@modules/cart/components/item"
+import SkeletonLineProducto from "@modules/skeletons/components/skeleton-line-item"
 
-type ItemsTemplateProps = {
-  cart: HttpTypes.StoreCart
+type ProductosTemplateProps = {
+  cart: HttpTypes.TiendaCarrito
 }
 
-const ItemsPreviewTemplate = ({ cart }: ItemsTemplateProps) => {
+const ProductosPreviewTemplate = ({ cart }: ProductosTemplateProps) => {
   const items = cart.items
   const hasOverflow = items && items.length > 4
 
@@ -31,7 +31,7 @@ const ItemsPreviewTemplate = ({ cart }: ItemsTemplateProps) => {
                 })
                 .map((item) => {
                   return (
-                    <Item
+                    <Producto
                       key={item.id}
                       item={item}
                       type="preview"
@@ -40,7 +40,7 @@ const ItemsPreviewTemplate = ({ cart }: ItemsTemplateProps) => {
                   )
                 })
             : repeat(5).map((i) => {
-                return <SkeletonLineItem key={i} />
+                return <SkeletonLineProducto key={i} />
               })}
         </Table.Body>
       </Table>
@@ -48,4 +48,4 @@ const ItemsPreviewTemplate = ({ cart }: ItemsTemplateProps) => {
   )
 }
 
-export default ItemsPreviewTemplate
+export default ProductosPreviewTemplate

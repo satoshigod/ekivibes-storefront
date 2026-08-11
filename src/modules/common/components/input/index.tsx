@@ -18,18 +18,18 @@ type InputProps = Omit<
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ type, name, label, touched, required, topLabel, ...props }, ref) => {
     const inputRef = React.useRef<HTMLInputElement>(null)
-    const [showPassword, setShowPassword] = useState(false)
+    const [showContraseña, setShowContraseña] = useState(false)
     const [inputType, setInputType] = useState(type)
 
     useEffect(() => {
-      if (type === "password" && showPassword) {
+      if (type === "password" && showContraseña) {
         setInputType("text")
       }
 
-      if (type === "password" && !showPassword) {
+      if (type === "password" && !showContraseña) {
         setInputType("password")
       }
-    }, [type, showPassword])
+    }, [type, showContraseña])
 
     useImperativeHandle(ref, () => inputRef.current!)
 
@@ -59,10 +59,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {type === "password" && (
             <button
               type="button"
-              onClick={() => setShowPassword(!showPassword)}
+              onClick={() => setShowContraseña(!showContraseña)}
               className="text-ui-fg-subtle px-4 focus:outline-none transition-all duration-150 outline-none focus:text-ui-fg-base absolute right-0 top-3"
             >
-              {showPassword ? <Eye /> : <EyeOff />}
+              {showContraseña ? <Eye /> : <EyeOff />}
             </button>
           )}
         </div>

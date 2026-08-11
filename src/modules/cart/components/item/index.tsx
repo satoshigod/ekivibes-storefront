@@ -1,34 +1,34 @@
 "use client"
 
 import { Table, Text, clx } from "@medusajs/ui"
-import { updateLineItem } from "@lib/data/cart"
+import { updateLineProducto } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
-import CartItemSelect from "@modules/cart/components/cart-item-select"
+import CarritoProductoSelect from "@modules/cart/components/cart-item-select"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import DeleteButton from "@modules/common/components/delete-button"
-import LineItemOptions from "@modules/common/components/line-item-options"
-import LineItemPrice from "@modules/common/components/line-item-price"
-import LineItemUnitPrice from "@modules/common/components/line-item-unit-price"
+import LineProductoOptions from "@modules/common/components/line-item-options"
+import LineProductoPrecio from "@modules/common/components/line-item-price"
+import LineProductoUnitPrecio from "@modules/common/components/line-item-unit-price"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Spinner from "@modules/common/icons/spinner"
 import Thumbnail from "@modules/products/components/thumbnail"
 import { useState } from "react"
 
-type ItemProps = {
-  item: HttpTypes.StoreCartLineItem
+type ProductoProps = {
+  item: HttpTypes.TiendaCarritoLineProducto
   type?: "full" | "preview"
   currencyCode: string
 }
 
-const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
+const Producto = ({ item, type = "full", currencyCode }: ProductoProps) => {
   const [updating, setUpdating] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const changeQuantity = async (quantity: number) => {
+  const changeCantidad = async (quantity: number) => {
     setError(null)
     setUpdating(true)
 
-    await updateLineItem({
+    await updateLineProducto({
       lineId: item.id,
       quantity,
     })
@@ -42,7 +42,7 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
 
   // TODO: Update this to grab the actual max inventory
   const maxQtyFromInventory = 10
-  const maxQuantity = item.variant?.manage_inventory ? 10 : maxQtyFromInventory
+  const maxCantidad = item.variant?.manage_inventory ? 10 : maxQtyFromInventory
 
   return (
     <Table.Row className="w-full" data-testid="product-row">
@@ -69,23 +69,23 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
         >
           {item.product_title}
         </Text>
-        <LineItemOptions variant={item.variant} data-testid="product-variant" />
+        <LineProductoOptions variant={item.variant} data-testid="product-variant" />
       </Table.Cell>
 
       {type === "full" && (
         <Table.Cell>
           <div className="flex gap-2 items-center w-28">
             <DeleteButton id={item.id} data-testid="product-delete-button" />
-            <CartItemSelect
+            <CarritoProductoSelect
               value={item.quantity}
-              onChange={(value) => changeQuantity(parseInt(value.target.value))}
+              onChange={(value) => changeCantidad(parseInt(value.target.value))}
               className="w-14 h-10 p-4"
               data-testid="product-select-button"
             >
               {/* TODO: Update this with the v2 way of managing inventory */}
               {Array.from(
                 {
-                  length: Math.min(maxQuantity, 10),
+                  length: Math.min(maxCantidad, 10),
                 },
                 (_, i) => (
                   <option value={i + 1} key={i}>
@@ -97,7 +97,7 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
               <option value={1} key={1}>
                 1
               </option>
-            </CartItemSelect>
+            </CarritoProductoSelect>
             {updating && <Spinner />}
           </div>
           <ErrorMessage error={error} data-testid="product-error-message" />
@@ -106,7 +106,7 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
 
       {type === "full" && (
         <Table.Cell className="hidden small:table-cell">
-          <LineItemUnitPrice
+          <LineProductoUnitPrecio
             item={item}
             style="tight"
             currencyCode={currencyCode}
@@ -123,14 +123,14 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
           {type === "preview" && (
             <span className="flex gap-x-1 ">
               <Text className="text-ui-fg-muted">{item.quantity}x </Text>
-              <LineItemUnitPrice
+              <LineProductoUnitPrecio
                 item={item}
                 style="tight"
                 currencyCode={currencyCode}
               />
             </span>
           )}
-          <LineItemPrice
+          <LineProductoPrecio
             item={item}
             style="tight"
             currencyCode={currencyCode}
@@ -141,4 +141,4 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
   )
 }
 
-export default Item
+export default Producto

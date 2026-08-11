@@ -14,23 +14,23 @@ export const listProducts = async ({
   regionId,
 }: {
   pageParam?: number
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductListParams
+  queryParams?: HttpTypes.FindParams & HttpTypes.TiendaProductListParams
   countryCode?: string
   regionId?: string
 }): Promise<{
-  response: { products: HttpTypes.StoreProduct[]; count: number }
+  response: { products: HttpTypes.TiendaProduct[]; count: number }
   nextPage: number | null
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductListParams
+  queryParams?: HttpTypes.FindParams & HttpTypes.TiendaProductListParams
 }> => {
   if (!countryCode && !regionId) {
-    throw new Error("Country code or region ID is required")
+    throw new Error("País code or region ID is required")
   }
 
   const limit = queryParams?.limit || 12
   const _pageParam = Math.max(pageParam, 1)
   const offset = _pageParam === 1 ? 0 : (_pageParam - 1) * limit
 
-  let region: HttpTypes.StoreRegion | undefined | null
+  let region: HttpTypes.TiendaRegion | undefined | null
 
   if (countryCode) {
     region = await getRegion(countryCode)
@@ -54,7 +54,7 @@ export const listProducts = async ({
   }
 
   return sdk.client
-    .fetch<{ products: HttpTypes.StoreProduct[]; count: number }>(
+    .fetch<{ products: HttpTypes.TiendaProduct[]; count: number }>(
       `/store/products`,
       {
         method: "GET",
@@ -86,7 +86,7 @@ export const listProducts = async ({
 }
 
 /**
- * This will fetch 100 products to the Next.js cache and sort them based on the sortBy parameter.
+ * This will fetch 100 products to the Siguiente.js cache and sort them based on the sortBy parameter.
  * It will then return the paginated products based on the page and limit parameters.
  */
 export const listProductsWithSort = async ({
@@ -96,13 +96,13 @@ export const listProductsWithSort = async ({
   countryCode,
 }: {
   page?: number
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
+  queryParams?: HttpTypes.FindParams & HttpTypes.TiendaProductParams
   sortBy?: SortOptions
   countryCode: string
 }): Promise<{
-  response: { products: HttpTypes.StoreProduct[]; count: number }
+  response: { products: HttpTypes.TiendaProduct[]; count: number }
   nextPage: number | null
-  queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
+  queryParams?: HttpTypes.FindParams & HttpTypes.TiendaProductParams
 }> => {
   const limit = queryParams?.limit || 12
 

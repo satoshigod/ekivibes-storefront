@@ -9,14 +9,14 @@ import {
   getAuthHeaders,
   getCacheOptions,
   getCacheTag,
-  getCartId,
+  getCarritoId,
   removeAuthToken,
-  removeCartId,
+  removeCarritoId,
   setAuthToken,
 } from "./cookies"
 
 export const retrieveCustomer =
-  async (): Promise<HttpTypes.StoreCustomer | null> => {
+  async (): Promise<HttpTypes.TiendaCustomer | null> => {
     const authHeaders = await getAuthHeaders()
 
     if (!authHeaders) return null
@@ -30,7 +30,7 @@ export const retrieveCustomer =
     }
 
     return await sdk.client
-      .fetch<{ customer: HttpTypes.StoreCustomer }>(`/store/customers/me`, {
+      .fetch<{ customer: HttpTypes.TiendaCustomer }>(`/store/customers/me`, {
         method: "GET",
         query: {
           fields: "*orders",
@@ -43,7 +43,7 @@ export const retrieveCustomer =
       .catch(() => null)
   }
 
-export const updateCustomer = async (body: HttpTypes.StoreUpdateCustomer) => {
+export const updateCustomer = async (body: HttpTypes.TiendaUpdateCustomer) => {
   const headers = {
     ...(await getAuthHeaders()),
   }
@@ -96,7 +96,7 @@ export async function signup(_currentState: unknown, formData: FormData) {
     const customerCacheTag = await getCacheTag("customers")
     revalidateTag(customerCacheTag)
 
-    await transferCart()
+    await transferCarrito()
 
     return createdCustomer
   } catch (error: any) {
@@ -121,7 +121,7 @@ export async function login(_currentState: unknown, formData: FormData) {
   }
 
   try {
-    await transferCart()
+    await transferCarrito()
   } catch (error: any) {
     return error.toString()
   }
@@ -135,7 +135,7 @@ export async function signout(countryCode: string) {
   const customerCacheTag = await getCacheTag("customers")
   revalidateTag(customerCacheTag)
 
-  await removeCartId()
+  await removeCarritoId()
 
   const cartCacheTag = await getCacheTag("carts")
   revalidateTag(cartCacheTag)
@@ -143,8 +143,8 @@ export async function signout(countryCode: string) {
   redirect(`/${countryCode}/account`)
 }
 
-export async function transferCart() {
-  const cartId = await getCartId()
+export async function transferCarrito() {
+  const cartId = await getCarritoId()
 
   if (!cartId) {
     return
@@ -152,13 +152,13 @@ export async function transferCart() {
 
   const headers = await getAuthHeaders()
 
-  await sdk.store.cart.transferCart(cartId, {}, headers)
+  await sdk.store.cart.transferCarrito(cartId, {}, headers)
 
   const cartCacheTag = await getCacheTag("carts")
   revalidateTag(cartCacheTag)
 }
 
-export const addCustomerAddress = async (
+export const addCustomerDirección = async (
   currentState: Record<string, unknown>,
   formData: FormData
 ): Promise<any> => {
@@ -185,7 +185,7 @@ export const addCustomerAddress = async (
   }
 
   return sdk.store.customer
-    .createAddress(address, {}, headers)
+    .createDirección(address, {}, headers)
     .then(async ({ customer }) => {
       const customerCacheTag = await getCacheTag("customers")
       revalidateTag(customerCacheTag)
@@ -196,7 +196,7 @@ export const addCustomerAddress = async (
     })
 }
 
-export const deleteCustomerAddress = async (
+export const deleteCustomerDirección = async (
   addressId: string
 ): Promise<void> => {
   const headers = {
@@ -204,7 +204,7 @@ export const deleteCustomerAddress = async (
   }
 
   await sdk.store.customer
-    .deleteAddress(addressId, headers)
+    .deleteDirección(addressId, headers)
     .then(async () => {
       const customerCacheTag = await getCacheTag("customers")
       revalidateTag(customerCacheTag)
@@ -215,7 +215,7 @@ export const deleteCustomerAddress = async (
     })
 }
 
-export const updateCustomerAddress = async (
+export const updateCustomerDirección = async (
   currentState: Record<string, unknown>,
   formData: FormData
 ): Promise<any> => {
@@ -223,7 +223,7 @@ export const updateCustomerAddress = async (
     (currentState.addressId as string) || (formData.get("addressId") as string)
 
   if (!addressId) {
-    return { success: false, error: "Address ID is required" }
+    return { success: false, error: "Dirección ID is required" }
   }
 
   const address = {
@@ -236,7 +236,7 @@ export const updateCustomerAddress = async (
     postal_code: formData.get("postal_code") as string,
     province: formData.get("province") as string,
     country_code: formData.get("country_code") as string,
-  } as HttpTypes.StoreUpdateCustomerAddress
+  } as HttpTypes.TiendaUpdateCustomerDirección
 
   const phone = formData.get("phone") as string
 
@@ -249,7 +249,7 @@ export const updateCustomerAddress = async (
   }
 
   return sdk.store.customer
-    .updateAddress(addressId, address, {}, headers)
+    .updateDirección(addressId, address, {}, headers)
     .then(async () => {
       const customerCacheTag = await getCacheTag("customers")
       revalidateTag(customerCacheTag)

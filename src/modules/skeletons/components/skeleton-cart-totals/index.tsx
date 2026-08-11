@@ -1,4 +1,4 @@
-const SkeletonCartTotals = ({ header = true }) => {
+const SkeletonCarritoTotals = ({ header = true }) => {
   return (
     <div className="flex flex-col">
       {header && <div className="w-32 h-4 bg-gray-100 mb-4"></div>}
@@ -27,4 +27,4 @@ const SkeletonCartTotals = ({ header = true }) => {
   )
 }
 
-export default SkeletonCartTotals
+export default SkeletonCarritoTotals

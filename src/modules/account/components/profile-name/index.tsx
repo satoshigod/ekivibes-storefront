@@ -4,15 +4,15 @@ import React, { useEffect, useActionState } from "react";
 
 import Input from "@modules/common/components/input"
 
-import AccountInfo from "../account-info"
+import CuentaInfo from "../account-info"
 import { HttpTypes } from "@medusajs/types"
 import { updateCustomer } from "@lib/data/customer"
 
 type MyInformationProps = {
-  customer: HttpTypes.StoreCustomer
+  customer: HttpTypes.TiendaCustomer
 }
 
-const ProfileName: React.FC<MyInformationProps> = ({ customer }) => {
+const PerfilName: React.FC<MyInformationProps> = ({ customer }) => {
   const [successState, setSuccessState] = React.useState(false)
 
   const updateCustomerName = async (
@@ -47,7 +47,7 @@ const ProfileName: React.FC<MyInformationProps> = ({ customer }) => {
 
   return (
     <form action={formAction} className="w-full overflow-visible">
-      <AccountInfo
+      <CuentaInfo
         label="Name"
         currentInfo={`${customer.first_name} ${customer.last_name}`}
         isSuccess={successState}
@@ -57,23 +57,23 @@ const ProfileName: React.FC<MyInformationProps> = ({ customer }) => {
       >
         <div className="grid grid-cols-2 gap-x-4">
           <Input
-            label="First name"
+            label="Nombre"
             name="first_name"
             required
             defaultValue={customer.first_name ?? ""}
             data-testid="first-name-input"
           />
           <Input
-            label="Last name"
+            label="Apellido"
             name="last_name"
             required
             defaultValue={customer.last_name ?? ""}
             data-testid="last-name-input"
           />
         </div>
-      </AccountInfo>
+      </CuentaInfo>
     </form>
   )
 }
 
-export default ProfileName
+export default PerfilName

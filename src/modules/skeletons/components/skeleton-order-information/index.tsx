@@ -1,4 +1,4 @@
-import SkeletonCartTotals from "@modules/skeletons/components/skeleton-cart-totals"
+import SkeletonCarritoTotals from "@modules/skeletons/components/skeleton-cart-totals"
 
 const SkeletonOrderInformation = () => {
   return (
@@ -27,7 +27,7 @@ const SkeletonOrderInformation = () => {
           <div className="w-3/6 h-3 bg-gray-100 my-4"></div>
         </div>
 
-        <SkeletonCartTotals />
+        <SkeletonCarritoTotals />
       </div>
     </div>
   )

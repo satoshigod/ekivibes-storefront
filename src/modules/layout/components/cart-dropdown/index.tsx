@@ -17,18 +17,18 @@ import Thumbnail from "@modules/products/components/thumbnail"
 import { usePathname } from "next/navigation"
 import { Fragment, useEffect, useRef, useState } from "react"
 
-const CartDropdown = ({
+const CarritoDropdown = ({
   cart: cartState,
 }: {
-  cart?: HttpTypes.StoreCart | null
+  cart?: HttpTypes.TiendaCarrito | null
 }) => {
   const [activeTimer, setActiveTimer] = useState<NodeJS.Timer | undefined>(
     undefined
   )
-  const [cartDropdownOpen, setCartDropdownOpen] = useState(false)
+  const [cartDropdownOpen, setCarritoDropdownOpen] = useState(false)
 
-  const open = () => setCartDropdownOpen(true)
-  const close = () => setCartDropdownOpen(false)
+  const open = () => setCarritoDropdownOpen(true)
+  const close = () => setCarritoDropdownOpen(false)
 
   const totalItems =
     cartState?.items?.reduce((acc, item) => {
@@ -46,7 +46,7 @@ const CartDropdown = ({
     setActiveTimer(timer)
   }
 
-  const openAndCancel = () => {
+  const openAndCancelar = () => {
     if (activeTimer) {
       clearTimeout(activeTimer)
     }
@@ -76,7 +76,7 @@ const CartDropdown = ({
   return (
     <div
       className="h-full z-50"
-      onMouseEnter={openAndCancel}
+      onMouseEnter={openAndCancelar}
       onMouseLeave={close}
     >
       <Popover className="relative h-full">
@@ -85,7 +85,7 @@ const CartDropdown = ({
             className="hover:text-ui-fg-base"
             href="/cart"
             data-testid="nav-cart-link"
-          >{`Cart (${totalItems})`}</LocalizedClientLink>
+          >{`Carrito (${totalItems})`}</LocalizedClientLink>
         </PopoverButton>
         <Transition
           show={cartDropdownOpen}
@@ -103,7 +103,7 @@ const CartDropdown = ({
             data-testid="nav-cart-dropdown"
           >
             <div className="p-4 flex items-center justify-center">
-              <h3 className="text-large-semi">Cart</h3>
+              <h3 className="text-large-semi">Carrito</h3>
             </div>
             {cartState && cartState.items?.length ? (
               <>
@@ -168,7 +168,7 @@ const CartDropdown = ({
                             className="mt-1"
                             data-testid="cart-item-remove-button"
                           >
-                            Remove
+                            Eliminar
                           </DeleteButton>
                         </div>
                       </div>
@@ -197,7 +197,7 @@ const CartDropdown = ({
                       size="large"
                       data-testid="go-to-cart-button"
                     >
-                      Go to cart
+                      Ver carrito
                     </Button>
                   </LocalizedClientLink>
                 </div>
@@ -227,4 +227,4 @@ const CartDropdown = ({
   )
 }
 
-export default CartDropdown
+export default CarritoDropdown

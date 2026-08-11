@@ -13,7 +13,7 @@ const CATS = [
   { label: "Accesorios",  slug: "accesorios", icon: "/cats/accesorios.svg" },
 ]
 
-export default async function EkivibesHome({
+export default async function EkivibesInicio({
   countryCode,
 }: {
   countryCode: string

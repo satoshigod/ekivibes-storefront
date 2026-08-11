@@ -1,6 +1,6 @@
 import { Table } from "@medusajs/ui"
 
-const SkeletonCartItem = () => {
+const SkeletonCarritoItem = () => {
   return (
     <Table.Row className="w-full m-4">
       <Table.Cell className="!pl-0 p-4 w-24">
@@ -32,4 +32,4 @@ const SkeletonCartItem = () => {
   )
 }
 
-export default SkeletonCartItem
+export default SkeletonCarritoItem

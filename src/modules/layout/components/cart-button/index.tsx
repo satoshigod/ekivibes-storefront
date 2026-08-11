@@ -1,8 +1,8 @@
-import { retrieveCart } from "@lib/data/cart"
-import CartDropdown from "../cart-dropdown"
+import { retrieveCarrito } from "@lib/data/cart"
+import CarritoDropdown from "../cart-dropdown"
 
-export default async function CartButton() {
-  const cart = await retrieveCart().catch(() => null)
+export default async function CarritoButton() {
+  const cart = await retrieveCarrito().catch(() => null)
 
-  return <CartDropdown cart={cart} />
+  return <CarritoDropdown cart={cart} />
 }

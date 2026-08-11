@@ -1,26 +1,26 @@
 "use client"
 
-import { addToCart } from "@lib/data/cart"
+import { addToCarrito } from "@lib/data/cart"
 import { useIntersection } from "@lib/hooks/use-in-view"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
 import Divider from "@modules/common/components/divider"
 import OptionSelect from "@modules/products/components/product-actions/option-select"
 import { isEqual } from "lodash"
-import { useParams, usePathname, useSearchParams } from "next/navigation"
+import { useParams, usePathname, useBuscarParams } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
 import ProductPrice from "../product-price"
 import MobileActions from "./mobile-actions"
 import { useRouter } from "next/navigation"
 
 type ProductActionsProps = {
-  product: HttpTypes.StoreProduct
-  region: HttpTypes.StoreRegion
+  product: HttpTypes.TiendaProduct
+  region: HttpTypes.TiendaRegion
   disabled?: boolean
 }
 
 const optionsAsKeymap = (
-  variantOptions: HttpTypes.StoreProductVariant["options"]
+  variantOptions: HttpTypes.TiendaProductVariant["options"]
 ) => {
   return variantOptions?.reduce((acc: Record<string, string>, varopt: any) => {
     acc[varopt.option_id] = varopt.value
@@ -34,7 +34,7 @@ export default function ProductActions({
 }: ProductActionsProps) {
   const router = useRouter()
   const pathname = usePathname()
-  const searchParams = useSearchParams()
+  const searchParams = useBuscarParams()
 
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
   const [isAdding, setIsAdding] = useState(false)
@@ -76,7 +76,7 @@ export default function ProductActions({
   }, [product.variants, options])
 
   useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString())
+    const params = new URLBuscarParams(searchParams.toString())
     const value = isValidVariant ? selectedVariant?.id : null
 
     if (params.get("v_id") === value) {
@@ -94,6 +94,10 @@ export default function ProductActions({
 
   // check if the selected variant is in stock
   const inStock = useMemo(() => {
+    // Ekivibes: permitir agregar al carrito siempre (backorder habilitado)
+    // Para activar control de inventario, configurar en Medusa Admin por variante
+    if (selectedVariant) return true
+
     // If we don't manage inventory, we can always add to cart
     if (selectedVariant && !selectedVariant.manage_inventory) {
       return true
@@ -121,12 +125,12 @@ export default function ProductActions({
   const inView = useIntersection(actionsRef, "0px")
 
   // add the selected variant to the cart
-  const handleAddToCart = async () => {
+  const handleAddToCarrito = async () => {
     if (!selectedVariant?.id) return null
 
     setIsAdding(true)
 
-    await addToCart({
+    await addToCarrito({
       variantId: selectedVariant.id,
       quantity: 1,
       countryCode,
@@ -163,7 +167,7 @@ export default function ProductActions({
         <ProductPrice product={product} variant={selectedVariant} />
 
         <Button
-          onClick={handleAddToCart}
+          onClick={handleAddToCarrito}
           disabled={
             !inStock ||
             !selectedVariant ||
@@ -179,8 +183,8 @@ export default function ProductActions({
           {!selectedVariant && !options
             ? "Select variant"
             : !inStock || !isValidVariant
-            ? "Out of stock"
-            : "Add to cart"}
+            ? "Sin stock"
+            : "Agregar al carrito"}
         </Button>
         <MobileActions
           product={product}
@@ -188,7 +192,7 @@ export default function ProductActions({
           options={options}
           updateOptions={setOptionValue}
           inStock={inStock}
-          handleAddToCart={handleAddToCart}
+          handleAddToCarrito={handleAddToCarrito}
           isAdding={isAdding}
           show={!inView}
           optionsDisabled={!!disabled || isAdding}

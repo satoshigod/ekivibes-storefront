@@ -11,8 +11,8 @@ import ErrorMessage from "../error-message"
 import { SubmitButton } from "../submit-button"
 
 type DiscountCodeProps = {
-  cart: HttpTypes.StoreCart & {
-    promotions: HttpTypes.StorePromotion[]
+  cart: HttpTypes.TiendaCarrito & {
+    promotions: HttpTypes.TiendaPromotion[]
   }
 }
 
@@ -66,7 +66,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
               className="txt-medium text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
               data-testid="add-discount-button"
             >
-              Add Promotion Code(s)
+              Agregar código de descuento
             </button>
 
             {/* <Tooltip content="You can add multiple promotion codes">
@@ -161,7 +161,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                       >
                         <Trash size={14} />
                         <span className="sr-only">
-                          Remove discount code from order
+                          Eliminar discount code from order
                         </span>
                       </button>
                     )}

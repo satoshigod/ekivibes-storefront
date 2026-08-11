@@ -8,20 +8,20 @@ import { isManual } from "@lib/constants"
 import SkeletonCardDetails from "@modules/skeletons/components/skeleton-card-details"
 import { CardElement } from "@stripe/react-stripe-js"
 import { StripeCardElementOptions } from "@stripe/stripe-js"
-import PaymentTest from "../payment-test"
+import PagoTest from "../payment-test"
 import { StripeContext } from "../payment-wrapper/stripe-wrapper"
 
-type PaymentContainerProps = {
+type PagoContainerProps = {
   paymentProviderId: string
-  selectedPaymentOptionId: string | null
+  selectedPagoOptionId: string | null
   disabled?: boolean
   paymentInfoMap: Record<string, { title: string; icon: JSX.Element }>
   children?: React.ReactNode
 }
 
-const PaymentContainer: React.FC<PaymentContainerProps> = ({
+const PagoContainer: React.FC<PagoContainerProps> = ({
   paymentProviderId,
-  selectedPaymentOptionId,
+  selectedPagoOptionId,
   paymentInfoMap,
   disabled = false,
   children,
@@ -37,18 +37,18 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
         "flex flex-col gap-y-2 text-small-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2 hover:shadow-borders-interactive-with-active",
         {
           "border-ui-border-interactive":
-            selectedPaymentOptionId === paymentProviderId,
+            selectedPagoOptionId === paymentProviderId,
         }
       )}
     >
       <div className="flex items-center justify-between ">
         <div className="flex items-center gap-x-4">
-          <Radio checked={selectedPaymentOptionId === paymentProviderId} />
+          <Radio checked={selectedPagoOptionId === paymentProviderId} />
           <Text className="text-base-regular">
             {paymentInfoMap[paymentProviderId]?.title || paymentProviderId}
           </Text>
           {isManual(paymentProviderId) && isDevelopment && (
-            <PaymentTest className="hidden small:block" />
+            <PagoTest className="hidden small:block" />
           )}
         </div>
         <span className="justify-self-end text-ui-fg-base">
@@ -56,24 +56,24 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
         </span>
       </div>
       {isManual(paymentProviderId) && isDevelopment && (
-        <PaymentTest className="small:hidden text-[10px]" />
+        <PagoTest className="small:hidden text-[10px]" />
       )}
       {children}
     </RadioGroupOption>
   )
 }
 
-export default PaymentContainer
+export default PagoContainer
 
 export const StripeCardContainer = ({
   paymentProviderId,
-  selectedPaymentOptionId,
+  selectedPagoOptionId,
   paymentInfoMap,
   disabled = false,
   setCardBrand,
   setError,
   setCardComplete,
-}: Omit<PaymentContainerProps, "children"> & {
+}: Omit<PagoContainerProps, "children"> & {
   setCardBrand: (brand: string) => void
   setError: (error: string | null) => void
   setCardComplete: (complete: boolean) => void
@@ -98,13 +98,13 @@ export const StripeCardContainer = ({
   }, [])
 
   return (
-    <PaymentContainer
+    <PagoContainer
       paymentProviderId={paymentProviderId}
-      selectedPaymentOptionId={selectedPaymentOptionId}
+      selectedPagoOptionId={selectedPagoOptionId}
       paymentInfoMap={paymentInfoMap}
       disabled={disabled}
     >
-      {selectedPaymentOptionId === paymentProviderId &&
+      {selectedPagoOptionId === paymentProviderId &&
         (stripeReady ? (
           <div className="my-4 transition-all duration-150 ease-in-out">
             <Text className="txt-medium-plus text-ui-fg-base mb-1">
@@ -124,6 +124,6 @@ export const StripeCardContainer = ({
         ) : (
           <SkeletonCardDetails />
         ))}
-    </PaymentContainer>
+    </PagoContainer>
   )
 }

@@ -9,9 +9,9 @@ import {
   getAuthHeaders,
   getCacheOptions,
   getCacheTag,
-  getCartId,
-  removeCartId,
-  setCartId,
+  getCarritoId,
+  removeCarritoId,
+  setCarritoId,
 } from "./cookies"
 import { getRegion } from "./regions"
 import { getLocale } from "@lib/data/locale-actions"
@@ -21,8 +21,8 @@ import { getLocale } from "@lib/data/locale-actions"
  * @param cartId - optional - The ID of the cart to retrieve.
  * @returns The cart object if found, or null if not found.
  */
-export async function retrieveCart(cartId?: string, fields?: string) {
-  const id = cartId || (await getCartId())
+export async function retrieveCarrito(cartId?: string, fields?: string) {
+  const id = cartId || (await getCarritoId())
   fields ??=
     "*items, *region, *items.product, *items.variant, *items.thumbnail, *items.metadata, +items.total, *promotions, +shipping_methods.name"
 
@@ -39,7 +39,7 @@ export async function retrieveCart(cartId?: string, fields?: string) {
   }
 
   return await sdk.client
-    .fetch<HttpTypes.StoreCartResponse>(`/store/carts/${id}`, {
+    .fetch<HttpTypes.TiendaCarritoResponse>(`/store/carts/${id}`, {
       method: "GET",
       query: {
         fields,
@@ -48,18 +48,18 @@ export async function retrieveCart(cartId?: string, fields?: string) {
       next,
       cache: "force-cache",
     })
-    .then(({ cart }: { cart: HttpTypes.StoreCart }) => cart)
+    .then(({ cart }: { cart: HttpTypes.TiendaCarrito }) => cart)
     .catch(() => null)
 }
 
-export async function getOrSetCart(countryCode: string) {
+export async function getOrSetCarrito(countryCode: string) {
   const region = await getRegion(countryCode)
 
   if (!region) {
     throw new Error(`Region not found for country code: ${countryCode}`)
   }
 
-  let cart = await retrieveCart(undefined, "id,region_id")
+  let cart = await retrieveCarrito(undefined, "id,region_id")
 
   const headers = {
     ...(await getAuthHeaders()),
@@ -74,7 +74,7 @@ export async function getOrSetCart(countryCode: string) {
     )
     cart = cartResp.cart
 
-    await setCartId(cart.id)
+    await setCarritoId(cart.id)
 
     const cartCacheTag = await getCacheTag("carts")
     revalidateTag(cartCacheTag)
@@ -89,8 +89,8 @@ export async function getOrSetCart(countryCode: string) {
   return cart
 }
 
-export async function updateCart(data: HttpTypes.StoreUpdateCart) {
-  const cartId = await getCartId()
+export async function updateCarrito(data: HttpTypes.TiendaUpdateCarrito) {
+  const cartId = await getCarritoId()
 
   if (!cartId) {
     throw new Error("No existing cart found, please create one before updating")
@@ -102,7 +102,7 @@ export async function updateCart(data: HttpTypes.StoreUpdateCart) {
 
   return sdk.store.cart
     .update(cartId, data, {}, headers)
-    .then(async ({ cart }: { cart: HttpTypes.StoreCart }) => {
+    .then(async ({ cart }: { cart: HttpTypes.TiendaCarrito }) => {
       const cartCacheTag = await getCacheTag("carts")
       revalidateTag(cartCacheTag)
 
@@ -114,7 +114,7 @@ export async function updateCart(data: HttpTypes.StoreUpdateCart) {
     .catch(medusaError)
 }
 
-export async function addToCart({
+export async function addToCarrito({
   variantId,
   quantity,
   countryCode,
@@ -127,7 +127,7 @@ export async function addToCart({
     throw new Error("Missing variant ID when adding to cart")
   }
 
-  const cart = await getOrSetCart(countryCode)
+  const cart = await getOrSetCarrito(countryCode)
 
   if (!cart) {
     throw new Error("Error retrieving or creating cart")
@@ -168,7 +168,7 @@ export async function updateLineItem({
     throw new Error("Missing lineItem ID when updating line item")
   }
 
-  const cartId = await getCartId()
+  const cartId = await getCarritoId()
 
   if (!cartId) {
     throw new Error("Missing cart ID when updating line item")
@@ -195,7 +195,7 @@ export async function deleteLineItem(lineId: string) {
     throw new Error("Missing lineItem ID when deleting line item")
   }
 
-  const cartId = await getCartId()
+  const cartId = await getCarritoId()
 
   if (!cartId) {
     throw new Error("Missing cart ID when deleting line item")
@@ -238,8 +238,8 @@ export async function setShippingMethod({
 }
 
 export async function initiatePaymentSession(
-  cart: HttpTypes.StoreCart,
-  data: HttpTypes.StoreInitializePaymentSession
+  cart: HttpTypes.TiendaCarrito,
+  data: HttpTypes.TiendaInitializePaymentSession
 ) {
   const headers = {
     ...(await getAuthHeaders()),
@@ -256,7 +256,7 @@ export async function initiatePaymentSession(
 }
 
 export async function applyPromotions(codes: string[]) {
-  const cartId = await getCartId()
+  const cartId = await getCarritoId()
 
   if (!cartId) {
     throw new Error("No existing cart found")
@@ -279,10 +279,10 @@ export async function applyPromotions(codes: string[]) {
 }
 
 export async function applyGiftCard(code: string) {
-  //   const cartId = getCartId()
+  //   const cartId = getCarritoId()
   //   if (!cartId) return "No cartId cookie found"
   //   try {
-  //     await updateCart(cartId, { gift_cards: [{ code }] }).then(() => {
+  //     await updateCarrito(cartId, { gift_cards: [{ code }] }).then(() => {
   //       revalidateTag("cart")
   //     })
   //   } catch (error: any) {
@@ -291,7 +291,7 @@ export async function applyGiftCard(code: string) {
 }
 
 export async function removeDiscount(code: string) {
-  // const cartId = getCartId()
+  // const cartId = getCarritoId()
   // if (!cartId) return "No cartId cookie found"
   // try {
   //   await deleteDiscount(cartId, code)
@@ -302,16 +302,16 @@ export async function removeDiscount(code: string) {
 }
 
 export async function removeGiftCard(
-  codeToRemove: string,
+  codeToEliminar: string,
   giftCards: any[]
   // giftCards: GiftCard[]
 ) {
-  //   const cartId = getCartId()
+  //   const cartId = getCarritoId()
   //   if (!cartId) return "No cartId cookie found"
   //   try {
-  //     await updateCart(cartId, {
+  //     await updateCarrito(cartId, {
   //       gift_cards: [...giftCards]
-  //         .filter((gc) => gc.code !== codeToRemove)
+  //         .filter((gc) => gc.code !== codeToEliminar)
   //         .map((gc) => ({ code: gc.code })),
   //     }).then(() => {
   //       revalidateTag("cart")
@@ -334,12 +334,12 @@ export async function submitPromotionForm(
 }
 
 // TODO: Pass a POJO instead of a form entity here
-export async function setAddresses(currentState: unknown, formData: FormData) {
+export async function setDirecciónes(currentState: unknown, formData: FormData) {
   try {
     if (!formData) {
       throw new Error("No form data found when setting addresses")
     }
-    const cartId = getCartId()
+    const cartId = getCarritoId()
     if (!cartId) {
       throw new Error("No existing cart found when setting addresses")
     }
@@ -376,7 +376,7 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
         province: formData.get("billing_address.province"),
         phone: formData.get("billing_address.phone"),
       }
-    await updateCart(data)
+    await updateCarrito(data)
   } catch (e: any) {
     return e.message
   }
@@ -392,7 +392,7 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
  * @returns The cart object if the order was successful, or null if not.
  */
 export async function placeOrder(cartId?: string) {
-  const id = cartId || (await getCartId())
+  const id = cartId || (await getCarritoId())
 
   if (!id) {
     throw new Error("No existing cart found when placing an order")
@@ -418,7 +418,7 @@ export async function placeOrder(cartId?: string) {
     const orderCacheTag = await getCacheTag("orders")
     revalidateTag(orderCacheTag)
 
-    removeCartId()
+    removeCarritoId()
     redirect(`/${countryCode}/order/${cartRes?.order.id}/confirmed`)
   }
 
@@ -431,7 +431,7 @@ export async function placeOrder(cartId?: string) {
  * @param countryCode
  */
 export async function updateRegion(countryCode: string, currentPath: string) {
-  const cartId = await getCartId()
+  const cartId = await getCarritoId()
   const region = await getRegion(countryCode)
 
   if (!region) {
@@ -439,7 +439,7 @@ export async function updateRegion(countryCode: string, currentPath: string) {
   }
 
   if (cartId) {
-    await updateCart({ region_id: region.id })
+    await updateCarrito({ region_id: region.id })
     const cartCacheTag = await getCacheTag("carts")
     revalidateTag(cartCacheTag)
   }
@@ -453,8 +453,8 @@ export async function updateRegion(countryCode: string, currentPath: string) {
   redirect(`/${countryCode}${currentPath}`)
 }
 
-export async function listCartOptions() {
-  const cartId = await getCartId()
+export async function listCarritoOptions() {
+  const cartId = await getCarritoId()
   const headers = {
     ...(await getAuthHeaders()),
   }
@@ -463,7 +463,7 @@ export async function listCartOptions() {
   }
 
   return await sdk.client.fetch<{
-    shipping_options: HttpTypes.StoreCartShippingOption[]
+    shipping_options: HttpTypes.TiendaCarritoShippingOption[]
   }>("/store/shipping-options", {
     query: { cart_id: cartId },
     next,

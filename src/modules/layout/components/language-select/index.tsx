@@ -9,7 +9,7 @@ import {
 } from "@headlessui/react"
 import { Fragment, useEffect, useMemo, useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
-import ReactCountryFlag from "react-country-flag"
+import ReactPaísFlag from "react-country-flag"
 
 import { StateType } from "@lib/hooks/use-toggle-state"
 import { updateLocale } from "@lib/data/locale-actions"
@@ -22,7 +22,7 @@ type LanguageOption = {
   countryCode: string
 }
 
-const getCountryCodeFromLocale = (localeCode: string): string => {
+const getPaísCodeFromLocale = (localeCode: string): string => {
   try {
     const locale = new Intl.Locale(localeCode)
     if (locale.region) {
@@ -74,7 +74,7 @@ const LanguageSelect = ({
   currentLocale,
 }: LanguageSelectProps) => {
   const [current, setCurrent] = useState<LanguageOption | undefined>(undefined)
-  const [isPending, startTransition] = useTransition()
+  const [isPendiente, startTransition] = useTransition()
   const router = useRouter()
 
   const { state, close } = toggleState
@@ -88,7 +88,7 @@ const LanguageSelect = ({
         locale.name,
         currentLocale ?? "en-US"
       ),
-      countryCode: getCountryCodeFromLocale(locale.code),
+      countryCode: getPaísCodeFromLocale(locale.code),
     }))
     return [DEFAULT_OPTION, ...localeOptions]
   }, [locales, currentLocale])
@@ -124,7 +124,7 @@ const LanguageSelect = ({
               ) ?? DEFAULT_OPTION
             : DEFAULT_OPTION
         }
-        disabled={isPending}
+        disabled={isPendiente}
       >
         <ListboxButton className="py-1 w-full">
           <div className="txt-compact-small flex items-start gap-x-2">
@@ -133,7 +133,7 @@ const LanguageSelect = ({
               <span className="txt-compact-small flex items-center gap-x-2">
                 {current.countryCode && (
                   /* @ts-ignore */
-                  <ReactCountryFlag
+                  <ReactPaísFlag
                     svg
                     style={{
                       width: "16px",
@@ -142,7 +142,7 @@ const LanguageSelect = ({
                     countryCode={current.countryCode}
                   />
                 )}
-                {isPending ? "..." : current.localizedName}
+                {isPendiente ? "..." : current.localizedName}
               </span>
             )}
           </div>
@@ -167,7 +167,7 @@ const LanguageSelect = ({
                 >
                   {o.countryCode ? (
                     /* @ts-ignore */
-                    <ReactCountryFlag
+                    <ReactPaísFlag
                       svg
                       style={{
                         width: "16px",

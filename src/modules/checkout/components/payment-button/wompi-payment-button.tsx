@@ -2,7 +2,7 @@
 
 import React, { useState } from "react"
 
-interface WompiPaymentButtonProps {
+interface WompiPagoButtonProps {
   session: {
     data: {
       amount: number
@@ -12,18 +12,18 @@ interface WompiPaymentButtonProps {
     }
   }
   cartId: string
-  onPaymentCompleted: () => Promise<void>
+  onPagoCompletado: () => Promise<void>
 }
 
-export const WompiPaymentButton: React.FC<WompiPaymentButtonProps> = ({
+export const WompiPagoButton: React.FC<WompiPagoButtonProps> = ({
   session,
   cartId,
-  onPaymentCompleted,
+  onPagoCompletado,
 }) => {
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const handlePayment = () => {
+  const handlePago = () => {
     setErrorMessage(null)
 
     if (!window.WidgetCheckout) {
@@ -51,10 +51,10 @@ export const WompiPaymentButton: React.FC<WompiPaymentButtonProps> = ({
 
       if (transaction?.status === "APPROVED") {
         try {
-          await onPaymentCompleted()
+          await onPagoCompletado()
         } catch (err: any) {
           setErrorMessage(
-            "El pago fue aprobado por Wompi, pero hubo un problema al confirmar el pedido. Contacta a soporte."
+            "El pago fue aprobado por Wompi, pero hubo un problema al confirmar el pedido. Contactoa a soporte."
           )
         } finally {
           setSubmitting(false)
@@ -74,7 +74,7 @@ export const WompiPaymentButton: React.FC<WompiPaymentButtonProps> = ({
     <div className="w-full flex flex-col gap-y-2">
       <button
         type="button"
-        onClick={handlePayment}
+        onClick={handlePago}
         disabled={submitting}
         className="w-full bg-black text-white font-medium py-3 px-4 rounded-md hover:bg-gray-800 transition-colors disabled:bg-gray-400"
       >

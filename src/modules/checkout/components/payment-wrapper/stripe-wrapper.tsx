@@ -6,7 +6,7 @@ import { HttpTypes } from "@medusajs/types"
 import { createContext } from "react"
 
 type StripeWrapperProps = {
-  paymentSession: HttpTypes.StorePaymentSession
+  paymentSession: HttpTypes.TiendaPagoSession
   stripeKey?: string
   stripePromise: Promise<Stripe | null> | null
   children: React.ReactNode

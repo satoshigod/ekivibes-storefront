@@ -6,7 +6,7 @@ import OrderCard from "../order-card"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { HttpTypes } from "@medusajs/types"
 
-const OrderOverview = ({ orders }: { orders: HttpTypes.StoreOrder[] }) => {
+const OrderOverview = ({ orders }: { orders: HttpTypes.TiendaOrder[] }) => {
   if (orders?.length) {
     return (
       <div className="flex flex-col gap-y-8 w-full">

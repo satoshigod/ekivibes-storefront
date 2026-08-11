@@ -1,17 +1,17 @@
 "use client"
 
-import { transferCart } from "@lib/data/customer"
+import { transferCarrito } from "@lib/data/customer"
 import { ExclamationCircleSolid } from "@medusajs/icons"
-import { StoreCart, StoreCustomer } from "@medusajs/types"
+import { TiendaCarrito, TiendaCustomer } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
 import { useState } from "react"
 
-function CartMismatchBanner(props: {
-  customer: StoreCustomer
-  cart: StoreCart
+function CarritoMismatchBanner(props: {
+  customer: TiendaCustomer
+  cart: TiendaCarrito
 }) {
   const { customer, cart } = props
-  const [isPending, setIsPending] = useState(false)
+  const [isPendiente, setIsPendiente] = useState(false)
   const [actionText, setActionText] = useState("Run transfer again")
 
   if (!customer || !!cart.customer_id) {
@@ -20,13 +20,13 @@ function CartMismatchBanner(props: {
 
   const handleSubmit = async () => {
     try {
-      setIsPending(true)
+      setIsPendiente(true)
       setActionText("Transferring..")
 
-      await transferCart()
+      await transferCarrito()
     } catch {
       setActionText("Run transfer again")
-      setIsPending(false)
+      setIsPendiente(false)
     }
   }
 
@@ -44,7 +44,7 @@ function CartMismatchBanner(props: {
           variant="transparent"
           className="hover:bg-transparent active:bg-transparent focus:bg-transparent disabled:text-orange-500 text-orange-950 p-0 bg-transparent"
           size="base"
-          disabled={isPending}
+          disabled={isPendiente}
           onClick={handleSubmit}
         >
           {actionText}
@@ -54,4 +54,4 @@ function CartMismatchBanner(props: {
   )
 }
 
-export default CartMismatchBanner
+export default CarritoMismatchBanner

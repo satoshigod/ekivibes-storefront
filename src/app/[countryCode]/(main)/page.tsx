@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic"
 
 import { Metadata } from "next"
-import EkivibesHome from "@modules/ekivibes/home"
+import EkivibesInicio from "@modules/ekivibes/home"
 
 export const metadata: Metadata = {
   title: "Ekivibes | Equitación & Chalecos Airbag Hit-Air",
@@ -9,9 +9,9 @@ export const metadata: Metadata = {
     "Tienda de equitación en Colombia. Chalecos airbag Hit-Air, accesorios y repuestos originales.",
 }
 
-export default async function Home(props: {
+export default async function Inicio(props: {
   params: Promise<{ countryCode: string }>
 }) {
   const { countryCode } = await props.params
-  return <EkivibesHome countryCode={countryCode} />
+  return <EkivibesInicio countryCode={countryCode} />
 }

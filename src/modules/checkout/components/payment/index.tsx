@@ -2,23 +2,23 @@
 
 import { RadioGroup } from "@headlessui/react"
 import { isStripeLike, paymentInfoMap } from "@lib/constants"
-import { initiatePaymentSession } from "@lib/data/cart"
+import { initiatePagoSession } from "@lib/data/cart"
 import { CheckCircleSolid, CreditCard } from "@medusajs/icons"
 import { Button, Container, Heading, Text, clx } from "@medusajs/ui"
 import ErrorMessage from "@modules/checkout/components/error-message"
-import PaymentContainer, {
+import PagoContainer, {
   StripeCardContainer,
 } from "@modules/checkout/components/payment-container"
 import Divider from "@modules/common/components/divider"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { usePathname, useRouter, useBuscarParams } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
 
-const Payment = ({
+const Pago = ({
   cart,
-  availablePaymentMethods,
+  availablePagoMethods,
 }: {
   cart: any
-  availablePaymentMethods: any[]
+  availablePagoMethods: any[]
 }) => {
   const activeSession = cart.payment_collection?.payment_sessions?.find(
     (paymentSession: any) => paymentSession.status === "pending"
@@ -28,21 +28,21 @@ const Payment = ({
   const [error, setError] = useState<string | null>(null)
   const [cardBrand, setCardBrand] = useState<string | null>(null)
   const [cardComplete, setCardComplete] = useState(false)
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(
+  const [selectedPagoMethod, setSelectedPagoMethod] = useState(
     activeSession?.provider_id ?? ""
   )
 
-  const searchParams = useSearchParams()
+  const searchParams = useBuscarParams()
   const router = useRouter()
   const pathname = usePathname()
 
   const isOpen = searchParams.get("step") === "payment"
 
-  const setPaymentMethod = async (method: string) => {
+  const setPagoMethod = async (method: string) => {
     setError(null)
-    setSelectedPaymentMethod(method)
+    setSelectedPagoMethod(method)
     if (isStripeLike(method)) {
-      await initiatePaymentSession(cart, {
+      await initiatePagoSession(cart, {
         provider_id: method,
       })
     }
@@ -56,7 +56,7 @@ const Payment = ({
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams)
+      const params = new URLBuscarParams(searchParams)
       params.set(name, value)
 
       return params.toString()
@@ -64,7 +64,7 @@ const Payment = ({
     [searchParams]
   )
 
-  const handleEdit = () => {
+  const handleEditar = () => {
     router.push(pathname + "?" + createQueryString("step", "payment"), {
       scroll: false,
     })
@@ -74,14 +74,14 @@ const Payment = ({
     setIsLoading(true)
     try {
       const shouldInputCard =
-        isStripeLike(selectedPaymentMethod) && !activeSession
+        isStripeLike(selectedPagoMethod) && !activeSession
 
       const checkActiveSession =
-        activeSession?.provider_id === selectedPaymentMethod
+        activeSession?.provider_id === selectedPagoMethod
 
       if (!checkActiveSession) {
-        await initiatePaymentSession(cart, {
-          provider_id: selectedPaymentMethod,
+        await initiatePagoSession(cart, {
+          provider_id: selectedPagoMethod,
         })
       }
 
@@ -117,45 +117,45 @@ const Payment = ({
             }
           )}
         >
-          Payment
+          Pago
           {!isOpen && paymentReady && <CheckCircleSolid />}
         </Heading>
         {!isOpen && paymentReady && (
           <Text>
             <button
-              onClick={handleEdit}
+              onClick={handleEditar}
               className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
               data-testid="edit-payment-button"
             >
-              Edit
+              Editar
             </button>
           </Text>
         )}
       </div>
       <div>
         <div className={isOpen ? "block" : "hidden"}>
-          {!paidByGiftcard && availablePaymentMethods?.length && (
+          {!paidByGiftcard && availablePagoMethods?.length && (
             <>
               <RadioGroup
-                value={selectedPaymentMethod}
-                onChange={(value: string) => setPaymentMethod(value)}
+                value={selectedPagoMethod}
+                onChange={(value: string) => setPagoMethod(value)}
               >
-                {availablePaymentMethods.map((paymentMethod) => (
+                {availablePagoMethods.map((paymentMethod) => (
                   <div key={paymentMethod.id}>
                     {isStripeLike(paymentMethod.id) ? (
                       <StripeCardContainer
                         paymentProviderId={paymentMethod.id}
-                        selectedPaymentOptionId={selectedPaymentMethod}
+                        selectedPagoOptionId={selectedPagoMethod}
                         paymentInfoMap={paymentInfoMap}
                         setCardBrand={setCardBrand}
                         setError={setError}
                         setCardComplete={setCardComplete}
                       />
                     ) : (
-                      <PaymentContainer
+                      <PagoContainer
                         paymentInfoMap={paymentInfoMap}
                         paymentProviderId={paymentMethod.id}
-                        selectedPaymentOptionId={selectedPaymentMethod}
+                        selectedPagoOptionId={selectedPagoMethod}
                       />
                     )}
                   </div>
@@ -167,7 +167,7 @@ const Payment = ({
           {paidByGiftcard && (
             <div className="flex flex-col w-1/3">
               <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                Payment method
+                Pago method
               </Text>
               <Text
                 className="txt-medium text-ui-fg-subtle"
@@ -189,14 +189,14 @@ const Payment = ({
             onClick={handleSubmit}
             isLoading={isLoading}
             disabled={
-              (isStripeLike(selectedPaymentMethod) && !cardComplete) ||
-              (!selectedPaymentMethod && !paidByGiftcard)
+              (isStripeLike(selectedPagoMethod) && !cardComplete) ||
+              (!selectedPagoMethod && !paidByGiftcard)
             }
             data-testid="submit-payment-button"
           >
-            {!activeSession && isStripeLike(selectedPaymentMethod)
+            {!activeSession && isStripeLike(selectedPagoMethod)
               ? " Enter card details"
-              : "Continue to review"}
+              : "Continuar a revisión"}
           </Button>
         </div>
 
@@ -205,7 +205,7 @@ const Payment = ({
             <div className="flex items-start gap-x-1 w-full">
               <div className="flex flex-col w-1/3">
                 <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                  Payment method
+                  Pago method
                 </Text>
                 <Text
                   className="txt-medium text-ui-fg-subtle"
@@ -217,19 +217,19 @@ const Payment = ({
               </div>
               <div className="flex flex-col w-1/3">
                 <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                  Payment details
+                  Pago details
                 </Text>
                 <div
                   className="flex gap-2 txt-medium text-ui-fg-subtle items-center"
                   data-testid="payment-details-summary"
                 >
                   <Container className="flex items-center h-7 w-fit p-2 bg-ui-button-neutral-hover">
-                    {paymentInfoMap[selectedPaymentMethod]?.icon || (
+                    {paymentInfoMap[selectedPagoMethod]?.icon || (
                       <CreditCard />
                     )}
                   </Container>
                   <Text>
-                    {isStripeLike(selectedPaymentMethod) && cardBrand
+                    {isStripeLike(selectedPagoMethod) && cardBrand
                       ? cardBrand
                       : "Another step will appear"}
                   </Text>
@@ -239,7 +239,7 @@ const Payment = ({
           ) : paidByGiftcard ? (
             <div className="flex flex-col w-1/3">
               <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                Payment method
+                Pago method
               </Text>
               <Text
                 className="txt-medium text-ui-fg-subtle"
@@ -256,4 +256,4 @@ const Payment = ({
   )
 }
 
-export default Payment
+export default Pago

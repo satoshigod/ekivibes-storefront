@@ -5,16 +5,16 @@ import React, { useEffect, useMemo, useActionState } from "react"
 import Input from "@modules/common/components/input"
 import NativeSelect from "@modules/common/components/native-select"
 
-import AccountInfo from "../account-info"
+import CuentaInfo from "../account-info"
 import { HttpTypes } from "@medusajs/types"
-import { addCustomerAddress, updateCustomerAddress } from "@lib/data/customer"
+import { addCustomerDirección, updateCustomerDirección } from "@lib/data/customer"
 
 type MyInformationProps = {
-  customer: HttpTypes.StoreCustomer
-  regions: HttpTypes.StoreRegion[]
+  customer: HttpTypes.TiendaCustomer
+  regions: HttpTypes.TiendaRegion[]
 }
 
-const ProfileBillingAddress: React.FC<MyInformationProps> = ({
+const PerfilBillingDirección: React.FC<MyInformationProps> = ({
   customer,
   regions,
 }) => {
@@ -33,7 +33,7 @@ const ProfileBillingAddress: React.FC<MyInformationProps> = ({
 
   const [successState, setSuccessState] = React.useState(false)
 
-  const billingAddress = customer.addresses?.find(
+  const billingDirección = customer.addresses?.find(
     (addr) => addr.is_default_billing
   )
 
@@ -44,12 +44,12 @@ const ProfileBillingAddress: React.FC<MyInformationProps> = ({
     success: false,
   }
 
-  if (billingAddress) {
-    initialState.addressId = billingAddress.id
+  if (billingDirección) {
+    initialState.addressId = billingDirección.id
   }
 
   const [state, formAction] = useActionState(
-    billingAddress ? updateCustomerAddress : addCustomerAddress,
+    billingDirección ? updateCustomerDirección : addCustomerDirección,
     initialState
   )
 
@@ -62,37 +62,37 @@ const ProfileBillingAddress: React.FC<MyInformationProps> = ({
   }, [state])
 
   const currentInfo = useMemo(() => {
-    if (!billingAddress) {
+    if (!billingDirección) {
       return "No billing address"
     }
 
     const country =
       regionOptions?.find(
-        (country) => country?.value === billingAddress.country_code
-      )?.label || billingAddress.country_code?.toUpperCase()
+        (country) => country?.value === billingDirección.country_code
+      )?.label || billingDirección.country_code?.toUpperCase()
 
     return (
       <div className="flex flex-col font-semibold" data-testid="current-info">
         <span>
-          {billingAddress.first_name} {billingAddress.last_name}
+          {billingDirección.first_name} {billingDirección.last_name}
         </span>
-        <span>{billingAddress.company}</span>
+        <span>{billingDirección.company}</span>
         <span>
-          {billingAddress.address_1}
-          {billingAddress.address_2 ? `, ${billingAddress.address_2}` : ""}
+          {billingDirección.address_1}
+          {billingDirección.address_2 ? `, ${billingDirección.address_2}` : ""}
         </span>
         <span>
-          {billingAddress.postal_code}, {billingAddress.city}
+          {billingDirección.postal_code}, {billingDirección.city}
         </span>
         <span>{country}</span>
       </div>
     )
-  }, [billingAddress, regionOptions])
+  }, [billingDirección, regionOptions])
 
   return (
     <form action={formAction} onReset={() => clearState()} className="w-full">
-      <input type="hidden" name="addressId" value={billingAddress?.id} />
-      <AccountInfo
+      <input type="hidden" name="addressId" value={billingDirección?.id} />
+      <CuentaInfo
         label="Billing address"
         currentInfo={currentInfo}
         isSuccess={successState}
@@ -103,16 +103,16 @@ const ProfileBillingAddress: React.FC<MyInformationProps> = ({
         <div className="grid grid-cols-1 gap-y-2">
           <div className="grid grid-cols-2 gap-x-2">
             <Input
-              label="First name"
+              label="Nombre"
               name="first_name"
-              defaultValue={billingAddress?.first_name || undefined}
+              defaultValue={billingDirección?.first_name || undefined}
               required
               data-testid="billing-first-name-input"
             />
             <Input
-              label="Last name"
+              label="Apellido"
               name="last_name"
-              defaultValue={billingAddress?.last_name || undefined}
+              defaultValue={billingDirección?.last_name || undefined}
               required
               data-testid="billing-last-name-input"
             />
@@ -120,56 +120,56 @@ const ProfileBillingAddress: React.FC<MyInformationProps> = ({
           <Input
             label="Company"
             name="company"
-            defaultValue={billingAddress?.company || undefined}
+            defaultValue={billingDirección?.company || undefined}
             data-testid="billing-company-input"
           />
           <Input
-            label="Phone"
+            label="Teléfono"
             name="phone"
             type="phone"
             autoComplete="phone"
             required
-            defaultValue={billingAddress?.phone ?? customer?.phone ?? ""}
+            defaultValue={billingDirección?.phone ?? customer?.phone ?? ""}
             data-testid="billing-phone-input"
           />
           <Input
-            label="Address"
+            label="Dirección"
             name="address_1"
-            defaultValue={billingAddress?.address_1 || undefined}
+            defaultValue={billingDirección?.address_1 || undefined}
             required
             data-testid="billing-address-1-input"
           />
           <Input
             label="Apartment, suite, etc."
             name="address_2"
-            defaultValue={billingAddress?.address_2 || undefined}
+            defaultValue={billingDirección?.address_2 || undefined}
             data-testid="billing-address-2-input"
           />
           <div className="grid grid-cols-[144px_1fr] gap-x-2">
             <Input
-              label="Postal code"
+              label="Código postal"
               name="postal_code"
-              defaultValue={billingAddress?.postal_code || undefined}
+              defaultValue={billingDirección?.postal_code || undefined}
               required
               data-testid="billing-postcal-code-input"
             />
             <Input
-              label="City"
+              label="Ciudad"
               name="city"
-              defaultValue={billingAddress?.city || undefined}
+              defaultValue={billingDirección?.city || undefined}
               required
               data-testid="billing-city-input"
             />
           </div>
           <Input
-            label="Province"
+            label="Departamento"
             name="province"
-            defaultValue={billingAddress?.province || undefined}
+            defaultValue={billingDirección?.province || undefined}
             data-testid="billing-province-input"
           />
           <NativeSelect
             name="country_code"
-            defaultValue={billingAddress?.country_code || undefined}
+            defaultValue={billingDirección?.country_code || undefined}
             required
             data-testid="billing-country-code-select"
           >
@@ -183,9 +183,9 @@ const ProfileBillingAddress: React.FC<MyInformationProps> = ({
             })}
           </NativeSelect>
         </div>
-      </AccountInfo>
+      </CuentaInfo>
     </form>
   )
 }
 
-export default ProfileBillingAddress
+export default PerfilBillingDirección

@@ -1,6 +1,6 @@
 "use client"
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { usePathname, useRouter, useBuscarParams } from "next/navigation"
 import { useCallback } from "react"
 
 import SortProducts, { SortOptions } from "./sort-products"
@@ -14,11 +14,11 @@ type RefinementListProps = {
 const RefinementList = ({ sortBy, 'data-testid': dataTestId }: RefinementListProps) => {
   const router = useRouter()
   const pathname = usePathname()
-  const searchParams = useSearchParams()
+  const searchParams = useBuscarParams()
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams)
+      const params = new URLBuscarParams(searchParams)
       params.set(name, value)
 
       return params.toString()

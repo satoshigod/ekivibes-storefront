@@ -1,7 +1,7 @@
 "use client"
 
 import { clx } from "@medusajs/ui"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { usePathname, useRouter, useBuscarParams } from "next/navigation"
 
 export function Pagination({
   page,
@@ -14,7 +14,7 @@ export function Pagination({
 }) {
   const router = useRouter()
   const pathname = usePathname()
-  const searchParams = useSearchParams()
+  const searchParams = useBuscarParams()
 
   // Helper function to generate an array of numbers within a range
   const arrayRange = (start: number, stop: number) =>
@@ -22,7 +22,7 @@ export function Pagination({
 
   // Function to handle page changes
   const handlePageChange = (newPage: number) => {
-    const params = new URLSearchParams(searchParams)
+    const params = new URLBuscarParams(searchParams)
     params.set("page", newPage.toString())
     router.push(`${pathname}?${params.toString()}`)
   }

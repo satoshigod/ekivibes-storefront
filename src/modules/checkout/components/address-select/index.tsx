@@ -4,36 +4,36 @@ import { clx } from "@medusajs/ui"
 import { Fragment, useMemo } from "react"
 
 import Radio from "@modules/common/components/radio"
-import compareAddresses from "@lib/util/compare-addresses"
+import compareDirecciónes from "@lib/util/compare-addresses"
 import { HttpTypes } from "@medusajs/types"
 
-type AddressSelectProps = {
-  addresses: HttpTypes.StoreCustomerAddress[]
-  addressInput: HttpTypes.StoreCartAddress | null
+type DirecciónSelectProps = {
+  addresses: HttpTypes.TiendaCustomerDirección[]
+  addressInput: HttpTypes.TiendaCarritoDirección | null
   onSelect: (
-    address: HttpTypes.StoreCartAddress | undefined,
+    address: HttpTypes.TiendaCarritoDirección | undefined,
     email?: string
   ) => void
 }
 
-const AddressSelect = ({
+const DirecciónSelect = ({
   addresses,
   addressInput,
   onSelect,
-}: AddressSelectProps) => {
+}: DirecciónSelectProps) => {
   const handleSelect = (id: string) => {
-    const savedAddress = addresses.find((a) => a.id === id)
-    if (savedAddress) {
-      onSelect(savedAddress as HttpTypes.StoreCartAddress)
+    const savedDirección = addresses.find((a) => a.id === id)
+    if (savedDirección) {
+      onSelect(savedDirección as HttpTypes.TiendaCarritoDirección)
     }
   }
 
-  const selectedAddress = useMemo(() => {
-    return addresses.find((a) => compareAddresses(a, addressInput))
+  const selectedDirección = useMemo(() => {
+    return addresses.find((a) => compareDirecciónes(a, addressInput))
   }, [addresses, addressInput])
 
   return (
-    <Listbox onChange={handleSelect} value={selectedAddress?.id}>
+    <Listbox onChange={handleSelect} value={selectedDirección?.id}>
       <div className="relative">
         <Listbox.Button
           className="relative w-full flex justify-between items-center px-4 py-[10px] text-left bg-white cursor-default focus:outline-none border rounded-rounded focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-gray-300 focus-visible:ring-offset-2 focus-visible:border-gray-300 text-base-regular"
@@ -42,8 +42,8 @@ const AddressSelect = ({
           {({ open }) => (
             <>
               <span className="block truncate">
-                {selectedAddress
-                  ? selectedAddress.address_1
+                {selectedDirección
+                  ? selectedDirección.address_1
                   : "Choose an address"}
               </span>
               <ChevronUpDown
@@ -74,7 +74,7 @@ const AddressSelect = ({
                 >
                   <div className="flex gap-x-4 items-start">
                     <Radio
-                      checked={selectedAddress?.id === address.id}
+                      checked={selectedDirección?.id === address.id}
                       data-testid="shipping-address-radio"
                     />
                     <div className="flex flex-col">
@@ -113,4 +113,4 @@ const AddressSelect = ({
   )
 }
 
-export default AddressSelect
+export default DirecciónSelect

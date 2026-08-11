@@ -15,7 +15,7 @@ export default function CategoryTemplate({
   page,
   countryCode,
 }: {
-  category: HttpTypes.StoreProductCategory
+  category: HttpTypes.TiendaProductCategory
   sortBy?: SortOptions
   page?: string
   countryCode: string
@@ -25,9 +25,9 @@ export default function CategoryTemplate({
 
   if (!category || !countryCode) notFound()
 
-  const parents = [] as HttpTypes.StoreProductCategory[]
+  const parents = [] as HttpTypes.TiendaProductCategory[]
 
-  const getParents = (category: HttpTypes.StoreProductCategory) => {
+  const getParents = (category: HttpTypes.TiendaProductCategory) => {
     if (category.parent_category) {
       parents.push(category.parent_category)
       getParents(category.parent_category)

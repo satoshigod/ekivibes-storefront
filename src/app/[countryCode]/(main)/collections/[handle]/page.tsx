@@ -3,7 +3,7 @@ import { notFound } from "next/navigation"
 
 import { getCollectionByHandle, listCollections } from "@lib/data/collections"
 import { listRegions } from "@lib/data/regions"
-import { StoreCollection, StoreRegion } from "@medusajs/types"
+import { TiendaCollection, TiendaRegion } from "@medusajs/types"
 import CollectionTemplate from "@modules/collections/templates"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 
@@ -27,7 +27,7 @@ export async function generateStaticParams() {
   }
 
   const countryCodes = await listRegions().then(
-    (regions: StoreRegion[]) =>
+    (regions: TiendaRegion[]) =>
       regions
         ?.map((r) => r.countries?.map((c) => c.iso_2))
         .flat()
@@ -35,7 +35,7 @@ export async function generateStaticParams() {
   )
 
   const collectionHandles = collections.map(
-    (collection: StoreCollection) => collection.handle
+    (collection: TiendaCollection) => collection.handle
   )
 
   const staticParams = countryCodes
@@ -59,7 +59,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   }
 
   const metadata = {
-    title: `${collection.title} | Medusa Store`,
+    title: `${collection.title} | Ekivibes`,
     description: `${collection.title} collection`,
   } as Metadata
 
@@ -72,7 +72,7 @@ export default async function CollectionPage(props: Props) {
   const { sortBy, page } = searchParams
 
   const collection = await getCollectionByHandle(params.handle).then(
-    (collection: StoreCollection) => collection
+    (collection: TiendaCollection) => collection
   )
 
   if (!collection) {

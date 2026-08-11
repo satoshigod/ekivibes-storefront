@@ -1,11 +1,11 @@
 import { Table } from "@medusajs/ui"
 
 import repeat from "@lib/util/repeat"
-import SkeletonCartItem from "@modules/skeletons/components/skeleton-cart-item"
+import SkeletonCarritoItem from "@modules/skeletons/components/skeleton-cart-item"
 import SkeletonCodeForm from "@modules/skeletons/components/skeleton-code-form"
 import SkeletonOrderSummary from "@modules/skeletons/components/skeleton-order-summary"
 
-const SkeletonCartPage = () => {
+const SkeletonCarritoPage = () => {
   return (
     <div className="py-12">
       <div className="content-container">
@@ -46,7 +46,7 @@ const SkeletonCartPage = () => {
                 </Table.Header>
                 <Table.Body>
                   {repeat(4).map((index) => (
-                    <SkeletonCartItem key={index} />
+                    <SkeletonCarritoItem key={index} />
                   ))}
                 </Table.Body>
               </Table>
@@ -62,4 +62,4 @@ const SkeletonCartPage = () => {
   )
 }
 
-export default SkeletonCartPage
+export default SkeletonCarritoPage

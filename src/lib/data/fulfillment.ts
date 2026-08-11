@@ -4,7 +4,7 @@ import { sdk } from "@lib/config"
 import { HttpTypes } from "@medusajs/types"
 import { getAuthHeaders, getCacheOptions } from "./cookies"
 
-export const listCartShippingMethods = async (cartId: string) => {
+export const listCarritoShippingMethods = async (cartId: string) => {
   const headers = {
     ...(await getAuthHeaders()),
   }
@@ -14,7 +14,7 @@ export const listCartShippingMethods = async (cartId: string) => {
   }
 
   return sdk.client
-    .fetch<HttpTypes.StoreShippingOptionListResponse>(
+    .fetch<HttpTypes.TiendaShippingOptionListResponse>(
       `/store/shipping-options`,
       {
         method: "GET",
@@ -52,7 +52,7 @@ export const calculatePriceForShippingOption = async (
   }
 
   return sdk.client
-    .fetch<{ shipping_option: HttpTypes.StoreCartShippingOption }>(
+    .fetch<{ shipping_option: HttpTypes.TiendaCarritoShippingOption }>(
       `/store/shipping-options/${optionId}/calculate`,
       {
         method: "POST",

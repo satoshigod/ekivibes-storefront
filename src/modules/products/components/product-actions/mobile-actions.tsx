@@ -12,12 +12,12 @@ import { HttpTypes } from "@medusajs/types"
 import { isSimpleProduct } from "@lib/util/product"
 
 type MobileActionsProps = {
-  product: HttpTypes.StoreProduct
-  variant?: HttpTypes.StoreProductVariant
+  product: HttpTypes.TiendaProduct
+  variant?: HttpTypes.TiendaProductVariant
   options: Record<string, string | undefined>
   updateOptions: (title: string, value: string) => void
   inStock?: boolean
-  handleAddToCart: () => void
+  handleAddToCarrito: () => void
   isAdding?: boolean
   show: boolean
   optionsDisabled: boolean
@@ -29,7 +29,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
   options,
   updateOptions,
   inStock,
-  handleAddToCart,
+  handleAddToCarrito,
   isAdding,
   show,
   optionsDisabled,
@@ -117,7 +117,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                 </div>
               </Button>}
               <Button
-                onClick={handleAddToCart}
+                onClick={handleAddToCarrito}
                 disabled={!inStock || !variant}
                 className="w-full"
                 isLoading={isAdding}
@@ -126,8 +126,8 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                 {!variant
                   ? "Select variant"
                   : !inStock
-                  ? "Out of stock"
-                  : "Add to cart"}
+                  ? "Sin stock"
+                  : "Agregar al carrito"}
               </Button>
             </div>
           </div>

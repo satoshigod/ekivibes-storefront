@@ -2,7 +2,7 @@ import React from "react"
 
 import { IconProps } from "types/icon"
 
-const Back: React.FC<IconProps> = ({
+const Volver: React.FC<IconProps> = ({
   size = "16",
   color = "currentColor",
   ...attributes
@@ -34,4 +34,4 @@ const Back: React.FC<IconProps> = ({
   )
 }
 
-export default Back
+export default Volver

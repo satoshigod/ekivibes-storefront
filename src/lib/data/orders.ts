@@ -15,7 +15,7 @@ export const retrieveOrder = async (id: string) => {
   }
 
   return sdk.client
-    .fetch<HttpTypes.StoreOrderResponse>(`/store/orders/${id}`, {
+    .fetch<HttpTypes.TiendaOrderResponse>(`/store/orders/${id}`, {
       method: "GET",
       query: {
         fields:
@@ -29,7 +29,7 @@ export const retrieveOrder = async (id: string) => {
     .catch((err) => medusaError(err))
 }
 
-export const listOrders = async (
+export const listPedidos = async (
   limit: number = 10,
   offset: number = 0,
   filters?: Record<string, any>
@@ -43,7 +43,7 @@ export const listOrders = async (
   }
 
   return sdk.client
-    .fetch<HttpTypes.StoreOrderListResponse>(`/store/orders`, {
+    .fetch<HttpTypes.TiendaOrderListResponse>(`/store/orders`, {
       method: "GET",
       query: {
         limit,
@@ -64,13 +64,13 @@ export const createTransferRequest = async (
   state: {
     success: boolean
     error: string | null
-    order: HttpTypes.StoreOrder | null
+    order: HttpTypes.TiendaOrder | null
   },
   formData: FormData
 ): Promise<{
   success: boolean
   error: string | null
-  order: HttpTypes.StoreOrder | null
+  order: HttpTypes.TiendaOrder | null
 }> => {
   const id = formData.get("order_id") as string
 

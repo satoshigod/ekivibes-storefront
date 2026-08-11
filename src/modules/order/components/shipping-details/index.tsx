@@ -5,7 +5,7 @@ import { Heading, Text } from "@medusajs/ui"
 import Divider from "@modules/common/components/divider"
 
 type ShippingDetailsProps = {
-  order: HttpTypes.StoreOrder
+  order: HttpTypes.TiendaOrder
 }
 
 const ShippingDetails = ({ order }: ShippingDetailsProps) => {
@@ -20,7 +20,7 @@ const ShippingDetails = ({ order }: ShippingDetailsProps) => {
           data-testid="shipping-address-summary"
         >
           <Text className="txt-medium-plus text-ui-fg-base mb-1">
-            Shipping Address
+            Shipping Dirección
           </Text>
           <Text className="txt-medium text-ui-fg-subtle">
             {order.shipping_address?.first_name}{" "}

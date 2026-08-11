@@ -6,7 +6,7 @@ import { SortOptions } from "@modules/store/components/refinement-list/sort-prod
 
 import PaginatedProducts from "./paginated-products"
 
-const StoreTemplate = ({
+const TiendaTemplate = ({
   sortBy,
   page,
   countryCode,
@@ -26,7 +26,7 @@ const StoreTemplate = ({
       <RefinementList sortBy={sort} />
       <div className="w-full">
         <div className="mb-8 text-2xl-semi">
-          <h1 data-testid="store-page-title">All products</h1>
+          <h1 data-testid="store-page-title">Todos los productos</h1>
         </div>
         <Suspense fallback={<SkeletonProductGrid />}>
           <PaginatedProducts
@@ -40,4 +40,4 @@ const StoreTemplate = ({
   )
 }
 
-export default StoreTemplate
+export default TiendaTemplate

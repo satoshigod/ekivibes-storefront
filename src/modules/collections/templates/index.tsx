@@ -13,7 +13,7 @@ export default function CollectionTemplate({
   countryCode,
 }: {
   sortBy?: SortOptions
-  collection: HttpTypes.StoreCollection
+  collection: HttpTypes.TiendaCollection
   page?: string
   countryCode: string
 }) {

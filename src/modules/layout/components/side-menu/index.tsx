@@ -6,20 +6,20 @@ import { Text, clx, useToggleState } from "@medusajs/ui"
 import { Fragment } from "react"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import CountrySelect from "../country-select"
+import PaísSelect from "../country-select"
 import LanguageSelect from "../language-select"
 import { HttpTypes } from "@medusajs/types"
 import { Locale } from "@lib/data/locales"
 
 const SideMenuItems = {
-  Home: "/",
-  Store: "/store",
-  Account: "/account",
-  Cart: "/cart",
+  Inicio: "/",
+  Tienda: "/store",
+  Cuenta: "/account",
+  Carrito: "/cart",
 }
 
 type SideMenuProps = {
-  regions: HttpTypes.StoreRegion[] | null
+  regions: HttpTypes.TiendaRegion[] | null
   locales: Locale[] | null
   currentLocale: string | null
 }
@@ -113,7 +113,7 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                         onMouseLeave={countryToggleState.close}
                       >
                         {regions && (
-                          <CountrySelect
+                          <PaísSelect
                             toggleState={countryToggleState}
                             regions={regions}
                           />
@@ -126,7 +126,7 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                         />
                       </div>
                       <Text className="flex justify-between txt-compact-small">
-                        © {new Date().getFullYear()} Medusa Store. All rights
+                        © {new Date().getFullYear()} Ekivibes. All rights
                         reserved.
                       </Text>
                     </div>

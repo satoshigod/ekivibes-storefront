@@ -1,4 +1,4 @@
-import { StorePrice } from "@medusajs/types"
+import { TiendaPrice } from "@medusajs/types"
 
 export type FeaturedProduct = {
   id: string
@@ -17,7 +17,7 @@ export type VariantPrice = {
   percentage_diff: string
 }
 
-export type StoreFreeShippingPrice = StorePrice & {
+export type TiendaFreeShippingPrice = TiendaPrice & {
   target_reached: boolean
   target_remaining: number
   remaining_percentage: number

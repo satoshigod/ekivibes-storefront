@@ -1,6 +1,6 @@
 "use client"
 
-import Back from "@modules/common/icons/back"
+import Volver from "@modules/common/icons/back"
 import FastDelivery from "@modules/common/icons/fast-delivery"
 import Refresh from "@modules/common/icons/refresh"
 
@@ -8,7 +8,7 @@ import Accordion from "./accordion"
 import { HttpTypes } from "@medusajs/types"
 
 type ProductTabsProps = {
-  product: HttpTypes.StoreProduct
+  product: HttpTypes.TiendaProduct
 }
 
 const ProductTabs = ({ product }: ProductTabsProps) => {
@@ -30,7 +30,7 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
           <Accordion.Item
             key={i}
             title={tab.label}
-            headingSize="medium"
+            headingTalla="medium"
             value={tab.label}
           >
             {tab.component}
@@ -51,7 +51,7 @@ const ProductInfoTab = ({ product }: ProductTabsProps) => {
             <p>{product.material ? product.material : "-"}</p>
           </div>
           <div>
-            <span className="font-semibold">Country of origin</span>
+            <span className="font-semibold">País of origin</span>
             <p>{product.origin_country ? product.origin_country : "-"}</p>
           </div>
           <div>
@@ -103,7 +103,7 @@ const ShippingInfoTab = () => {
           </div>
         </div>
         <div className="flex items-start gap-x-2">
-          <Back />
+          <Volver />
           <div>
             <span className="font-semibold">Easy returns</span>
             <p className="max-w-sm">

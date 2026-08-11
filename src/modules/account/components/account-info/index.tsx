@@ -5,7 +5,7 @@ import { useEffect } from "react"
 import useToggleState from "@lib/hooks/use-toggle-state"
 import { useFormStatus } from "react-dom"
 
-type AccountInfoProps = {
+type CuentaInfoProps = {
   label: string
   currentInfo: string | React.ReactNode
   isSuccess?: boolean
@@ -16,7 +16,7 @@ type AccountInfoProps = {
   'data-testid'?: string
 }
 
-const AccountInfo = ({
+const CuentaInfo = ({
   label,
   currentInfo,
   isSuccess,
@@ -25,7 +25,7 @@ const AccountInfo = ({
   errorMessage = "An error occurred, please try again",
   children,
   'data-testid': dataTestid
-}: AccountInfoProps) => {
+}: CuentaInfoProps) => {
   const { state, close, toggle } = useToggleState()
 
   const { pending } = useFormStatus()
@@ -63,7 +63,7 @@ const AccountInfo = ({
             data-testid="edit-button"
             data-active={state}
           >
-            {state ? "Cancel" : "Edit"}
+            {state ? "Cancelar" : "Editar"}
           </Button>
         </div>
       </div>
@@ -126,7 +126,7 @@ const AccountInfo = ({
                 type="submit"
                 data-testid="save-button"
               >
-                Save changes
+                Guardar changes
               </Button>
             </div>
           </div>
@@ -136,4 +136,4 @@ const AccountInfo = ({
   )
 }
 
-export default AccountInfo
+export default CuentaInfo

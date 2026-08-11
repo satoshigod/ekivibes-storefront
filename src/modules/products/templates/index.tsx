@@ -14,10 +14,10 @@ import ProductActionsWrapper from "./product-actions-wrapper"
 import EkivibesProductDetails from "@modules/ekivibes/product-details"
 
 type ProductTemplateProps = {
-  product: HttpTypes.StoreProduct
-  region: HttpTypes.StoreRegion
+  product: HttpTypes.TiendaProduct
+  region: HttpTypes.TiendaRegion
   countryCode: string
-  images: HttpTypes.StoreProductImage[]
+  images: HttpTypes.TiendaProductImage[]
 }
 
 const ProductTemplate: React.FC<ProductTemplateProps> = ({

@@ -18,7 +18,7 @@ type NativeSelectProps = {
   touched?: Record<string, unknown>
 } & Omit<SelectHTMLAttributes<HTMLSelectElement>, "size">
 
-const CartItemSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
+const CarritoProductoSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
   ({ placeholder = "Select...", className, children, ...props }, ref) => {
     const innerRef = useRef<HTMLSelectElement>(null)
     const [isPlaceholder, setIsPlaceholder] = useState(false)
@@ -68,6 +68,6 @@ const CartItemSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
   }
 )
 
-CartItemSelect.displayName = "CartItemSelect"
+CarritoProductoSelect.displayName = "CarritoProductoSelect"
 
-export default CartItemSelect
+export default CarritoProductoSelect

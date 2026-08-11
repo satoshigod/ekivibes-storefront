@@ -7,14 +7,14 @@ import { Button } from "@medusajs/ui"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
 import React, { useState } from "react"
 import ErrorMessage from "../error-message"
-import { WompiPaymentButton } from "./wompi-payment-button"
+import { WompiPagoButton } from "./wompi-payment-button"
 
-type PaymentButtonProps = {
-  cart: HttpTypes.StoreCart
+type PagoButtonProps = {
+  cart: HttpTypes.TiendaCarrito
   "data-testid": string
 }
 
-const PaymentButton: React.FC<PaymentButtonProps> = ({
+const PagoButton: React.FC<PagoButtonProps> = ({
   cart,
   "data-testid": dataTestId,
 }) => {
@@ -31,7 +31,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
     case paymentSession?.provider_id === "wompi" ||
       paymentSession?.provider_id?.includes("wompi"):
       return (
-        <WompiPaymentButtonWrapper
+        <WompiPagoButtonWrapper
           notReady={notReady}
           cart={cart}
           session={paymentSession}
@@ -39,7 +39,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
       )
     case isStripeLike(paymentSession?.provider_id):
       return (
-        <StripePaymentButton
+        <StripePagoButton
           notReady={notReady}
           cart={cart}
           data-testid={dataTestId}
@@ -47,40 +47,40 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
       )
     case isManual(paymentSession?.provider_id):
       return (
-        <ManualTestPaymentButton notReady={notReady} data-testid={dataTestId} />
+        <ManualTestPagoButton notReady={notReady} data-testid={dataTestId} />
       )
     default:
-      return <Button disabled>Select a payment method</Button>
+      return <Button disabled>Selecciona un método de pago</Button>
   }
 }
 
-const WompiPaymentButtonWrapper = ({
+const WompiPagoButtonWrapper = ({
   cart,
   notReady,
   session,
 }: {
-  cart: HttpTypes.StoreCart
+  cart: HttpTypes.TiendaCarrito
   notReady: boolean
   session: any
 }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const onPaymentCompleted = async () => {
+  const onPagoCompletado = async () => {
     await placeOrder().catch((err) => {
       setErrorMessage(err.message)
     })
   }
 
   if (notReady) {
-    return <Button disabled>Place order</Button>
+    return <Button disabled>Realizar pedido</Button>
   }
 
   return (
     <>
-      <WompiPaymentButton
+      <WompiPagoButton
         session={session}
         cartId={cart.id}
-        onPaymentCompleted={onPaymentCompleted}
+        onPagoCompletado={onPagoCompletado}
       />
       <ErrorMessage
         error={errorMessage}
@@ -90,19 +90,19 @@ const WompiPaymentButtonWrapper = ({
   )
 }
 
-const StripePaymentButton = ({
+const StripePagoButton = ({
   cart,
   notReady,
   "data-testid": dataTestId,
 }: {
-  cart: HttpTypes.StoreCart
+  cart: HttpTypes.TiendaCarrito
   notReady: boolean
   "data-testid"?: string
 }) => {
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const onPaymentCompleted = async () => {
+  const onPagoCompletado = async () => {
     await placeOrder()
       .catch((err) => {
         setErrorMessage(err.message)
@@ -122,7 +122,7 @@ const StripePaymentButton = ({
 
   const disabled = !stripe || !elements ? true : false
 
-  const handlePayment = async () => {
+  const handlePago = async () => {
     setSubmitting(true)
 
     if (!stripe || !elements || !card || !cart) {
@@ -131,7 +131,7 @@ const StripePaymentButton = ({
     }
 
     await stripe
-      .confirmCardPayment(session?.data.client_secret as string, {
+      .confirmCardPago(session?.data.client_secret as string, {
         payment_method: {
           card: card,
           billing_details: {
@@ -160,7 +160,7 @@ const StripePaymentButton = ({
             (pi && pi.status === "requires_capture") ||
             (pi && pi.status === "succeeded")
           ) {
-            onPaymentCompleted()
+            onPagoCompletado()
           }
 
           setErrorMessage(error.message || null)
@@ -171,7 +171,7 @@ const StripePaymentButton = ({
           (paymentIntent && paymentIntent.status === "requires_capture") ||
           paymentIntent.status === "succeeded"
         ) {
-          return onPaymentCompleted()
+          return onPagoCompletado()
         }
 
         return
@@ -182,12 +182,12 @@ const StripePaymentButton = ({
     <>
       <Button
         disabled={disabled || notReady}
-        onClick={handlePayment}
+        onClick={handlePago}
         size="large"
         isLoading={submitting}
         data-testid={dataTestId}
       >
-        Place order
+        Realizar pedido
       </Button>
       <ErrorMessage
         error={errorMessage}
@@ -197,11 +197,11 @@ const StripePaymentButton = ({
   )
 }
 
-const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
+const ManualTestPagoButton = ({ notReady }: { notReady: boolean }) => {
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const onPaymentCompleted = async () => {
+  const onPagoCompletado = async () => {
     await placeOrder()
       .catch((err) => {
         setErrorMessage(err.message)
@@ -211,10 +211,10 @@ const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
       })
   }
 
-  const handlePayment = () => {
+  const handlePago = () => {
     setSubmitting(true)
 
-    onPaymentCompleted()
+    onPagoCompletado()
   }
 
   return (
@@ -222,11 +222,11 @@ const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
       <Button
         disabled={notReady}
         isLoading={submitting}
-        onClick={handlePayment}
+        onClick={handlePago}
         size="large"
         data-testid="submit-order-button"
       >
-        Place order
+        Realizar pedido
       </Button>
       <ErrorMessage
         error={errorMessage}
@@ -236,4 +236,4 @@ const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
   )
 }
 
-export default PaymentButton
+export default PagoButton

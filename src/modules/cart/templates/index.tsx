@@ -1,16 +1,16 @@
-import ItemsTemplate from "./items"
-import Summary from "./summary"
-import EmptyCartMessage from "../components/empty-cart-message"
+import ProductosTemplate from "./items"
+import Resumen from "./summary"
+import EmptyCarritoMessage from "../components/empty-cart-message"
 import SignInPrompt from "../components/sign-in-prompt"
 import Divider from "@modules/common/components/divider"
 import { HttpTypes } from "@medusajs/types"
 
-const CartTemplate = ({
+const CarritoTemplate = ({
   cart,
   customer,
 }: {
-  cart: HttpTypes.StoreCart | null
-  customer: HttpTypes.StoreCustomer | null
+  cart: HttpTypes.TiendaCarrito | null
+  customer: HttpTypes.TiendaCustomer | null
 }) => {
   return (
     <div className="py-12">
@@ -24,14 +24,14 @@ const CartTemplate = ({
                   <Divider />
                 </>
               )}
-              <ItemsTemplate cart={cart} />
+              <ProductosTemplate cart={cart} />
             </div>
             <div className="relative">
               <div className="flex flex-col gap-y-8 sticky top-12">
                 {cart && cart.region && (
                   <>
                     <div className="bg-white py-6">
-                      <Summary cart={cart as any} />
+                      <Resumen cart={cart as any} />
                     </div>
                   </>
                 )}
@@ -40,7 +40,7 @@ const CartTemplate = ({
           </div>
         ) : (
           <div>
-            <EmptyCartMessage />
+            <EmptyCarritoMessage />
           </div>
         )}
       </div>
@@ -48,4 +48,4 @@ const CartTemplate = ({
   )
 }
 
-export default CartTemplate
+export default CarritoTemplate

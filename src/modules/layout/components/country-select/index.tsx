@@ -8,25 +8,25 @@ import {
   Transition,
 } from "@headlessui/react"
 import { Fragment, useEffect, useMemo, useState } from "react"
-import ReactCountryFlag from "react-country-flag"
+import ReactPaísFlag from "react-country-flag"
 
 import { StateType } from "@lib/hooks/use-toggle-state"
 import { useParams, usePathname } from "next/navigation"
 import { updateRegion } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
 
-type CountryOption = {
+type PaísOption = {
   country: string
   region: string
   label: string
 }
 
-type CountrySelectProps = {
+type PaísSelectProps = {
   toggleState: StateType
-  regions: HttpTypes.StoreRegion[]
+  regions: HttpTypes.TiendaRegion[]
 }
 
-const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
+const PaísSelect = ({ toggleState, regions }: PaísSelectProps) => {
   const [current, setCurrent] = useState<
     | { country: string | undefined; region: string; label: string | undefined }
     | undefined
@@ -57,7 +57,7 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
     }
   }, [options, countryCode])
 
-  const handleChange = (option: CountryOption) => {
+  const handleChange = (option: PaísOption) => {
     updateRegion(option.country, currentPath)
     close()
   }
@@ -79,7 +79,7 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
             {current && (
               <span className="txt-compact-small flex items-center gap-x-2">
                 {/* @ts-ignore */}
-                <ReactCountryFlag
+                <ReactPaísFlag
                   svg
                   style={{
                     width: "16px",
@@ -112,7 +112,7 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
                     className="py-2 hover:bg-gray-200 px-3 cursor-pointer flex items-center gap-x-2"
                   >
                     {/* @ts-ignore */}
-                    <ReactCountryFlag
+                    <ReactPaísFlag
                       svg
                       style={{
                         width: "16px",
@@ -132,4 +132,4 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
   )
 }
 
-export default CountrySelect
+export default PaísSelect

@@ -9,7 +9,7 @@ type AccordionItemProps = AccordionPrimitive.AccordionItemProps & {
   required?: boolean
   tooltip?: string
   forceMountContent?: true
-  headingSize?: "small" | "medium" | "large"
+  headingTalla?: "small" | "medium" | "large"
   customTrigger?: React.ReactNode
   complete?: boolean
   active?: boolean
@@ -37,7 +37,7 @@ const Item: React.FC<AccordionItemProps> = ({
   description,
   children,
   className,
-  headingSize = "large",
+  headingTalla = "large",
   customTrigger = undefined,
   forceMountContent = undefined,
   triggerable,

@@ -3,7 +3,7 @@
 import { convertToLocale } from "@lib/util/money"
 import React from "react"
 
-type CartTotalsProps = {
+type CarritoTotalsProps = {
   totals: {
     total?: number | null
     subtotal?: number | null
@@ -15,7 +15,7 @@ type CartTotalsProps = {
   }
 }
 
-const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
+const CarritoTotals: React.FC<CarritoTotalsProps> = ({ totals }) => {
   const {
     currency_code,
     total,
@@ -79,4 +79,4 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
   )
 }
 
-export default CartTotals
+export default CarritoTotals

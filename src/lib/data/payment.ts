@@ -4,7 +4,7 @@ import { sdk } from "@lib/config"
 import { getAuthHeaders, getCacheOptions } from "./cookies"
 import { HttpTypes } from "@medusajs/types"
 
-export const listCartPaymentMethods = async (regionId: string) => {
+export const listCarritoPaymentMethods = async (regionId: string) => {
   const headers = {
     ...(await getAuthHeaders()),
   }
@@ -14,7 +14,7 @@ export const listCartPaymentMethods = async (regionId: string) => {
   }
 
   return sdk.client
-    .fetch<HttpTypes.StorePaymentProviderListResponse>(
+    .fetch<HttpTypes.TiendaPaymentProviderListResponse>(
       `/store/payment-providers`,
       {
         method: "GET",

@@ -6,8 +6,8 @@ import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
 
 type OverviewProps = {
-  customer: HttpTypes.StoreCustomer | null
-  orders: HttpTypes.StoreOrder[] | null
+  customer: HttpTypes.TiendaCustomer | null
+  orders: HttpTypes.TiendaOrder[] | null
 }
 
 const Overview = ({ customer, orders }: OverviewProps) => {
@@ -33,23 +33,23 @@ const Overview = ({ customer, orders }: OverviewProps) => {
           <div className="flex flex-col gap-y-4 h-full col-span-1 row-span-2 flex-1">
             <div className="flex items-start gap-x-16 mb-6">
               <div className="flex flex-col gap-y-4">
-                <h3 className="text-large-semi">Profile</h3>
+                <h3 className="text-large-semi">Perfil</h3>
                 <div className="flex items-end gap-x-2">
                   <span
                     className="text-3xl-semi leading-none"
                     data-testid="customer-profile-completion"
-                    data-value={getProfileCompletion(customer)}
+                    data-value={getPerfilCompletion(customer)}
                   >
-                    {getProfileCompletion(customer)}%
+                    {getPerfilCompletion(customer)}%
                   </span>
                   <span className="uppercase text-base-regular text-ui-fg-subtle">
-                    Completed
+                    Completado
                   </span>
                 </div>
               </div>
 
               <div className="flex flex-col gap-y-4">
-                <h3 className="text-large-semi">Addresses</h3>
+                <h3 className="text-large-semi">Direcciónes</h3>
                 <div className="flex items-end gap-x-2">
                   <span
                     className="text-3xl-semi leading-none"
@@ -59,7 +59,7 @@ const Overview = ({ customer, orders }: OverviewProps) => {
                     {customer?.addresses?.length || 0}
                   </span>
                   <span className="uppercase text-base-regular text-ui-fg-subtle">
-                    Saved
+                    Guardard
                   </span>
                 </div>
               </div>
@@ -88,7 +88,7 @@ const Overview = ({ customer, orders }: OverviewProps) => {
                             <div className="grid grid-cols-3 grid-rows-2 text-small-regular gap-x-4 flex-1">
                               <span className="font-semibold">Date placed</span>
                               <span className="font-semibold">
-                                Order number
+                                Número de pedido
                               </span>
                               <span className="font-semibold">
                                 Total amount
@@ -135,7 +135,7 @@ const Overview = ({ customer, orders }: OverviewProps) => {
   )
 }
 
-const getProfileCompletion = (customer: HttpTypes.StoreCustomer | null) => {
+const getPerfilCompletion = (customer: HttpTypes.TiendaCustomer | null) => {
   let count = 0
 
   if (!customer) {
@@ -154,11 +154,11 @@ const getProfileCompletion = (customer: HttpTypes.StoreCustomer | null) => {
     count++
   }
 
-  const billingAddress = customer.addresses?.find(
+  const billingDirección = customer.addresses?.find(
     (addr) => addr.is_default_billing
   )
 
-  if (billingAddress) {
+  if (billingDirección) {
     count++
   }
 

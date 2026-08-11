@@ -2,7 +2,7 @@ import React from "react"
 
 import { IconProps } from "types/icon"
 
-const NextJs: React.FC<IconProps> = ({
+const SiguienteJs: React.FC<IconProps> = ({
   size = "20",
   color = "#9CA3AF",
   ...attributes
@@ -24,4 +24,4 @@ const NextJs: React.FC<IconProps> = ({
   )
 }
 
-export default NextJs
+export default SiguienteJs

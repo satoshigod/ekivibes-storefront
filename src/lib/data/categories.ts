@@ -10,7 +10,7 @@ export const listCategories = async (query?: Record<string, any>) => {
   const limit = query?.limit || 100
 
   return sdk.client
-    .fetch<{ product_categories: HttpTypes.StoreProductCategory[] }>(
+    .fetch<{ product_categories: HttpTypes.TiendaProductCategory[] }>(
       "/store/product-categories",
       {
         query: {
@@ -34,7 +34,7 @@ export const getCategoryByHandle = async (categoryHandle: string[]) => {
   }
 
   return sdk.client
-    .fetch<HttpTypes.StoreProductCategoryListResponse>(
+    .fetch<HttpTypes.TiendaProductCategoryListResponse>(
       `/store/product-categories`,
       {
         query: {

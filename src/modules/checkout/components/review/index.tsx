@@ -2,18 +2,18 @@
 
 import { Heading, Text, clx } from "@medusajs/ui"
 
-import PaymentButton from "../payment-button"
-import { useSearchParams } from "next/navigation"
+import PagoButton from "../payment-button"
+import { useBuscarParams } from "next/navigation"
 
-const Review = ({ cart }: { cart: any }) => {
-  const searchParams = useSearchParams()
+const Revisión = ({ cart }: { cart: any }) => {
+  const searchParams = useBuscarParams()
 
   const isOpen = searchParams.get("step") === "review"
 
   const paidByGiftcard =
     cart?.gift_cards && cart?.gift_cards?.length > 0 && cart?.total === 0
 
-  const previousStepsCompleted =
+  const previousStepsCompletado =
     cart.shipping_address &&
     cart.shipping_methods.length > 0 &&
     (cart.payment_collection || paidByGiftcard)
@@ -30,10 +30,10 @@ const Review = ({ cart }: { cart: any }) => {
             }
           )}
         >
-          Review
+          Revisión
         </Heading>
       </div>
-      {isOpen && previousStepsCompleted && (
+      {isOpen && previousStepsCompletado && (
         <>
           <div className="flex items-start gap-x-1 w-full mb-6">
             <div className="w-full">
@@ -41,15 +41,15 @@ const Review = ({ cart }: { cart: any }) => {
                 By clicking the Place Order button, you confirm that you have
                 read, understand and accept our Terms of Use, Terms of Sale and
                 Returns Policy and acknowledge that you have read Medusa
-                Store&apos;s Privacy Policy.
+                Tienda&apos;s Privacy Policy.
               </Text>
             </div>
           </div>
-          <PaymentButton cart={cart} data-testid="submit-order-button" />
+          <PagoButton cart={cart} data-testid="submit-order-button" />
         </>
       )}
     </div>
   )
 }
 
-export default Review
+export default Revisión

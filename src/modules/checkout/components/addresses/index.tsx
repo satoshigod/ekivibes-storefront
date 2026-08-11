@@ -1,27 +1,27 @@
 "use client"
 
-import { setAddresses } from "@lib/data/cart"
-import compareAddresses from "@lib/util/compare-addresses"
+import { setDirecciónes } from "@lib/data/cart"
+import compareDirecciónes from "@lib/util/compare-addresses"
 import { CheckCircleSolid } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Heading, Text, useToggleState } from "@medusajs/ui"
 import Divider from "@modules/common/components/divider"
 import Spinner from "@modules/common/icons/spinner"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { usePathname, useRouter, useBuscarParams } from "next/navigation"
 import { useActionState } from "react"
-import BillingAddress from "../billing_address"
+import BillingDirección from "../billing_address"
 import ErrorMessage from "../error-message"
-import ShippingAddress from "../shipping-address"
+import EnvíoDirección from "../shipping-address"
 import { SubmitButton } from "../submit-button"
 
-const Addresses = ({
+const Direcciónes = ({
   cart,
   customer,
 }: {
-  cart: HttpTypes.StoreCart | null
-  customer: HttpTypes.StoreCustomer | null
+  cart: HttpTypes.TiendaCarrito | null
+  customer: HttpTypes.TiendaCustomer | null
 }) => {
-  const searchParams = useSearchParams()
+  const searchParams = useBuscarParams()
   const router = useRouter()
   const pathname = usePathname()
 
@@ -29,15 +29,15 @@ const Addresses = ({
 
   const { state: sameAsBilling, toggle: toggleSameAsBilling } = useToggleState(
     cart?.shipping_address && cart?.billing_address
-      ? compareAddresses(cart?.shipping_address, cart?.billing_address)
+      ? compareDirecciónes(cart?.shipping_address, cart?.billing_address)
       : true
   )
 
-  const handleEdit = () => {
+  const handleEditar = () => {
     router.push(pathname + "?step=address")
   }
 
-  const [message, formAction] = useActionState(setAddresses, null)
+  const [message, formAction] = useActionState(setDirecciónes, null)
 
   return (
     <div className="bg-white">
@@ -46,17 +46,17 @@ const Addresses = ({
           level="h2"
           className="flex flex-row text-3xl-regular gap-x-2 items-baseline"
         >
-          Shipping Address
+          Dirección de envío
           {!isOpen && <CheckCircleSolid />}
         </Heading>
         {!isOpen && cart?.shipping_address && (
           <Text>
             <button
-              onClick={handleEdit}
+              onClick={handleEditar}
               className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
               data-testid="edit-address-button"
             >
-              Edit
+              Editar
             </button>
           </Text>
         )}
@@ -64,7 +64,7 @@ const Addresses = ({
       {isOpen ? (
         <form action={formAction}>
           <div className="pb-8">
-            <ShippingAddress
+            <EnvíoDirección
               customer={customer}
               checked={sameAsBilling}
               onChange={toggleSameAsBilling}
@@ -80,11 +80,11 @@ const Addresses = ({
                   Billing address
                 </Heading>
 
-                <BillingAddress cart={cart} />
+                <BillingDirección cart={cart} />
               </div>
             )}
             <SubmitButton className="mt-6" data-testid="submit-address-button">
-              Continue to delivery
+              Continuar a entrega
             </SubmitButton>
             <ErrorMessage error={message} data-testid="address-error-message" />
           </div>
@@ -100,7 +100,7 @@ const Addresses = ({
                     data-testid="shipping-address-summary"
                   >
                     <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                      Shipping Address
+                      Dirección de envío
                     </Text>
                     <Text className="txt-medium text-ui-fg-subtle">
                       {cart.shipping_address.first_name}{" "}
@@ -124,7 +124,7 @@ const Addresses = ({
                     data-testid="shipping-contact-summary"
                   >
                     <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                      Contact
+                      Contacto
                     </Text>
                     <Text className="txt-medium text-ui-fg-subtle">
                       {cart.shipping_address.phone}
@@ -139,7 +139,7 @@ const Addresses = ({
                     data-testid="billing-address-summary"
                   >
                     <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                      Billing Address
+                      Dirección de facturación
                     </Text>
 
                     {sameAsBilling ? (
@@ -181,4 +181,4 @@ const Addresses = ({
   )
 }
 
-export default Addresses
+export default Direcciónes
