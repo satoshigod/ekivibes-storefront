@@ -3,10 +3,20 @@ import React from "react"
 import PlaceholderImage from "@modules/common/icons/placeholder-image"
 import { PRODUCT_IMAGES } from "@modules/ekivibes/product-images-data"
 
-function resolveImage(url?: string | null, handle?: string | null, index = 0): string | undefined {
-  if (url && !url.includes("localhost")) return url
+// Devuelve la URL correcta: si la de Medusa es válida la usa,
+// si no (localhost o vacía) usa la imagen local de /public/imgs/
+function resolveImage(
+  thumbnail?: string | null,
+  images?: any[] | null,
+  handle?: string | null
+): string | undefined {
+  // Intentar URL de Medusa primero
+  const medusaUrl = thumbnail || images?.[0]?.url
+  if (medusaUrl && !medusaUrl.includes("localhost")) return medusaUrl
+
+  // Fallback: imagen local por handle
   if (handle && PRODUCT_IMAGES[handle]) {
-    return PRODUCT_IMAGES[handle].images[index] || PRODUCT_IMAGES[handle].thumbnail
+    return PRODUCT_IMAGES[handle].thumbnail || PRODUCT_IMAGES[handle].images[0]
   }
   return undefined
 }
@@ -25,7 +35,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   thumbnail, images, size = "small", isFeatured, className, handle,
   "data-testid": dataTestid,
 }) => {
-  const initialImage = resolveImage(thumbnail, handle) || resolveImage(images?.[0]?.url, handle)
+  const src = resolveImage(thumbnail, images, handle)
 
   return (
     <Container
@@ -44,10 +54,10 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
       )}
       data-testid={dataTestid}
     >
-      {initialImage ? (
+      {src ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={initialImage}
+          src={src}
           alt="Thumbnail"
           className="absolute inset-0 w-full h-full object-contain object-center"
           draggable={false}
