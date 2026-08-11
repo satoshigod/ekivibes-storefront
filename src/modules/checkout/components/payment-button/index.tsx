@@ -7,6 +7,7 @@ import { Button } from "@medusajs/ui"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
 import React, { useState } from "react"
 import ErrorMessage from "../error-message"
+import { WompiPaymentButton } from "./wompi-payment-button"
 
 type PaymentButtonProps = {
   cart: HttpTypes.StoreCart
@@ -27,6 +28,15 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
   const paymentSession = cart.payment_collection?.payment_sessions?.[0]
 
   switch (true) {
+    case paymentSession?.provider_id === "wompi" ||
+      paymentSession?.provider_id?.includes("wompi"):
+      return (
+        <WompiPaymentButtonWrapper
+          notReady={notReady}
+          cart={cart}
+          session={paymentSession}
+        />
+      )
     case isStripeLike(paymentSession?.provider_id):
       return (
         <StripePaymentButton
@@ -42,6 +52,42 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
     default:
       return <Button disabled>Select a payment method</Button>
   }
+}
+
+const WompiPaymentButtonWrapper = ({
+  cart,
+  notReady,
+  session,
+}: {
+  cart: HttpTypes.StoreCart
+  notReady: boolean
+  session: any
+}) => {
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  const onPaymentCompleted = async () => {
+    await placeOrder().catch((err) => {
+      setErrorMessage(err.message)
+    })
+  }
+
+  if (notReady) {
+    return <Button disabled>Place order</Button>
+  }
+
+  return (
+    <>
+      <WompiPaymentButton
+        session={session}
+        cartId={cart.id}
+        onPaymentCompleted={onPaymentCompleted}
+      />
+      <ErrorMessage
+        error={errorMessage}
+        data-testid="wompi-payment-error-message"
+      />
+    </>
+  )
 }
 
 const StripePaymentButton = ({
