@@ -3,8 +3,7 @@ export const dynamic = "force-dynamic"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
-import { getCategoryByHandle, listCategories } from "@lib/data/categories"
-import { getRegion } from "@lib/data/regions"
+import { getCategoryByHandle } from "@lib/data/categories"
 import CategoryTemplate from "@modules/categories/templates"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 
@@ -24,17 +23,27 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
-  const params = await props.params
-  const { category } = params
-  const { product_categories } = await getCategoryByHandle(category)
+  try {
+    const params = await props.params
+    const { category } = params
+    const res = await getCategoryByHandle(category)
 
-  const title = product_categories
-    .map((c) => c.name)
-    .join(" | ")
+    if (!res || !res.product_categories || res.product_categories.length === 0) {
+      return {
+        title: "Categoría | Ekivibes",
+      }
+    }
 
-  return {
-    title: `${title} | Ekivibes`,
-    description: `${title} en Ekivibes Colombia`,
+    const title = res.product_categories.map((c: any) => c.name).join(" | ")
+
+    return {
+      title: `${title} | Ekivibes`,
+      description: `${title} en Ekivibes Colombia`,
+    }
+  } catch (error) {
+    return {
+      title: "Categoría | Ekivibes",
+    }
   }
 }
 
@@ -44,15 +53,17 @@ export default async function CategoryPage(props: Props) {
   const { sortBy, page } = searchParams
   const { category, countryCode } = params
 
-  const { product_categories } = await getCategoryByHandle(category)
+  const res = await getCategoryByHandle(category).catch(() => null)
 
-  if (!product_categories) {
+  if (!res || !res.product_categories || res.product_categories.length === 0) {
     notFound()
   }
 
+  const currentCategory = res.product_categories[res.product_categories.length - 1]
+
   return (
     <CategoryTemplate
-      category={product_categories[product_categories.length - 1]}
+      category={currentCategory}
       sortBy={sortBy}
       page={page}
       countryCode={countryCode}
