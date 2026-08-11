@@ -16,8 +16,8 @@ export default function Nav() {
         </LocalizedClientLink>
         <div className="nav-menu">
           <LocalizedClientLink href="/store">Tienda</LocalizedClientLink>
-          <LocalizedClientLink href="/store">Airbags</LocalizedClientLink>
-          <LocalizedClientLink href="/store">Accesorios</LocalizedClientLink>
+          <LocalizedClientLink href="/categories/chalecos-airbag">Airbags</LocalizedClientLink>
+          <LocalizedClientLink href="/categories/repuestos-y-accesorios-hit-air">Accesorios</LocalizedClientLink>
         </div>
         <div className="nav-icons">
           <LocalizedClientLink href="/account" className="ic">

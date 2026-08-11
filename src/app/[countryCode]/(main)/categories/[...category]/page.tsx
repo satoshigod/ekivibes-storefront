@@ -1,10 +1,9 @@
 export const dynamic = "force-dynamic"
+
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
-import { getCategoryByHandle, listCategories } from "@lib/data/categories"
-import { listRegions } from "@lib/data/regions"
-import { StoreRegion } from "@medusajs/types"
+import { getCategoryByHandle } from "@lib/data/categories"
 import CategoryTemplate from "@modules/categories/templates"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 
@@ -16,51 +15,46 @@ type Props = {
   }>
 }
 
-export async function generateStaticParams() {
-  const product_categories = await listCategories()
-
-  if (!product_categories) {
-    return []
-  }
-
-  const countryCodes = await listRegions().then((regions: StoreRegion[]) =>
-    regions?.map((r) => r.countries?.map((c) => c.iso_2)).flat()
-  )
-
-  const categoryHandles = product_categories.map(
-    (category: any) => category.handle
-  )
-
-  const staticParams = countryCodes
-    ?.map((countryCode: string | undefined) =>
-      categoryHandles.map((handle: any) => ({
-        countryCode,
-        category: [handle],
-      }))
+// params.category -> siempre string[] no vacio (o null)
+function normalizeCategory(raw: unknown): string[] | null {
+  if (Array.isArray(raw)) {
+    const arr = raw.filter(
+      (v): v is string => typeof v === "string" && v.length > 0
     )
-    .flat()
+    return arr.length ? arr : null
+  }
+  if (typeof raw === "string" && raw.length > 0) {
+    return [raw]
+  }
+  return null
+}
 
-  return staticParams
+export async function generateStaticParams() {
+  return []
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params
-  try {
-    const productCategory = await getCategoryByHandle(params.category)
+  const category = normalizeCategory(params.category)
 
-    const title = productCategory.name + " | Medusa Store"
+  if (!category) {
+    return { title: "Categoría | Ekivibes" }
+  }
 
-    const description = productCategory.description ?? `${title} category.`
+  const productCategory = await getCategoryByHandle(category).catch(() => null)
 
-    return {
-      title: `${title} | Medusa Store`,
-      description,
-      alternates: {
-        canonical: `${params.category.join("/")}`,
-      },
-    }
-  } catch (error) {
-    notFound()
+  if (!productCategory) {
+    return { title: "Categoría | Ekivibes" }
+  }
+
+  const title = productCategory.name
+
+  return {
+    title: `${title} | Ekivibes`,
+    description: productCategory.description ?? `${title} en Ekivibes Colombia.`,
+    alternates: {
+      canonical: category.join("/"),
+    },
   }
 }
 
@@ -69,7 +63,13 @@ export default async function CategoryPage(props: Props) {
   const params = await props.params
   const { sortBy, page } = searchParams
 
-  const productCategory = await getCategoryByHandle(params.category)
+  const category = normalizeCategory(params.category)
+
+  if (!category) {
+    notFound()
+  }
+
+  const productCategory = await getCategoryByHandle(category).catch(() => null)
 
   if (!productCategory) {
     notFound()

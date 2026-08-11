@@ -18,8 +18,8 @@ export default function Footer() {
         <div className="footer-col">
           <h5>Categorías</h5>
           <ul>
-            <li><LocalizedClientLink href="/store">Airbags</LocalizedClientLink></li>
-            <li><LocalizedClientLink href="/store">Accesorios</LocalizedClientLink></li>
+            <li><LocalizedClientLink href="/categories/chalecos-airbag">Airbags</LocalizedClientLink></li>
+            <li><LocalizedClientLink href="/categories/repuestos-y-accesorios-hit-air">Accesorios</LocalizedClientLink></li>
             <li><LocalizedClientLink href="/store">Cascos</LocalizedClientLink></li>
             <li><LocalizedClientLink href="/store">Guantes</LocalizedClientLink></li>
           </ul>
