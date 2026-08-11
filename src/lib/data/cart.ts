@@ -123,6 +123,7 @@ export async function addToCart({
   quantity: number
   countryCode: string
 }) {
+  console.log("[addToCart] variantId:", variantId, "qty:", quantity, "country:", countryCode)
   if (!variantId) {
     throw new Error("Missing variant ID when adding to cart")
   }
