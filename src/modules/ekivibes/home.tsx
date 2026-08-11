@@ -4,12 +4,13 @@ import EkivibesProductCard from "@modules/ekivibes/product-card"
 import Logo from "@modules/ekivibes/logo"
 
 const CATS = [
-  { label: "Airbags", emoji: "🦺" },
-  { label: "Cascos", emoji: "⛑️" },
-  { label: "Guantes", emoji: "🧤" },
-  { label: "Ropa", emoji: "👕" },
-  { label: "Accesorios", emoji: "🎒" },
-  { label: "Repuestos", emoji: "🔧" },
+  { label: "Ropa",        slug: "ropa",       icon: "/cats/ropa.svg" },
+  { label: "Guantes",     slug: "guantes",    icon: "/cats/guantes.svg" },
+  { label: "Airbag",      slug: "airbag",     icon: "/cats/airbag.svg" },
+  { label: "Cascos",      slug: "cascos",     icon: "/cats/cascos.svg" },
+  { label: "Protección",  slug: "proteccion", icon: "/cats/proteccion.svg" },
+  { label: "Chaps",       slug: "chaps",      icon: "/cats/chaps.svg" },
+  { label: "Accesorios",  slug: "accesorios", icon: "/cats/accesorios.svg" },
 ]
 
 export default async function EkivibesHome({
@@ -44,8 +45,19 @@ export default async function EkivibesHome({
       <div className="section">
         <div className="cats">
           {CATS.map((c) => (
-            <LocalizedClientLink href="/store" className="cat" key={c.label}>
-              <div className="cat-circle">{c.emoji}</div>
+            <LocalizedClientLink
+              href={`/categories/${c.slug}`}
+              className="cat"
+              key={c.label}
+            >
+              <div className="cat-circle">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={c.icon}
+                  alt={c.label}
+                  style={{ width: 48, height: 48, objectFit: "contain" }}
+                />
+              </div>
               <div className="cat-label">{c.label}</div>
             </LocalizedClientLink>
           ))}
@@ -78,7 +90,7 @@ export default async function EkivibesHome({
             Chalecos airbag Hit-Air, la protección líder para tu monta
             diaria y de competición.
           </p>
-          <LocalizedClientLink href="/store">
+          <LocalizedClientLink href="/categories/airbag">
             <button className="btn-gold">Ver airbags</button>
           </LocalizedClientLink>
         </div>
