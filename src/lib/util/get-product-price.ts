@@ -43,7 +43,7 @@ export function getProductPrice({
       return null
     }
 
-    const cheapestVariant: any = product.variants
+    const cheapestVariante: any = product.variants
       .filter((v: any) => !!v.calculated_price)
       .sort((a: any, b: any) => {
         return (

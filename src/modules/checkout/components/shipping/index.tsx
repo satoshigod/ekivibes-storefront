@@ -189,7 +189,7 @@ const Envío: React.FC<EnvíoProps> = ({
                 Método de envío
               </span>
               <span className="mb-4 text-ui-fg-muted txt-medium">
-                How would you like you order delivered
+                ¿Cómo quieres recibir tu pedido?
               </span>
             </div>
             <div data-testid="delivery-options-container">

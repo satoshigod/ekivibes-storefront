@@ -144,7 +144,7 @@ const Direcciónes = ({
 
                     {sameAsBilling ? (
                       <Text className="txt-medium text-ui-fg-subtle">
-                        Billing and delivery address are the same.
+                        La dirección de facturación y envío son iguales.
                       </Text>
                     ) : (
                       <>
