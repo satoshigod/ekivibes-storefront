@@ -61,5 +61,59 @@ export const PRODUCT_IMAGES: Record<string,{thumbnail:string,images:string[]}> =
       "/imgs/lan1.jpg",
       "/imgs/lan2.jpg"
     ]
+  },
+  "chaleco-airbag-vh-niños": {
+    "thumbnail": "/imgs/vh-kids-front.jpg",
+    "images": [
+      "/imgs/vh-kids-front.jpg",
+      "",
+      "/imgs/vh-kids-inflado.jpg",
+      "/imgs/vh-kids-co2.jpg"
+    ]
+  },
+  "chaleco-airbag-mlv3-h-niños": {
+    "thumbnail": "/imgs/mlv3h-kids-front.jpg",
+    "images": [
+      "/imgs/mlv3h-kids-front.jpg",
+      "",
+      "/imgs/mlv3h-kids-inflado.jpg",
+      "/imgs/mlv3h-kids-co2.jpg"
+    ]
+  },
+  "chaleco-airbag-vh-kids": {
+    "thumbnail": "/imgs/vh-kids-front.jpg",
+    "images": [
+      "/imgs/vh-kids-front.jpg",
+      "",
+      "/imgs/vh-kids-inflado.jpg",
+      "/imgs/vh-kids-co2.jpg"
+    ]
+  },
+  "chaleco-airbag-mlv3-h-kids": {
+    "thumbnail": "/imgs/mlv3h-kids-front.jpg",
+    "images": [
+      "/imgs/mlv3h-kids-front.jpg",
+      "",
+      "/imgs/mlv3h-kids-inflado.jpg",
+      "/imgs/mlv3h-kids-co2.jpg"
+    ]
+  },
+  "vh-vest-kids": {
+    "thumbnail": "/imgs/vh-kids-front.jpg",
+    "images": [
+      "/imgs/vh-kids-front.jpg",
+      "",
+      "/imgs/vh-kids-inflado.jpg",
+      "/imgs/vh-kids-co2.jpg"
+    ]
+  },
+  "mlv3-h-kids": {
+    "thumbnail": "/imgs/mlv3h-kids-front.jpg",
+    "images": [
+      "/imgs/mlv3h-kids-front.jpg",
+      "",
+      "/imgs/mlv3h-kids-inflado.jpg",
+      "/imgs/mlv3h-kids-co2.jpg"
+    ]
   }
 }
