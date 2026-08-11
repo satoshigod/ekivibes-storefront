@@ -12,11 +12,11 @@ type MyInformationProps = {
   customer: HttpTypes.TiendaCustomer
 }
 
-const PerfilCorreo electrónico: React.FC<MyInformationProps> = ({ customer }) => {
+const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
   const [successState, setSuccessState] = React.useState(false)
 
   // TODO: It seems we don't support updating emails now?
-  const updateCustomerCorreo electrónico = (
+  const updateCustomerEmail = (
     _currentState: Record<string, unknown>,
     formData: FormData
   ) => {
@@ -32,7 +32,7 @@ const PerfilCorreo electrónico: React.FC<MyInformationProps> = ({ customer }) =
     }
   }
 
-  const [state, formAction] = useActionState(updateCustomerCorreo electrónico, {
+  const [state, formAction] = useActionState(updateCustomerEmail, {
     error: false,
     success: false,
   })
@@ -72,4 +72,4 @@ const PerfilCorreo electrónico: React.FC<MyInformationProps> = ({ customer }) =
   )
 }
 
-export default PerfilCorreo electrónico
+export default ProfileEmail

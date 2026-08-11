@@ -14,7 +14,7 @@ type MyInformationProps = {
   regions: HttpTypes.TiendaRegion[]
 }
 
-const PerfilBillingDirección: React.FC<MyInformationProps> = ({
+const ProfileBillingAddress: React.FC<MyInformationProps> = ({
   customer,
   regions,
 }) => {
@@ -188,4 +188,4 @@ const PerfilBillingDirección: React.FC<MyInformationProps> = ({
   )
 }
 
-export default PerfilBillingDirección
+export default ProfileBillingAddress

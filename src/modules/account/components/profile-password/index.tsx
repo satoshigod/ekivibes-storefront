@@ -10,7 +10,7 @@ type MyInformationProps = {
   customer: HttpTypes.TiendaCustomer
 }
 
-const PerfilContraseña: React.FC<MyInformationProps> = ({ customer }) => {
+const ProfilePassword: React.FC<MyInformationProps> = ({ customer }) => {
   const [successState, setSuccessState] = React.useState(false)
 
   // TODO: Add support for password updates
@@ -67,4 +67,4 @@ const PerfilContraseña: React.FC<MyInformationProps> = ({ customer }) => {
   )
 }
 
-export default PerfilContraseña
+export default ProfilePassword

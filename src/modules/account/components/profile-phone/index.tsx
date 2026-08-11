@@ -12,10 +12,10 @@ type MyInformationProps = {
   customer: HttpTypes.TiendaCustomer
 }
 
-const PerfilCorreo electrónico: React.FC<MyInformationProps> = ({ customer }) => {
+const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
   const [successState, setSuccessState] = React.useState(false)
 
-  const updateCustomerTeléfono = async (
+  const updateCustomerPhone = async (
     _currentState: Record<string, unknown>,
     formData: FormData
   ) => {
@@ -31,7 +31,7 @@ const PerfilCorreo electrónico: React.FC<MyInformationProps> = ({ customer }) =
     }
   }
 
-  const [state, formAction] = useActionState(updateCustomerTeléfono, {
+  const [state, formAction] = useActionState(updateCustomerPhone, {
     error: false,
     success: false,
   })
@@ -71,4 +71,4 @@ const PerfilCorreo electrónico: React.FC<MyInformationProps> = ({ customer }) =
   )
 }
 
-export default PerfilCorreo electrónico
+export default ProfileEmail
