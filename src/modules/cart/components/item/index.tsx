@@ -56,7 +56,7 @@ const Producto = ({ item, type = "full", currencyCode }: ProductoProps) => {
         >
           <Thumbnail
             thumbnail={item.thumbnail}
-              handle={item.variant?.product?.handle}
+            handle={item.product_handle || item.variant?.product?.handle}
             images={item.variant?.product?.images}
             size="square"
           />
