@@ -5,7 +5,7 @@ import { PencilSquare as Editar, Trash } from "@medusajs/icons"
 import { Button, Heading, Text, clx } from "@medusajs/ui"
 
 import useToggleState from "@lib/hooks/use-toggle-state"
-import PaísSelect from "@modules/checkout/components/country-select"
+import CountrySelect from "@modules/checkout/components/country-select"
 import Input from "@modules/common/components/input"
 import Modal from "@modules/common/components/modal"
 import Spinner from "@modules/common/icons/spinner"
@@ -13,7 +13,7 @@ import { SubmitButton } from "@modules/checkout/components/submit-button"
 import { HttpTypes } from "@medusajs/types"
 import {
   deleteCustomerDirección,
-  updateCustomerDirección,
+  updateCustomerAddress,
 } from "@lib/data/customer"
 
 type EditarDirecciónProps = {
@@ -22,7 +22,7 @@ type EditarDirecciónProps = {
   isActive?: boolean
 }
 
-const EditarDirección: React.FC<EditarDirecciónProps> = ({
+const EditarDirección: React.FC<EditAddressProps> = ({
   region,
   address,
   isActive = false,
@@ -31,7 +31,7 @@ const EditarDirección: React.FC<EditarDirecciónProps> = ({
   const [successState, setSuccessState] = useState(false)
   const { state, open, close: closeModal } = useToggleState(false)
 
-  const [formState, formAction] = useActionState(updateCustomerDirección, {
+  const [formState, formAction] = useActionState(updateCustomerAddress, {
     success: false,
     error: null,
     addressId: address.id,
@@ -194,7 +194,7 @@ const EditarDirección: React.FC<EditarDirecciónProps> = ({
                 defaultValue={address.province || undefined}
                 data-testid="state-input"
               />
-              <PaísSelect
+              <CountrySelect
                 name="country_code"
                 region={region}
                 required

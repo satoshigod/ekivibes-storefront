@@ -12,7 +12,7 @@ type MyInformationProps = {
   customer: HttpTypes.TiendaCustomer
 }
 
-const PerfilName: React.FC<MyInformationProps> = ({ customer }) => {
+const ProfileName: React.FC<MyInformationProps> = ({ customer }) => {
   const [successState, setSuccessState] = React.useState(false)
 
   const updateCustomerName = async (
@@ -76,4 +76,4 @@ const PerfilName: React.FC<MyInformationProps> = ({ customer }) => {
   )
 }
 
-export default PerfilName
+export default ProfileName

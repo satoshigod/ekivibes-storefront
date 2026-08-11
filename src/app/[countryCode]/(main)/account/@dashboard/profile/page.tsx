@@ -1,10 +1,10 @@
 import { Metadata } from "next"
 
-import PerfilTeléfono from "@modules/account//components/profile-phone"
-import PerfilBillingDirección from "@modules/account/components/profile-billing-address"
-import PerfilCorreo electrónico from "@modules/account/components/profile-email"
-import PerfilName from "@modules/account/components/profile-name"
-import PerfilContraseña from "@modules/account/components/profile-password"
+import ProfilePhone from "@modules/account/components/profile-phone"
+import ProfileBillingAddress from "@modules/account/components/profile-billing-address"
+import ProfileEmail from "@modules/account/components/profile-email"
+import ProfileName from "@modules/account/components/profile-name"
+import ProfilePassword from "@modules/account/components/profile-password"
 
 import { notFound } from "next/navigation"
 import { listRegions } from "@lib/data/regions"
@@ -34,15 +34,15 @@ export default async function Perfil() {
         </p>
       </div>
       <div className="flex flex-col gap-y-8 w-full">
-        <PerfilName customer={customer} />
+        <ProfileName customer={customer} />
         <Divider />
-        <PerfilCorreo electrónico customer={customer} />
+        <ProfileEmail customer={customer} />
         <Divider />
-        <PerfilTeléfono customer={customer} />
+        <ProfilePhone customer={customer} />
         <Divider />
-        {/* <PerfilContraseña customer={customer} />
+        {/* <ProfilePassword customer={customer} />
         <Divider /> */}
-        <PerfilBillingDirección customer={customer} regions={regions} />
+        <ProfileBillingAddress customer={customer} regions={regions} />
       </div>
     </div>
   )

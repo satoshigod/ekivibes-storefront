@@ -9,7 +9,7 @@ import {
 } from "@headlessui/react"
 import { Fragment, useEffect, useMemo, useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
-import ReactPaísFlag from "react-country-flag"
+import ReactCountryFlag from "react-country-flag"
 
 import { StateType } from "@lib/hooks/use-toggle-state"
 import { updateLocale } from "@lib/data/locale-actions"
@@ -133,7 +133,7 @@ const LanguageSelect = ({
               <span className="txt-compact-small flex items-center gap-x-2">
                 {current.countryCode && (
                   /* @ts-ignore */
-                  <ReactPaísFlag
+                  <ReactCountryFlag
                     svg
                     style={{
                       width: "16px",
@@ -167,7 +167,7 @@ const LanguageSelect = ({
                 >
                   {o.countryCode ? (
                     /* @ts-ignore */
-                    <ReactPaísFlag
+                    <ReactCountryFlag
                       svg
                       style={{
                         width: "16px",

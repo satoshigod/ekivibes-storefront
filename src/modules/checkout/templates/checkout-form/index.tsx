@@ -1,7 +1,7 @@
 import { listCarritoEnvíoMethods } from "@lib/data/fulfillment"
 import { listCarritoPagoMethods } from "@lib/data/payment"
 import { HttpTypes } from "@medusajs/types"
-import Direcciónes from "@modules/checkout/components/addresses"
+import Addresses from "@modules/checkout/components/addresses"
 import Pago from "@modules/checkout/components/payment"
 import Revisión from "@modules/checkout/components/review"
 import Envío from "@modules/checkout/components/shipping"
@@ -26,7 +26,7 @@ export default async function CheckoutForm({
 
   return (
     <div className="w-full grid grid-cols-1 gap-y-8">
-      <Direcciónes cart={cart} customer={customer} />
+      <Addresses cart={cart} customer={customer} />
 
       <Envío cart={cart} availableEnvíoMethods={shippingMethods} />
 

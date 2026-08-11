@@ -1,7 +1,7 @@
 import { HttpTypes } from "@medusajs/types"
 import Input from "@modules/common/components/input"
 import React, { useState } from "react"
-import PaísSelect from "../country-select"
+import CountrySelect from "../country-select"
 
 const BillingDirección = ({ cart }: { cart: HttpTypes.TiendaCarrito | null }) => {
   const [formData, setFormData] = useState<any>({
@@ -81,7 +81,7 @@ const BillingDirección = ({ cart }: { cart: HttpTypes.TiendaCarrito | null }) =
           value={formData["billing_address.city"]}
           onChange={handleChange}
         />
-        <PaísSelect
+        <CountrySelect
           name="billing_address.country_code"
           autoComplete="country"
           region={cart?.region}

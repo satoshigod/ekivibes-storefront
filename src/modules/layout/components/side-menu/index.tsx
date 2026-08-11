@@ -6,7 +6,7 @@ import { Text, clx, useToggleState } from "@medusajs/ui"
 import { Fragment } from "react"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import PaísSelect from "../country-select"
+import CountrySelect from "../country-select"
 import LanguageSelect from "../language-select"
 import { HttpTypes } from "@medusajs/types"
 import { Locale } from "@lib/data/locales"
@@ -113,7 +113,7 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                         onMouseLeave={countryToggleState.close}
                       >
                         {regions && (
-                          <PaísSelect
+                          <CountrySelect
                             toggleState={countryToggleState}
                             regions={regions}
                           />

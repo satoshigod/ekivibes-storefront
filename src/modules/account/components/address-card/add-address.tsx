@@ -5,12 +5,12 @@ import { Button, Heading } from "@medusajs/ui"
 import { useEffect, useState, useActionState } from "react"
 
 import useToggleState from "@lib/hooks/use-toggle-state"
-import PaísSelect from "@modules/checkout/components/country-select"
+import CountrySelect from "@modules/checkout/components/country-select"
 import Input from "@modules/common/components/input"
 import Modal from "@modules/common/components/modal"
 import { SubmitButton } from "@modules/checkout/components/submit-button"
 import { HttpTypes } from "@medusajs/types"
-import { addCustomerDirección } from "@lib/data/customer"
+import { addCustomerAddress } from "@lib/data/customer"
 
 const AddDirección = ({
   region,
@@ -22,7 +22,7 @@ const AddDirección = ({
   const [successState, setSuccessState] = useState(false)
   const { state, open, close: closeModal } = useToggleState(false)
 
-  const [formState, formAction] = useActionState(addCustomerDirección, {
+  const [formState, formAction] = useActionState(addCustomerAddress, {
     isDefaultShipping: addresses.length === 0,
     success: false,
     error: null,
@@ -121,7 +121,7 @@ const AddDirección = ({
                 autoComplete="address-level1"
                 data-testid="state-input"
               />
-              <PaísSelect
+              <CountrySelect
                 region={region}
                 name="country_code"
                 required

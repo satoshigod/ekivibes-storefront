@@ -158,7 +158,7 @@ export async function transferCarrito() {
   revalidateTag(cartCacheTag)
 }
 
-export const addCustomerDirección = async (
+export const addCustomerAddress = async (
   currentState: Record<string, unknown>,
   formData: FormData
 ): Promise<any> => {
@@ -215,7 +215,7 @@ export const deleteCustomerDirección = async (
     })
 }
 
-export const updateCustomerDirección = async (
+export const updateCustomerAddress = async (
   currentState: Record<string, unknown>,
   formData: FormData
 ): Promise<any> => {

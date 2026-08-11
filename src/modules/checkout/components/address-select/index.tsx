@@ -4,7 +4,7 @@ import { clx } from "@medusajs/ui"
 import { Fragment, useMemo } from "react"
 
 import Radio from "@modules/common/components/radio"
-import compareDirecciónes from "@lib/util/compare-addresses"
+import compareAddresses from "@lib/util/compare-addresses"
 import { HttpTypes } from "@medusajs/types"
 
 type DirecciónSelectProps = {
@@ -29,7 +29,7 @@ const DirecciónSelect = ({
   }
 
   const selectedDirección = useMemo(() => {
-    return addresses.find((a) => compareDirecciónes(a, addressInput))
+    return addresses.find((a) => compareAddresses(a, addressInput))
   }, [addresses, addressInput])
 
   return (

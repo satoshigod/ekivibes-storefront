@@ -4,8 +4,8 @@ import Checkbox from "@modules/common/components/checkbox"
 import Input from "@modules/common/components/input"
 import { mapKeys } from "lodash"
 import React, { useEffect, useMemo, useState } from "react"
-import DirecciónSelect from "../address-select"
-import PaísSelect from "../country-select"
+import AddressSelect from "../address-select"
+import CountrySelect from "../country-select"
 
 const EnvíoDirección = ({
   customer,
@@ -99,7 +99,7 @@ const EnvíoDirección = ({
           <p className="text-small-regular">
             {`Hi ${customer.first_name}, do you want to use one of your saved addresses?`}
           </p>
-          <DirecciónSelect
+          <AddressSelect
             addresses={customer.addresses}
             addressInput={
               mapKeys(formData, (_, key) =>
@@ -164,7 +164,7 @@ const EnvíoDirección = ({
           required
           data-testid="shipping-city-input"
         />
-        <PaísSelect
+        <CountrySelect
           name="shipping_address.country_code"
           autoComplete="country"
           region={cart?.region}

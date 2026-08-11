@@ -1,7 +1,7 @@
 "use client"
 
-import { setDirecciónes } from "@lib/data/cart"
-import compareDirecciónes from "@lib/util/compare-addresses"
+import { setAddresses } from "@lib/data/cart"
+import compareAddresses from "@lib/util/compare-addresses"
 import { CheckCircleSolid } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Heading, Text, useToggleState } from "@medusajs/ui"
@@ -9,9 +9,9 @@ import Divider from "@modules/common/components/divider"
 import Spinner from "@modules/common/icons/spinner"
 import { usePathname, useRouter, useBuscarParams } from "next/navigation"
 import { useActionState } from "react"
-import BillingDirección from "../billing_address"
+import BillingAddress from "../billing_address"
 import ErrorMessage from "../error-message"
-import EnvíoDirección from "../shipping-address"
+import ShippingAddress from "../shipping-address"
 import { SubmitButton } from "../submit-button"
 
 const Direcciónes = ({
@@ -29,7 +29,7 @@ const Direcciónes = ({
 
   const { state: sameAsBilling, toggle: toggleSameAsBilling } = useToggleState(
     cart?.shipping_address && cart?.billing_address
-      ? compareDirecciónes(cart?.shipping_address, cart?.billing_address)
+      ? compareAddresses(cart?.shipping_address, cart?.billing_address)
       : true
   )
 
@@ -37,7 +37,7 @@ const Direcciónes = ({
     router.push(pathname + "?step=address")
   }
 
-  const [message, formAction] = useActionState(setDirecciónes, null)
+  const [message, formAction] = useActionState(setAddresses, null)
 
   return (
     <div className="bg-white">
@@ -64,7 +64,7 @@ const Direcciónes = ({
       {isOpen ? (
         <form action={formAction}>
           <div className="pb-8">
-            <EnvíoDirección
+            <ShippingAddress
               customer={customer}
               checked={sameAsBilling}
               onChange={toggleSameAsBilling}
@@ -80,7 +80,7 @@ const Direcciónes = ({
                   Billing address
                 </Heading>
 
-                <BillingDirección cart={cart} />
+                <BillingAddress cart={cart} />
               </div>
             )}
             <SubmitButton className="mt-6" data-testid="submit-address-button">

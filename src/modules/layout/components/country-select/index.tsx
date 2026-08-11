@@ -8,7 +8,7 @@ import {
   Transition,
 } from "@headlessui/react"
 import { Fragment, useEffect, useMemo, useState } from "react"
-import ReactPaísFlag from "react-country-flag"
+import ReactCountryFlag from "react-country-flag"
 
 import { StateType } from "@lib/hooks/use-toggle-state"
 import { useParams, usePathname } from "next/navigation"
@@ -79,7 +79,7 @@ const PaísSelect = ({ toggleState, regions }: PaísSelectProps) => {
             {current && (
               <span className="txt-compact-small flex items-center gap-x-2">
                 {/* @ts-ignore */}
-                <ReactPaísFlag
+                <ReactCountryFlag
                   svg
                   style={{
                     width: "16px",
@@ -112,7 +112,7 @@ const PaísSelect = ({ toggleState, regions }: PaísSelectProps) => {
                     className="py-2 hover:bg-gray-200 px-3 cursor-pointer flex items-center gap-x-2"
                   >
                     {/* @ts-ignore */}
-                    <ReactPaísFlag
+                    <ReactCountryFlag
                       svg
                       style={{
                         width: "16px",
