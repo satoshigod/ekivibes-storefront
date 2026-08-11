@@ -1,37 +1,31 @@
 import { Container, clx } from "@medusajs/ui"
 import React from "react"
-
 import PlaceholderImage from "@modules/common/icons/placeholder-image"
+import { PRODUCT_IMAGES } from "@modules/ekivibes/product-images-data"
 
-// Reemplaza localhost:9000 por el backend real de Railway en URLs de imagenes
-function fixImageUrl(url?: string | null): string | undefined {
-  if (!url) return undefined
-  return url.replace(
-    /https?:\/\/localhost:9000/g,
-    process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "https://ekivibes-production.up.railway.app"
-  )
+function resolveImage(url?: string | null, handle?: string | null, index = 0): string | undefined {
+  if (url && !url.includes("localhost")) return url
+  if (handle && PRODUCT_IMAGES[handle]) {
+    return PRODUCT_IMAGES[handle].images[index] || PRODUCT_IMAGES[handle].thumbnail
+  }
+  return undefined
 }
-
 
 type ThumbnailProps = {
   thumbnail?: string | null
-  // TODO: Fix image typings
   images?: any[] | null
   size?: "small" | "medium" | "large" | "full" | "square"
   isFeatured?: boolean
   className?: string
+  handle?: string | null
   "data-testid"?: string
 }
 
 const Thumbnail: React.FC<ThumbnailProps> = ({
-  thumbnail,
-  images,
-  size = "small",
-  isFeatured,
-  className,
+  thumbnail, images, size = "small", isFeatured, className, handle,
   "data-testid": dataTestid,
 }) => {
-  const initialImage = fixImageUrl(thumbnail) || fixImageUrl(images?.[0]?.url)
+  const initialImage = resolveImage(thumbnail, handle) || resolveImage(images?.[0]?.url, handle)
 
   return (
     <Container
@@ -50,27 +44,20 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
       )}
       data-testid={dataTestid}
     >
-      <ImageOrPlaceholder image={initialImage} size={size} />
+      {initialImage ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={initialImage}
+          alt="Thumbnail"
+          className="absolute inset-0 w-full h-full object-contain object-center"
+          draggable={false}
+        />
+      ) : (
+        <div className="w-full h-full absolute inset-0 flex items-center justify-center">
+          <PlaceholderImage size={size === "small" ? 16 : 24} />
+        </div>
+      )}
     </Container>
-  )
-}
-
-const ImageOrPlaceholder = ({
-  image,
-  size,
-}: Pick<ThumbnailProps, "size"> & { image?: string }) => {
-  return image ? (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={image}
-      alt="Thumbnail"
-      className="absolute inset-0 w-full h-full object-cover object-center"
-      draggable={false}
-    />
-  ) : (
-    <div className="w-full h-full absolute inset-0 flex items-center justify-center">
-      <PlaceholderImage size={size === "small" ? 16 : 24} />
-    </div>
   )
 }
 
