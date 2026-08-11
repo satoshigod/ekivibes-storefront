@@ -29,9 +29,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     const res = await getCategoryByHandle(category)
 
     if (!res || !res.product_categories || res.product_categories.length === 0) {
-      return {
-        title: "Categoría | Ekivibes",
-      }
+      return { title: "Categoría | Ekivibes" }
     }
 
     const title = res.product_categories.map((c: any) => c.name).join(" | ")
@@ -41,9 +39,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       description: `${title} en Ekivibes Colombia`,
     }
   } catch (error) {
-    return {
-      title: "Categoría | Ekivibes",
-    }
+    return { title: "Categoría | Ekivibes" }
   }
 }
 
@@ -53,7 +49,14 @@ export default async function CategoryPage(props: Props) {
   const { sortBy, page } = searchParams
   const { category, countryCode } = params
 
-  const res = await getCategoryByHandle(category).catch(() => null)
+  // --- LÍNEAS DE DIAGNÓSTICO EN LOS LOGS ---
+  console.log("--> PARAMETRO CATEGORY ENVIADO:", category)
+  const res = await getCategoryByHandle(category).catch((err) => {
+    console.log("--> ERROR EN GETCATEGORYBYHANDLE:", err)
+    return null
+  })
+  console.log("--> RESPUESTA DE MEDUSA:", JSON.stringify(res))
+  // ----------------------------------------
 
   if (!res || !res.product_categories || res.product_categories.length === 0) {
     notFound()
