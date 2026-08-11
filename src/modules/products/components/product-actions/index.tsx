@@ -50,10 +50,10 @@ export default function ProductActions({
     }
   }, [product.variants])
 
-  const selectedVariant = useMemo(() => {
+  const selectedVariant = useMemo((): HttpTypes.StoreProductVariant | undefined => {
     if (!product.variants || product.variants.length === 0) return undefined
     if (product.variants.length === 1) return product.variants[0]
-    return product.variants.find((v) => {
+    return product.variants.find((v: HttpTypes.StoreProductVariant) => {
       const variantOptions = optionsAsKeymap(v.options)
       return isEqual(variantOptions, options)
     })

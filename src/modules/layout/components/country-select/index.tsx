@@ -71,11 +71,11 @@ const PaísSelect = ({ toggleState, regions }: PaísSelectProps) => {
           countryCode
             ? options?.find((o) => o?.country === countryCode)
             : undefined
-        }
+        } as CountryOption | undefined
       >
         <ListboxButton className="py-1 w-full">
           <div className="txt-compact-small flex items-start gap-x-2">
-            <span>Shipping to:</span>
+            <span>Envío a:</span>
             {current && (
               <span className="txt-compact-small flex items-center gap-x-2">
                 {/* @ts-ignore */}
