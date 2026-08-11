@@ -231,7 +231,7 @@ const Pago = ({
                   <Text>
                     {isStripeLike(selectedPagoMethod) && cardBrand
                       ? cardBrand
-                      : "Another step will appear"}
+                      : "El pago se procesará con Wompi"}
                   </Text>
                 </div>
               </div>

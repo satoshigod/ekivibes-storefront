@@ -74,14 +74,14 @@ const Register = ({ setCurrentView }: Props) => {
             href="/content/privacy-policy"
             className="underline"
           >
-            Privacy Policy
+            Política de privacidad
           </LocalizedClientLink>{" "}
           and{" "}
           <LocalizedClientLink
             href="/content/terms-of-use"
             className="underline"
           >
-            Terms of Use
+            Términos de uso
           </LocalizedClientLink>
           .
         </span>

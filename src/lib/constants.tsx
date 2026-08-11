@@ -34,6 +34,14 @@ export const paymentInfoMap: Record<
     title: "Manual Payment",
     icon: <CreditCard />,
   },
+  pp_wompi_wompi: {
+    title: "Wompi (Nequi, PSE, Tarjeta)",
+    icon: <CreditCard />,
+  },
+  wompi: {
+    title: "Wompi (Nequi, PSE, Tarjeta)",
+    icon: <CreditCard />,
+  },
   // Add more payment providers here
 }
 
