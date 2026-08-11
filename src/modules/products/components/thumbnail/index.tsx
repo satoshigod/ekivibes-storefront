@@ -3,6 +3,16 @@ import React from "react"
 
 import PlaceholderImage from "@modules/common/icons/placeholder-image"
 
+// Reemplaza localhost:9000 por el backend real de Railway en URLs de imagenes
+function fixImageUrl(url?: string | null): string | undefined {
+  if (!url) return undefined
+  return url.replace(
+    /https?:\/\/localhost:9000/g,
+    process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "https://ekivibes-production.up.railway.app"
+  )
+}
+
+
 type ThumbnailProps = {
   thumbnail?: string | null
   // TODO: Fix image typings
@@ -21,7 +31,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   className,
   "data-testid": dataTestid,
 }) => {
-  const initialImage = thumbnail || images?.[0]?.url
+  const initialImage = fixImageUrl(thumbnail) || fixImageUrl(images?.[0]?.url)
 
   return (
     <Container

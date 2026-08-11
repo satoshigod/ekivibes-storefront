@@ -1,5 +1,15 @@
 import { HttpTypes } from "@medusajs/types"
 import { getProductPrice } from "@lib/util/get-product-price"
+
+// Reemplaza localhost:9000 por el backend real de Railway en URLs de imagenes
+function fixImageUrl(url?: string | null): string | undefined {
+  if (!url) return undefined
+  return url.replace(
+    /https?:\/\/localhost:9000/g,
+    process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "https://ekivibes-production.up.railway.app"
+  )
+}
+
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 export default function EkivibesProductCard({
@@ -15,7 +25,7 @@ export default function EkivibesProductCard({
       <div className="card-img">
         {product.thumbnail ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={product.thumbnail} alt={product.title} />
+          <img src={fixImageUrl(product.thumbnail)} alt={product.title} />
         ) : (
           <span>🦺</span>
         )}
