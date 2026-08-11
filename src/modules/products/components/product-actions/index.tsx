@@ -183,7 +183,7 @@ export default function ProductActions({
           {!selectedVariant && !options
             ? "Select variant"
             : !inStock || !isValidVariant
-            ? "Sin stock"
+            ? "Agregar al carrito"
             : "Agregar al carrito"}
         </Button>
         <MobileActions
