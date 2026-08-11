@@ -6,7 +6,7 @@ import {
   HttpTypes,
   StoreCart,
   StoreCartShippingOption,
-  TiendaPrice,
+  StorePrice,
 } from "@medusajs/types"
 import { Button, clx } from "@medusajs/ui"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
@@ -15,7 +15,7 @@ import { TiendaFreeShippingPrice } from "types/global"
 
 const computeTarget = (
   cart: HttpTypes.StoreCart,
-  price: HttpTypes.TiendaPrice
+  price: HttpTypes.StorePrice
 ) => {
   const priceRule = (price.price_rules || []).find(
     (pr) => pr.attribute === "item_total"
@@ -135,7 +135,7 @@ function FreeShippingInline({
   price,
 }: {
   cart: StoreCart
-  price: TiendaPrice & {
+  price: StorePrice & {
     target_reached: boolean
     target_remaining: number
     remaining_percentage: number

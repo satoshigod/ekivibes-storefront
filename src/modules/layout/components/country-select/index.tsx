@@ -15,7 +15,7 @@ import { useParams, usePathname } from "next/navigation"
 import { updateRegion } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
 
-type PaísOption = {
+type CountryOption = {
   country: string
   region: string
   label: string
@@ -57,7 +57,7 @@ const PaísSelect = ({ toggleState, regions }: PaísSelectProps) => {
     }
   }, [options, countryCode])
 
-  const handleChange = (option: PaísOption) => {
+  const handleChange = (option: CountryOption) => {
     updateRegion(option.country, currentPath)
     close()
   }
