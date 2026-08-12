@@ -22,6 +22,7 @@ export default async function WompiReturnPage({ params, searchParams }: Props) {
 
   let status: string | null = null
   let errorMsg: string | null = null
+  let cartId: string | null = null
 
   if (transactionId) {
     const wompiEnv = (process.env.NEXT_PUBLIC_WOMPI_ENV || "test").toLowerCase()
@@ -36,6 +37,12 @@ export default async function WompiReturnPage({ params, searchParams }: Props) {
       })
       const json = await res.json()
       status = json?.data?.status ?? null
+      // La referencia tiene el formato cart_<id>_<sufijoUnico>.
+      // De ahi sacamos el carrito: la cookie no llega en el redirect
+      // porque venimos de un dominio externo (Wompi).
+      const reference: string = json?.data?.reference ?? ""
+      const match = reference.match(/^(cart_[A-Za-z0-9]+)_/)
+      cartId = match ? match[1] : reference || null
     } catch (e: any) {
       errorMsg = "No se pudo verificar el pago con Wompi."
     }
@@ -49,7 +56,7 @@ export default async function WompiReturnPage({ params, searchParams }: Props) {
   // que NO debe ser atrapada, hay que relanzarla.
   if (status === "APPROVED") {
     try {
-      await placeOrder()
+      await placeOrder(cartId || undefined)
     } catch (e: any) {
       const digest = typeof e?.digest === "string" ? e.digest : ""
       if (digest.startsWith("NEXT_REDIRECT")) {
