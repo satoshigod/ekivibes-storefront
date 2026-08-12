@@ -35,6 +35,11 @@ export const WompiPagoButton: React.FC<WompiPagoButtonProps> = ({
 
     setSubmitting(true)
 
+    // La app usa rutas con prefijo de pais (/co/...)
+    const countryPrefix = window.location.pathname.split("/")[1]
+      ? `/${window.location.pathname.split("/")[1]}`
+      : ""
+
     const sessionData = session?.data
     const amountInCents = sessionData?.amount || 0  // ya viene en centavos desde Medusa
     const currency = (sessionData?.currency_code || "COP").toUpperCase()
@@ -78,7 +83,10 @@ export const WompiPagoButton: React.FC<WompiPagoButtonProps> = ({
       amountInCents: signedAmount,
       reference,
       publicKey: sessionData?.public_key || process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY,
-      redirectUrl: `${window.location.origin}/order/confirmed`,
+      // Fallback para medios que sacan al usuario del sitio (PSE, Nequi).
+      // La orden se crea en onPagoCompletado(), que redirige a la
+      // confirmacion con el ID real. Aqui solo volvemos al checkout.
+      redirectUrl: `${window.location.origin}${countryPrefix}/checkout?step=review`,
       signature: { integrity: signature },
     })
 
