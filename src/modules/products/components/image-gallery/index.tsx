@@ -22,7 +22,7 @@ const ImageGallery = ({ images, handle }: ImageGalleryProps) => {
   return (
     <div className="flex flex-col gap-3 w-full">
       {/* Imagen principal */}
-      <div className="relative w-full aspect-square bg-ui-bg-subtle rounded-large overflow-hidden">
+      <div className="ekv-gallery-main relative w-full bg-ui-bg-subtle rounded-large overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={displayImages[active]}

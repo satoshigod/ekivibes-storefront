@@ -439,3 +439,15 @@
   .ekv-card-sizes li { transition: none; }
   .ekv-card:hover .ekv-card-img-alt { opacity: 0; }
 }
+
+
+/* ===== Ekivibes: galeria de la ficha de producto =====
+   Con aspect-square la imagen crecia tanto que el producto se cortaba
+   y el precio quedaba fuera de la pantalla al entrar. */
+.ekv-gallery-main {
+  height: clamp(320px, 52vh, 560px);
+}
+.ekv-gallery-main img {
+  padding: 1.5rem;
+  box-sizing: border-box;
+}

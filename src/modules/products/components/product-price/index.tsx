@@ -1,5 +1,13 @@
 import { clx } from "@medusajs/ui"
 
+const formatCOP = (value: number) =>
+  new Intl.NumberFormat("es-CO", {
+    style: "currency",
+    currency: "COP",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(value)
+
 import { getProductPrice } from "@lib/util/get-product-price"
 import { HttpTypes } from "@medusajs/types"
 
@@ -28,12 +36,11 @@ export default function ProductPrice({
           "text-ui-fg-interactive": selectedPrice.price_type === "sale",
         })}
       >
-        {!variant && "Desde "}
         <span
           data-testid="product-price"
           data-value={selectedPrice.calculated_price_number}
         >
-          {selectedPrice.calculated_price}
+          {formatCOP(selectedPrice.calculated_price_number)}
         </span>
       </span>
       {selectedPrice.price_type === "sale" && (
@@ -45,7 +52,7 @@ export default function ProductPrice({
               data-testid="original-product-price"
               data-value={selectedPrice.original_price_number}
             >
-              {selectedPrice.original_price}
+              {formatCOP(selectedPrice.original_price_number)}
             </span>
           </p>
           <span className="text-ui-fg-interactive">
