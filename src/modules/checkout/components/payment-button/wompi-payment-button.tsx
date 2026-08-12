@@ -45,6 +45,8 @@ export const WompiPagoButton: React.FC<WompiPagoButtonProps> = ({
 
     // Wompi exige una firma de integridad SHA256 generada en el servidor
     let signature: string
+    let signedAmount = amountInCents
+    let signedCurrency = currency
     try {
       const res = await fetch("/api/wompi/signature", {
         method: "POST",
@@ -56,6 +58,13 @@ export const WompiPagoButton: React.FC<WompiPagoButtonProps> = ({
         throw new Error(data?.error || "No se pudo generar la firma de integridad")
       }
       signature = data.signature
+      signedAmount = data.amountInCents
+      signedCurrency = data.currency
+      // Diagnostico: el ambiente del secreto debe coincidir con el de la llave publica
+      console.log("[Wompi] ambiente del secreto:", data?.debug?.secretEnv,
+                  "| llave publica:", (sessionData?.public_key || "").slice(0, 9),
+                  "| monto firmado:", data.amountInCents,
+                  "| moneda:", data.currency)
     } catch (err: any) {
       setSubmitting(false)
       setErrorMessage(
@@ -65,8 +74,8 @@ export const WompiPagoButton: React.FC<WompiPagoButtonProps> = ({
     }
 
     const checkout = new window.WidgetCheckout({
-      currency,
-      amountInCents: amountInCents,
+      currency: signedCurrency,
+      amountInCents: signedAmount,
       reference,
       publicKey: sessionData?.public_key || process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY,
       redirectUrl: `${window.location.origin}/order/confirmed`,
