@@ -46,7 +46,11 @@ export const WompiPagoButton: React.FC<WompiPagoButtonProps> = ({
     // Referencia unica por intento: Wompi rechaza reusar una referencia
     // ("El token de aceptacion ya fue usado") si se reintenta el pago.
     const unique = `${Date.now()}${Math.random().toString(36).slice(2, 8)}`
-    const reference = `${cartId}_${unique}`
+    // La referencia empieza con el session_id porque es el unico dato que
+    // el backend tiene garantizado al autorizar el pago (Medusa no le pasa
+    // el cart_id al provider). Asi puede buscar la transaccion en Wompi.
+    const sessionId = session?.id || cartId
+    const reference = `${sessionId}_${unique}`
 
     // Wompi exige una firma de integridad SHA256 generada en el servidor
     let signature: string

@@ -37,12 +37,12 @@ export default async function WompiReturnPage({ params, searchParams }: Props) {
       })
       const json = await res.json()
       status = json?.data?.status ?? null
-      // La referencia tiene el formato cart_<id>_<sufijoUnico>.
-      // De ahi sacamos el carrito: la cookie no llega en el redirect
-      // porque venimos de un dominio externo (Wompi).
+      // La referencia puede venir como cart_<id>_<sufijo> (formato viejo)
+      // o payses_<id>_<sufijo> (formato nuevo). Solo nos sirve el cart_,
+      // porque placeOrder necesita el carrito.
       const reference: string = json?.data?.reference ?? ""
-      const match = reference.match(/^(cart_[A-Za-z0-9]+)_/)
-      cartId = match ? match[1] : reference || null
+      const matchCart = reference.match(/^(cart_[A-Za-z0-9]+)_/)
+      cartId = matchCart ? matchCart[1] : null
     } catch (e: any) {
       errorMsg = "No se pudo verificar el pago con Wompi."
     }
