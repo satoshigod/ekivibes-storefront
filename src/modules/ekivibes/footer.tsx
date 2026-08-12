@@ -27,10 +27,15 @@ export default function Footer() {
         <div className="footer-col">
           <h5>Ayuda</h5>
           <ul>
-            <li><a href="https://hit-air.shop/en/shop/size-chart/" target="_blank" rel="noopener noreferrer" className="footer-link">Guía de tallas</a></li>
-            <li><a href="https://hit-air.shop/en/about-hit-air/#airbagvest" target="_blank" rel="noopener noreferrer" className="footer-link">Cómo funciona el airbag</a></li>
             <li>Envíos y devoluciones</li>
             <li>Contacto</li>
+          </ul>
+        </div>
+        <div className="footer-col">
+          <h5>Hit-Air Airbags</h5>
+          <ul>
+            <li><a href="https://hit-air.shop/en/about-hit-air/#airbagvest" target="_blank" rel="noopener noreferrer" className="footer-link">Cómo funciona el airbag</a></li>
+            <li><a href="https://hit-air.shop/en/shop/size-chart/" target="_blank" rel="noopener noreferrer" className="footer-link">Guía de tallas</a></li>
             <li><a href="/preguntas-frecuentes" className="footer-link">Preguntas frecuentes</a></li>
           </ul>
         </div>
