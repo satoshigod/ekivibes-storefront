@@ -144,8 +144,20 @@ export default function ProductActions({
       setJustAdded(true)
       window.setTimeout(() => setJustAdded(false), 2500)
 
-      // Avisar al mini-carrito del header para que se abra
-      window.dispatchEvent(new CustomEvent("ekv:cart-updated"))
+      // El contador del header vive en un server component: sin refresh
+      // no se entera de que el carrito cambio.
+      // La marca sobrevive al remonte del mini-carrito que provoca el refresh.
+      try {
+        sessionStorage.setItem("ekv:open-cart", "1")
+      } catch {}
+      router.refresh()
+
+      // Avisar al mini-carrito del header para que se abra.
+      // Se emite en el siguiente tick para que el refresh ya haya montado
+      // el componente con el total actualizado.
+      window.setTimeout(() => {
+        window.dispatchEvent(new CustomEvent("ekv:cart-updated"))
+      }, 100)
     } catch (error: any) {
       console.error("Error al agregar al carrito:", error)
       setAddError("No pudimos agregar el producto. Intenta de nuevo.")

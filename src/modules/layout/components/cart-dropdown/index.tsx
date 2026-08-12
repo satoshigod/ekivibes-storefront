@@ -83,6 +83,16 @@ const CarritoDropdown = ({
       }
     }
     window.addEventListener("ekv:cart-updated", onCartUpdated)
+
+    // Respaldo: si el refresh remonto este componente, el evento pudo
+    // perderse. La marca en sessionStorage sobrevive al remonte.
+    try {
+      if (sessionStorage.getItem("ekv:open-cart") === "1") {
+        sessionStorage.removeItem("ekv:open-cart")
+        onCartUpdated()
+      }
+    } catch {}
+
     return () => window.removeEventListener("ekv:cart-updated", onCartUpdated)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])
