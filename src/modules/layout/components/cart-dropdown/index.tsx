@@ -13,6 +13,7 @@ import DeleteButton from "@modules/common/components/delete-button"
 import LineItemOptions from "@modules/common/components/line-item-options"
 import LineItemPrice from "@modules/common/components/line-item-price"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import CartCountBadge from "../cart-count-badge"
 import Thumbnail from "@modules/products/components/thumbnail"
 import { usePathname } from "next/navigation"
 import { Fragment, useEffect, useRef, useState } from "react"
@@ -111,14 +112,7 @@ const CarritoDropdown = ({
             data-testid="nav-cart-link"
           >
             <span>Carrito</span>
-            {totalItems > 0 && (
-              <span
-                className="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-[#A8935E] text-white text-xs font-medium leading-none"
-                aria-label={`${totalItems} productos en el carrito`}
-              >
-                {totalItems}
-              </span>
-            )}
+            <CartCountBadge />
           </LocalizedClientLink>
         </PopoverButton>
         <Transition

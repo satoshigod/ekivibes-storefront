@@ -6,6 +6,7 @@ import { getLocale } from "@lib/data/locale-actions"
 import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CarritoButton from "@modules/layout/components/cart-button"
+import CartCountBadge from "@modules/layout/components/cart-count-badge"
 import SideMenu from "@modules/layout/components/side-menu"
 
 export default async function Nav() {
@@ -74,11 +75,12 @@ export default async function Nav() {
             <Suspense
               fallback={
                 <LocalizedClientLink
-                  className="hover:text-ui-fg-base flex gap-2"
+                  className="hover:text-ui-fg-base flex items-center gap-x-2"
                   href="/cart"
                   data-testid="nav-cart-link"
                 >
-                  Carrito
+                  <span>Carrito</span>
+                  <CartCountBadge />
                 </LocalizedClientLink>
               }
             >
