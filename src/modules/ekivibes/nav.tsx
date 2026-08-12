@@ -1,5 +1,6 @@
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Logo from "@modules/ekivibes/logo"
+import CartMenu from "@modules/ekivibes/cart-menu"
 
 export default function Nav() {
   return (
@@ -23,9 +24,7 @@ export default function Nav() {
           <LocalizedClientLink href="/account" className="ic">
             Cuenta
           </LocalizedClientLink>
-          <LocalizedClientLink href="/cart" className="ic">
-            Carrito
-          </LocalizedClientLink>
+          <CartMenu />
         </div>
       </nav>
     </header>
