@@ -279,15 +279,15 @@
   max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
-  padding: 2.5rem 1.5rem 4rem;
+  padding: 1.5rem 1.5rem 4rem;
   box-sizing: border-box;
 }
 .ekv-catalog-head {
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
 }
 .ekv-catalog-title {
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 2.25rem;
+  font-size: 2rem;
   font-weight: 500;
   letter-spacing: 0.01em;
   line-height: 1.15;
@@ -342,7 +342,7 @@
   width: 100%;
   /* Altura controlada en vez de proporcion libre: en pantallas anchas
      la proporcion hacia tarjetas de mas de 900px de alto. */
-  height: clamp(240px, 26vw, 380px);
+  height: clamp(200px, 21vw, 300px);
   background: #fafaf9;
   border-radius: 6px;
   overflow: hidden;

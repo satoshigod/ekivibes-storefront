@@ -42,7 +42,7 @@ export default function CategoryTemplate({
       data-testid="category-container"
     >
       <div className="w-full">
-        <div className="flex flex-row mb-4 text-2xl-semi gap-4">
+        <div className="flex flex-row mb-2 text-2xl-semi gap-4">
           {parents &&
             parents.map((parent) => (
               <span key={parent.id} className="text-ui-fg-subtle">
@@ -64,7 +64,7 @@ export default function CategoryTemplate({
           </div>
         </div>
         {category.description && (
-          <div className="mb-8">
+          <div className="mb-5">
             <p className="ekv-catalog-desc">{category.description}</p>
           </div>
         )}
