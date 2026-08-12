@@ -1,6 +1,6 @@
 "use client"
 import { HttpTypes } from "@medusajs/types"
-import { useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { PRODUCT_IMAGES } from "@modules/ekivibes/product-images-data"
 
 type ImageGalleryProps = {
@@ -9,18 +9,30 @@ type ImageGalleryProps = {
 }
 
 const ImageGallery = ({ images, handle }: ImageGalleryProps) => {
-  const validMedusa = images.filter(i => i.url && !i.url.includes("localhost"))
-  const localImgs = handle && PRODUCT_IMAGES[handle] ? PRODUCT_IMAGES[handle].images : []
-  const displayImages = validMedusa.length > 0
-    ? validMedusa.map(i => i.url!)
-    : localImgs
+  const validMedusa = images.filter((i) => i.url && !i.url.includes("localhost"))
+  const localImgs =
+    handle && PRODUCT_IMAGES[handle] ? PRODUCT_IMAGES[handle].images : []
+
+  // Filtrar vacios: el mapeo trae "" en algunas posiciones y eso
+  // generaba una miniatura en blanco y la imagen principal rota.
+  const displayImages = (
+    validMedusa.length > 0 ? validMedusa.map((i) => i.url!) : localImgs
+  ).filter((src): src is string => !!src && src.trim() !== "")
 
   const [active, setActive] = useState(0)
   const [zoom, setZoom] = useState(false)
   const [origen, setOrigen] = useState("50% 50%")
+  const [visor, setVisor] = useState(false)
 
-  // El zoom sigue al cursor dentro del mismo marco: permite inspeccionar
-  // costuras, cartucho y hebillas sin perder la vista general.
+  const total = displayImages.length
+
+  const anterior = useCallback(
+    () => setActive((i) => (i - 1 + total) % total),
+    [total]
+  )
+  const siguiente = useCallback(() => setActive((i) => (i + 1) % total), [total])
+
+  // El zoom sigue al cursor dentro del marco
   const moverLupa = (e: React.MouseEvent<HTMLDivElement>) => {
     const r = e.currentTarget.getBoundingClientRect()
     const x = ((e.clientX - r.left) / r.width) * 100
@@ -28,7 +40,23 @@ const ImageGallery = ({ images, handle }: ImageGalleryProps) => {
     setOrigen(`${x}% ${y}%`)
   }
 
-  if (!displayImages.length) return null
+  // Teclado en el visor: flechas para navegar, Esc para cerrar
+  useEffect(() => {
+    if (!visor) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setVisor(false)
+      if (e.key === "ArrowLeft") anterior()
+      if (e.key === "ArrowRight") siguiente()
+    }
+    window.addEventListener("keydown", onKey)
+    document.body.style.overflow = "hidden"
+    return () => {
+      window.removeEventListener("keydown", onKey)
+      document.body.style.overflow = ""
+    }
+  }, [visor, anterior, siguiente])
+
+  if (!total) return null
 
   return (
     <div className="flex flex-col gap-3 w-full">
@@ -38,6 +66,13 @@ const ImageGallery = ({ images, handle }: ImageGalleryProps) => {
         onMouseEnter={() => setZoom(true)}
         onMouseLeave={() => setZoom(false)}
         onMouseMove={moverLupa}
+        onClick={() => setVisor(true)}
+        role="button"
+        tabIndex={0}
+        aria-label="Ampliar imagen"
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") setVisor(true)
+        }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -49,35 +84,125 @@ const ImageGallery = ({ images, handle }: ImageGalleryProps) => {
             transformOrigin: origen,
           }}
         />
-        {/* Flechas si hay más de 1 */}
-        {displayImages.length > 1 && (
+
+        {total > 1 && (
           <>
             <button
-              onClick={() => setActive(i => (i - 1 + displayImages.length) % displayImages.length)}
+              onClick={(e) => {
+                e.stopPropagation()
+                anterior()
+              }}
+              aria-label="Imagen anterior"
               className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full w-8 h-8 flex items-center justify-center shadow text-lg"
-            >‹</button>
+            >
+              ‹
+            </button>
             <button
-              onClick={() => setActive(i => (i + 1) % displayImages.length)}
+              onClick={(e) => {
+                e.stopPropagation()
+                siguiente()
+              }}
+              aria-label="Imagen siguiente"
               className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full w-8 h-8 flex items-center justify-center shadow text-lg"
-            >›</button>
+            >
+              ›
+            </button>
           </>
         )}
+
+        <span className="ekv-gallery-hint">Clic para ampliar</span>
       </div>
-      {/* Miniaturas horizontales */}
-      {displayImages.length > 1 && (
+
+      {/* Miniaturas */}
+      {total > 1 && (
         <div className="flex gap-2 overflow-x-auto pb-1">
           {displayImages.map((src, i) => (
             <button
               key={i}
               onClick={() => setActive(i)}
+              aria-label={`Ver imagen ${i + 1}`}
               className={`flex-shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 transition-colors ${
                 i === active ? "border-[#A8935E]" : "border-transparent"
-              } bg-ui-bg-subtle`}
+              }`}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={src} alt="" className="w-full h-full object-contain" />
             </button>
           ))}
+        </div>
+      )}
+
+      {/* Visor ampliado */}
+      {visor && (
+        <div
+          className="ekv-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Imagen ampliada"
+          onClick={() => setVisor(false)}
+        >
+          <button
+            className="ekv-lightbox-close"
+            onClick={() => setVisor(false)}
+            aria-label="Cerrar"
+          >
+            ✕
+          </button>
+
+          <div
+            className="ekv-lightbox-stage"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {total > 1 && (
+              <button
+                className="ekv-lightbox-nav ekv-lightbox-prev"
+                onClick={anterior}
+                aria-label="Imagen anterior"
+              >
+                ‹
+              </button>
+            )}
+
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={displayImages[active]}
+              alt="Producto ampliado"
+              className="ekv-lightbox-img"
+            />
+
+            {total > 1 && (
+              <button
+                className="ekv-lightbox-nav ekv-lightbox-next"
+                onClick={siguiente}
+                aria-label="Imagen siguiente"
+              >
+                ›
+              </button>
+            )}
+          </div>
+
+          {total > 1 && (
+            <div
+              className="ekv-lightbox-thumbs"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {displayImages.map((src, i) => (
+                <button
+                  key={i}
+                  onClick={() => setActive(i)}
+                  aria-label={`Ver imagen ${i + 1}`}
+                  className={i === active ? "is-active" : ""}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={src} alt="" />
+                </button>
+              ))}
+            </div>
+          )}
+
+          <p className="ekv-lightbox-counter">
+            {active + 1} / {total}
+          </p>
         </div>
       )}
     </div>
