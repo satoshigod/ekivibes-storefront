@@ -69,7 +69,15 @@ export default function EkivibesProductCard({
         (v.inventory_quantity ?? 0) <= 0
     )
 
-  const varias = variants.length > 1
+  // "Desde" solo si los precios realmente difieren entre variantes.
+  // En Hit-Air todas las tallas del mismo chaleco valen igual, asi que
+  // decir "Desde" sugeriria una opcion mas barata que no existe.
+  const preciosDistintos =
+    new Set(
+      variants
+        .map((v) => (v as any).calculated_price?.calculated_amount)
+        .filter((p) => p !== undefined && p !== null)
+    ).size > 1
 
   return (
     <LocalizedClientLink
@@ -111,7 +119,7 @@ export default function EkivibesProductCard({
 
           {cheapestPrice && (
             <p className="ekv-card-price">
-              {varias && <span className="ekv-card-from">Desde </span>}
+              {preciosDistintos && <span className="ekv-card-from">Desde </span>}
               {formatCOP(cheapestPrice.calculated_price_number)}
             </p>
           )}
