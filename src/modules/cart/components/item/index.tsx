@@ -37,6 +37,8 @@ const Producto = ({ item, type = "full", currencyCode }: ProductoProps) => {
       })
       .finally(() => {
         setUpdating(false)
+        // Mantener sincronizado el contador del header
+        window.dispatchEvent(new CustomEvent("ekv:cart-updated-silent"))
       })
   }
 

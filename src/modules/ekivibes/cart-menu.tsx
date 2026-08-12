@@ -1,6 +1,7 @@
 "use client"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { usePathname } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 
 type MiniItem = {
@@ -33,6 +34,7 @@ export default function CartMenu() {
   const [subtotal, setSubtotal] = useState(0)
   const [open, setOpen] = useState(false)
   const timerRef = useRef<number | null>(null)
+  const pathname = usePathname()
 
   const load = async () => {
     try {
@@ -61,6 +63,8 @@ export default function CartMenu() {
     }
 
     window.addEventListener("ekv:cart-updated", onUpdated)
+    // Cambios desde la pagina del carrito: actualizar sin desplegar el panel
+    window.addEventListener("ekv:cart-updated-silent", load)
     window.addEventListener("focus", load)
 
     // Respaldo: si la navegacion remonto este componente, el evento
@@ -74,11 +78,20 @@ export default function CartMenu() {
 
     return () => {
       window.removeEventListener("ekv:cart-updated", onUpdated)
+      window.removeEventListener("ekv:cart-updated-silent", load)
       window.removeEventListener("focus", load)
       if (timerRef.current) window.clearTimeout(timerRef.current)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // Resincronizar al navegar: cubre vaciar el carrito o eliminar
+  // productos desde la pagina del carrito.
+  useEffect(() => {
+    load()
+    setOpen(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname])
 
   return (
     <div

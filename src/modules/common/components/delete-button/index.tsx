@@ -19,6 +19,8 @@ const DeleteButton = ({
     await deleteLineItem(id).catch((err) => {
       setIsDeleting(false)
     })
+    // Mantener sincronizado el contador del header
+    window.dispatchEvent(new CustomEvent("ekv:cart-updated-silent"))
   }
 
   return (

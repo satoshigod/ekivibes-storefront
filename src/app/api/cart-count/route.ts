@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { cookies } from "next/headers"
+import { PRODUCT_IMAGES } from "@modules/ekivibes/product-images-data"
 
 export const dynamic = "force-dynamic"
 
@@ -22,7 +23,7 @@ export async function GET() {
     const pk = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || ""
 
     const res = await fetch(
-      `${backend}/store/carts/${cartId}?fields=*items,+subtotal`,
+      `${backend}/store/carts/${cartId}?fields=*items,*items.product,+subtotal`,
       {
         headers: { "x-publishable-api-key": pk },
         cache: "no-store",
@@ -40,14 +41,24 @@ export async function GET() {
       0
     )
 
-    const items = rawItems.map((item: any) => ({
-      id: item.id,
-      title: item.product_title || item.title,
-      variant: item.variant_title || "",
-      quantity: item.quantity || 0,
-      unit_price: item.unit_price || 0,
-      thumbnail: item.thumbnail || null,
-    }))
+    const items = rawItems.map((item: any) => {
+      // Las thumbnails de Medusa apuntan a localhost:9000 y no cargan
+      // en produccion: usamos las imagenes locales mapeadas por handle.
+      const handle = item?.product?.handle || item?.product_handle
+      const local = handle ? PRODUCT_IMAGES[handle]?.thumbnail : undefined
+      const remote: string | undefined = item.thumbnail || undefined
+      const usable =
+        remote && !remote.includes("localhost") ? remote : local || null
+
+      return {
+        id: item.id,
+        title: item.product_title || item.title,
+        variant: item.variant_title || "",
+        quantity: item.quantity || 0,
+        unit_price: item.unit_price || 0,
+        thumbnail: usable,
+      }
+    })
 
     const subtotal = json?.cart?.subtotal ?? 0
 
