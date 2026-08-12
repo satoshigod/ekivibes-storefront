@@ -29,6 +29,7 @@ export default function Footer() {
           <ul>
             <li>Envíos y devoluciones</li>
             <li>Contacto</li>
+            <li><a href="/compras-empresariales" className="footer-link">Compras empresariales</a></li>
           </ul>
         </div>
         <div className="footer-col">
