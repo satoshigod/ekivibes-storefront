@@ -44,13 +44,26 @@ export default async function WompiReturnPage({ params, searchParams }: Props) {
   }
 
   // Si el pago fue aprobado, completamos el carrito.
-  // placeOrder() hace su propio redirect a /[cc]/order/[id]/confirmed,
-  // por eso no va dentro de un try/catch que atrape el redirect de Next.
+  // placeOrder() hace su propio redirect a /[cc]/order/[id]/confirmed.
+  // OJO: en Next.js redirect() lanza una excepcion especial (NEXT_REDIRECT)
+  // que NO debe ser atrapada, hay que relanzarla.
   if (status === "APPROVED") {
-    await placeOrder()
+    try {
+      await placeOrder()
+    } catch (e: any) {
+      const digest = typeof e?.digest === "string" ? e.digest : ""
+      if (digest.startsWith("NEXT_REDIRECT")) {
+        throw e // redirect legitimo, dejarlo pasar
+      }
+      console.error("[wompi-return] placeOrder fallo:", e?.message || e)
+      errorMsg =
+        "Tu pago fue aprobado, pero no pudimos generar el pedido automáticamente. " +
+        "Guarda este número de transacción y contáctanos: " +
+        (transactionId || "")
+    }
   }
 
-  const aprobadoPeroSinOrden = status === "APPROVED"
+  const aprobadoPeroSinOrden = status === "APPROVED" && !errorMsg
   const rechazado = status === "DECLINED" || status === "ERROR"
   const pendiente = status === "PENDING"
 
