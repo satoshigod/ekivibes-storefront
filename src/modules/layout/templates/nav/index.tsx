@@ -78,7 +78,7 @@ export default async function Nav() {
                   href="/cart"
                   data-testid="nav-cart-link"
                 >
-                  Carrito (0)
+                  Carrito
                 </LocalizedClientLink>
               }
             >

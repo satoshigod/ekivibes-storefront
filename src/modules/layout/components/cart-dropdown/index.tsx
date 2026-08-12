@@ -73,6 +73,20 @@ const CarritoDropdown = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalItems, itemRef.current])
 
+  // El componente es server-rendered y se remonta con el total ya actualizado,
+  // por eso la comparacion de arriba no siempre detecta el cambio.
+  // El boton "Agregar al carrito" emite este evento para abrir el mini-carrito.
+  useEffect(() => {
+    const onCartUpdated = () => {
+      if (!pathname.includes("/cart")) {
+        timedOpen()
+      }
+    }
+    window.addEventListener("ekv:cart-updated", onCartUpdated)
+    return () => window.removeEventListener("ekv:cart-updated", onCartUpdated)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname])
+
   return (
     <div
       className="h-full z-50"
@@ -82,10 +96,20 @@ const CarritoDropdown = ({
       <Popover className="relative h-full">
         <PopoverButton className="h-full">
           <LocalizedClientLink
-            className="hover:text-ui-fg-base"
+            className="hover:text-ui-fg-base flex items-center gap-x-2"
             href="/cart"
             data-testid="nav-cart-link"
-          >{`Carrito (${totalItems})`}</LocalizedClientLink>
+          >
+            <span>Carrito</span>
+            {totalItems > 0 && (
+              <span
+                className="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-[#A8935E] text-white text-xs font-medium leading-none"
+                aria-label={`${totalItems} productos en el carrito`}
+              >
+                {totalItems}
+              </span>
+            )}
+          </LocalizedClientLink>
         </PopoverButton>
         <Transition
           show={cartDropdownOpen}

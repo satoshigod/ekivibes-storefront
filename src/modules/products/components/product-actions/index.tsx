@@ -38,6 +38,8 @@ export default function ProductActions({
 
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
   const [isAdding, setIsAdding] = useState(false)
+  const [justAdded, setJustAdded] = useState(false)
+  const [addError, setAddError] = useState<string | null>(null)
   const countryCode = useParams().countryCode as string
 
   // Preselect: if only 1 variant, select it directly
@@ -129,6 +131,7 @@ export default function ProductActions({
     if (!selectedVariant?.id) return null
 
     setIsAdding(true)
+    setAddError(null)
 
     try {
       await addToCart({
@@ -136,8 +139,16 @@ export default function ProductActions({
         quantity: quantity,
         countryCode,
       })
-    } catch (error) {
+
+      // Confirmacion visible en el boton (patron estandar de ecommerce)
+      setJustAdded(true)
+      window.setTimeout(() => setJustAdded(false), 2500)
+
+      // Avisar al mini-carrito del header para que se abra
+      window.dispatchEvent(new CustomEvent("ekv:cart-updated"))
+    } catch (error: any) {
       console.error("Error al agregar al carrito:", error)
+      setAddError("No pudimos agregar el producto. Intenta de nuevo.")
     } finally {
       setIsAdding(false)
     }
@@ -202,11 +213,18 @@ export default function ProductActions({
           data-testid="add-product-button"
         >
           {!selectedVariant && !options
-            ? "Select variant"
+            ? "Selecciona una talla"
             : !inStock || !isValidVariant
-            ? "Agregar al carrito"
+            ? "Agotado"
+            : justAdded
+            ? "✓ Agregado al carrito"
             : "Agregar al carrito"}
         </Button>
+        {addError && (
+          <p className="text-small-regular text-rose-600" role="alert">
+            {addError}
+          </p>
+        )}
         <MobileActions
           product={product}
           variant={selectedVariant}
