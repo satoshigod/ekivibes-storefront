@@ -41,7 +41,10 @@ export const WompiPagoButton: React.FC<WompiPagoButtonProps> = ({
       : ""
 
     const sessionData = session?.data
-    const amountInCents = sessionData?.amount || 0  // ya viene en centavos desde Medusa
+    // El peso colombiano NO tiene decimales en Medusa v2: amount viene en
+    // pesos (1750000 = $1.750.000). Wompi espera centavos, asi que x100.
+    // Sin esto Wompi cobraba $17.500 en vez de $1.750.000.
+    const amountInCents = Math.round((sessionData?.amount || 0) * 100)
     const currency = (sessionData?.currency_code || "COP").toUpperCase()
     // Referencia unica por intento: Wompi rechaza reusar una referencia
     // ("El token de aceptacion ya fue usado") si se reintenta el pago.
