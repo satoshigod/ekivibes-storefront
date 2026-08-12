@@ -110,7 +110,7 @@ const EnvíoDirección = ({
           />
         </Container>
       )}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="ekv-form-grid">
         <Input
           label="Nombre"
           name="shipping_address.first_name"
@@ -139,7 +139,7 @@ const EnvíoDirección = ({
           data-testid="shipping-address-input"
         />
         <Input
-          label="Company"
+          label="Empresa (opcional)"
           name="shipping_address.company"
           value={formData["shipping_address.company"]}
           onChange={handleChange}
@@ -174,7 +174,7 @@ const EnvíoDirección = ({
           data-testid="shipping-country-select"
         />
         <Input
-          label="State / Departamento"
+          label="Departamento"
           name="shipping_address.province"
           autoComplete="address-level1"
           value={formData["shipping_address.province"]}
@@ -184,19 +184,19 @@ const EnvíoDirección = ({
       </div>
       <div className="my-8">
         <Checkbox
-          label="Billing address same as shipping address"
+          label="La dirección de facturación es la misma"
           name="same_as_billing"
           checked={checked}
           onChange={onChange}
           data-testid="billing-address-checkbox"
         />
       </div>
-      <div className="grid grid-cols-2 gap-4 mb-4">
+      <div className="ekv-form-grid mb-4">
         <Input
           label="Correo electrónico"
           name="email"
           type="email"
-          title="Enter a valid email address."
+          title="Ingresa un correo electrónico válido."
           autoComplete="email"
           value={formData.email}
           onChange={handleChange}

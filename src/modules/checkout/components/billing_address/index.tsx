@@ -29,7 +29,7 @@ const BillingDirección = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="ekv-form-grid">
         <Input
           label="Nombre"
           name="billing_address.first_name"
@@ -58,7 +58,7 @@ const BillingDirección = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           data-testid="billing-address-input"
         />
         <Input
-          label="Company"
+          label="Empresa (opcional)"
           name="billing_address.company"
           value={formData["billing_address.company"]}
           onChange={handleChange}
@@ -91,7 +91,7 @@ const BillingDirección = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           data-testid="billing-country-select"
         />
         <Input
-          label="State / Departamento"
+          label="Departamento"
           name="billing_address.province"
           autoComplete="address-level1"
           value={formData["billing_address.province"]}

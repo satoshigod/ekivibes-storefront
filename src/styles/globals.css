@@ -110,3 +110,47 @@
     @apply text-[32px] leading-[44px] font-semibold;
   }
 }
+
+
+/* ===== Ekivibes: layout checkout (independiente de grid-cols de Tailwind) ===== */
+.ekv-checkout-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+  align-items: flex-start;
+}
+@media (min-width: 1024px) {
+  .ekv-checkout-page {
+    flex-direction: row;
+    gap: 4rem;
+  }
+  .ekv-checkout-main { flex: 1 1 0%; min-width: 0; }
+  .ekv-checkout-aside { width: 380px; flex: 0 0 380px; position: sticky; top: 2rem; }
+}
+.ekv-checkout-main { width: 100%; }
+.ekv-checkout-aside { width: 100%; }
+
+.ekv-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+.ekv-form-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%;
+}
+.ekv-form-grid > * {
+  flex: 1 1 calc(50% - 0.5rem);
+  min-width: 220px;
+}
+@media (max-width: 640px) {
+  .ekv-form-grid > * { flex: 1 1 100%; }
+}
