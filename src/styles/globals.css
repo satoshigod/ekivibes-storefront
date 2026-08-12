@@ -284,10 +284,18 @@
   margin-bottom: 2rem;
 }
 .ekv-catalog-title {
-  font-size: 1.875rem;
-  line-height: 1.2;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 2.25rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.15;
   color: #2B2D42;
   margin: 0 0 0.5rem;
+}
+.ekv-catalog-desc {
+  font-family: "Jost", system-ui, sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.6;
 }
 .ekv-catalog-desc {
   color: #6b7280;
@@ -308,47 +316,119 @@
   .ekv-grid { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
 }
 
-/* Tarjeta: la imagen nunca se recorta ni se desborda */
-.ekv-card { display: block; }
+
+
+
+/* ===== Ekivibes: tarjeta de producto =====
+   La talla es el dato que mas se consulta en equipamiento de proteccion,
+   por eso va en la tarjeta y no escondida en la ficha. */
+.ekv-card {
+  display: block;
+  color: inherit;
+}
+.ekv-card:focus-visible {
+  outline: 2px solid #A8935E;
+  outline-offset: 4px;
+  border-radius: 10px;
+}
+
 .ekv-card-media {
   position: relative;
   width: 100%;
-  aspect-ratio: 3 / 4;
-  background: #f7f7f7;
-  border: 1px solid #ececec;
-  border-radius: 8px;
+  aspect-ratio: 4 / 5;
+  background: #fafaf9;
+  border-radius: 6px;
   overflow: hidden;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: box-shadow 0.25s ease;
 }
 .ekv-card:hover .ekv-card-media {
-  border-color: #A8935E;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 30px rgba(43, 45, 66, 0.10);
 }
-.ekv-card-media img {
+
+.ekv-card-img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: contain;
-  padding: 12%;
-  transition: transform 0.3s ease;
+  padding: 10%;
+  transition: opacity 0.35s ease;
 }
-.ekv-card:hover .ekv-card-media img { transform: scale(1.04); }
+.ekv-card-img-alt { opacity: 0; }
+.ekv-card:hover .ekv-card-img-alt { opacity: 1; }
+
+.ekv-card-flag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(43, 45, 66, 0.92);
+  color: #fff;
+  font-family: "Jost", system-ui, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 3px;
+}
 
 .ekv-card-body {
   padding-top: 0.875rem;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.4rem;
 }
+
+/* Cormorant es la voz de la marca: aqui el nombre del producto la usa */
 .ekv-card-title {
-  font-size: 0.9375rem;
-  line-height: 1.35;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.25;
   color: #2B2D42;
   margin: 0;
 }
-.ekv-card-price {
-  font-size: 0.9375rem;
-  font-weight: 600;
+
+.ekv-card-sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.ekv-card-sizes li {
+  font-family: "Jost", system-ui, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: #6b6a66;
+  border: 1px solid #e3e0d9;
+  border-radius: 3px;
+  padding: 2px 7px;
+  line-height: 1.4;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.ekv-card:hover .ekv-card-sizes li {
+  border-color: #A8935E;
   color: #2B2D42;
+}
+
+/* Numerales tabulares: los precios se alinean entre tarjetas */
+.ekv-card-price {
+  font-family: "Jost", system-ui, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #2B2D42;
+  font-variant-numeric: tabular-nums;
+  margin: 0.1rem 0 0;
+}
+.ekv-card-from {
+  font-weight: 300;
+  color: #8a8880;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ekv-card-media,
+  .ekv-card-img,
+  .ekv-card-sizes li { transition: none; }
+  .ekv-card:hover .ekv-card-img-alt { opacity: 0; }
 }
