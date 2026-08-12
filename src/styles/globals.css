@@ -702,3 +702,106 @@ details[open] .ekv-faq-q { color: #A8935E; }
   transition: opacity 0.2s ease;
 }
 .ekv-faq-mail:hover { opacity: 0.75; }
+
+
+/* ===== Ekivibes: paginas de contenido (Acerca de, Guia de tallas, etc.) ===== */
+.ekv-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 5rem;
+}
+.ekv-page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #e8e4dc;
+}
+.ekv-page-title {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 2.5rem;
+  font-weight: 500;
+  color: #2B2D42;
+  margin: 0 0 0.75rem;
+}
+.ekv-page-subtitle {
+  font-family: "Jost", system-ui, sans-serif;
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.6;
+}
+.ekv-page-body { display: flex; flex-direction: column; gap: 2.5rem; }
+.ekv-page-section h2 {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2B2D42;
+  margin: 0 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e8e4dc;
+}
+.ekv-page-section p {
+  font-family: "Jost", system-ui, sans-serif;
+  font-size: 0.9375rem;
+  color: #4b5563;
+  line-height: 1.75;
+  margin: 0 0 0.875rem;
+}
+.ekv-page-section p:last-child { margin-bottom: 0; }
+.ekv-page-list {
+  font-family: "Jost", system-ui, sans-serif;
+  font-size: 0.9375rem;
+  color: #4b5563;
+  line-height: 1.75;
+  padding-left: 1.25rem;
+  margin: 0.5rem 0 0;
+}
+.ekv-page-list li { margin-bottom: 0.25rem; }
+.ekv-section-tip {
+  background: #fafaf9;
+  border: 1px solid #e8e4dc;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+.ekv-section-tip h2 { border-bottom-color: #e8e4dc; }
+.ekv-page-cta {
+  text-align: center;
+  padding: 2rem;
+  background: #fafaf9;
+  border: 1px solid #e8e4dc;
+  border-radius: 8px;
+}
+.ekv-page-cta p {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.25rem;
+  color: #2B2D42;
+  margin: 0 0 1.25rem;
+}
+
+/* Tablas de tallas */
+.ekv-table-wrap { overflow-x: auto; }
+.ekv-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "Jost", system-ui, sans-serif;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+.ekv-table th {
+  background: #2B2D42;
+  color: #fff;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.ekv-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #f0ece4;
+  color: #374151;
+}
+.ekv-table tr:last-child td { border-bottom: none; }
+.ekv-table tr:nth-child(even) td { background: #fafaf9; }
+.ekv-table td:first-child { font-weight: 600; color: #A8935E; }
