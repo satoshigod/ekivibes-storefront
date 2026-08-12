@@ -38,7 +38,10 @@ export const WompiPagoButton: React.FC<WompiPagoButtonProps> = ({
     const sessionData = session?.data
     const amountInCents = sessionData?.amount || 0  // ya viene en centavos desde Medusa
     const currency = (sessionData?.currency_code || "COP").toUpperCase()
-    const reference = `${cartId}_${Date.now()}`
+    // Referencia unica por intento: Wompi rechaza reusar una referencia
+    // ("El token de aceptacion ya fue usado") si se reintenta el pago.
+    const unique = `${Date.now()}${Math.random().toString(36).slice(2, 8)}`
+    const reference = `${cartId}_${unique}`
 
     // Wompi exige una firma de integridad SHA256 generada en el servidor
     let signature: string
