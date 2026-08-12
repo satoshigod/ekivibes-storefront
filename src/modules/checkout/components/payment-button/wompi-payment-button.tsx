@@ -23,7 +23,7 @@ export const WompiPagoButton: React.FC<WompiPagoButtonProps> = ({
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const handlePago = () => {
+  const handlePago = async () => {
     setErrorMessage(null)
 
     if (!window.WidgetCheckout) {
@@ -37,13 +37,37 @@ export const WompiPagoButton: React.FC<WompiPagoButtonProps> = ({
 
     const sessionData = session?.data
     const amountInCents = sessionData?.amount || 0  // ya viene en centavos desde Medusa
+    const currency = (sessionData?.currency_code || "COP").toUpperCase()
+    const reference = `${cartId}_${Date.now()}`
+
+    // Wompi exige una firma de integridad SHA256 generada en el servidor
+    let signature: string
+    try {
+      const res = await fetch("/api/wompi/signature", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reference, amountInCents, currency }),
+      })
+      const data = await res.json()
+      if (!res.ok || !data?.signature) {
+        throw new Error(data?.error || "No se pudo generar la firma de integridad")
+      }
+      signature = data.signature
+    } catch (err: any) {
+      setSubmitting(false)
+      setErrorMessage(
+        err?.message || "No se pudo iniciar el pago. Intenta de nuevo."
+      )
+      return
+    }
 
     const checkout = new window.WidgetCheckout({
-      currency: (sessionData?.currency_code || "COP").toUpperCase(),
+      currency,
       amountInCents: amountInCents,
-      reference: `${cartId}_${Date.now()}`,
+      reference,
       publicKey: sessionData?.public_key || process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY,
       redirectUrl: `${window.location.origin}/order/confirmed`,
+      signature: { integrity: signature },
     })
 
     checkout.open(async (result: any) => {
