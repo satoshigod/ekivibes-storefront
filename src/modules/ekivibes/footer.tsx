@@ -30,7 +30,7 @@ export default function Footer() {
             <li>Guía de tallas</li>
             <li>Envíos y devoluciones</li>
             <li>Contacto</li>
-            <li>Preguntas frecuentes</li>
+            <li><a href="/preguntas-frecuentes" className="footer-link">Preguntas frecuentes</a></li>
           </ul>
         </div>
         <div className="footer-col">

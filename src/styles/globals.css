@@ -581,3 +581,124 @@
   .ekv-lightbox-nav { width: 38px; height: 38px; font-size: 22px; }
   .ekv-lightbox-thumbs button { width: 50px; height: 50px; }
 }
+
+
+/* ===== Ekivibes: preguntas frecuentes ===== */
+.ekv-faq-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 5rem;
+}
+.ekv-faq-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #e8e4dc;
+}
+.ekv-faq-title {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 2.5rem;
+  font-weight: 500;
+  color: #2B2D42;
+  margin: 0 0 0.75rem;
+}
+.ekv-faq-subtitle {
+  font-family: "Jost", system-ui, sans-serif;
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.6;
+}
+.ekv-faq-body { display: flex; flex-direction: column; gap: 2.5rem; }
+.ekv-faq-section {}
+.ekv-faq-cat {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: #A8935E;
+  margin: 0 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e8e4dc;
+  letter-spacing: 0.01em;
+}
+.ekv-faq-list { display: flex; flex-direction: column; gap: 0; }
+.ekv-faq-item {
+  border-bottom: 1px solid #f0ece4;
+}
+.ekv-faq-item:last-child { border-bottom: none; }
+.ekv-faq-q {
+  font-family: "Jost", system-ui, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #2B2D42;
+  padding: 1rem 2rem 1rem 0;
+  cursor: pointer;
+  list-style: none;
+  position: relative;
+  line-height: 1.45;
+  transition: color 0.2s ease;
+}
+.ekv-faq-q::-webkit-details-marker { display: none; }
+.ekv-faq-q::after {
+  content: "+";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.25rem;
+  font-weight: 300;
+  color: #A8935E;
+  transition: transform 0.25s ease;
+}
+details[open] .ekv-faq-q::after {
+  transform: translateY(-50%) rotate(45deg);
+}
+details[open] .ekv-faq-q { color: #A8935E; }
+.ekv-faq-a {
+  font-family: "Jost", system-ui, sans-serif;
+  font-size: 0.9rem;
+  color: #4b5563;
+  line-height: 1.7;
+  padding: 0 1rem 1.25rem 0;
+  margin: 0;
+}
+.ekv-faq-contact {
+  margin-top: 1rem;
+  padding: 2rem;
+  background: #fafaf9;
+  border: 1px solid #e8e4dc;
+  border-radius: 8px;
+  text-align: center;
+}
+.ekv-faq-contact p {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.25rem;
+  color: #2B2D42;
+  margin: 0 0 1.25rem;
+}
+.ekv-faq-contact-links {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.ekv-faq-wa {
+  background: #2B2D42;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-family: "Jost", system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+}
+.ekv-faq-wa:hover { opacity: 0.85; }
+.ekv-faq-mail {
+  color: #A8935E;
+  font-family: "Jost", system-ui, sans-serif;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.2s ease;
+}
+.ekv-faq-mail:hover { opacity: 0.75; }
