@@ -1,4 +1,4 @@
-import { placeOrder } from "@lib/data/cart"
+import { initiatePaymentSession, placeOrder, retrieveCart } from "@lib/data/cart"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 export const dynamic = "force-dynamic"
@@ -56,6 +56,28 @@ export default async function WompiReturnPage({ params, searchParams }: Props) {
   // que NO debe ser atrapada, hay que relanzarla.
   if (status === "APPROVED") {
     try {
+      // El provider solo autoriza la sesion si recibe wompi_status APPROVED.
+      // En el flujo de redirect ese dato nunca llego, asi que reinicializamos
+      // la sesion de pago con el resultado ya confirmado por Wompi.
+      if (cartId) {
+        const cart = await retrieveCart(
+          cartId,
+          "*payment_collection,*payment_collection.payment_sessions"
+        )
+        const providerId =
+          (cart as any)?.payment_collection?.payment_sessions?.[0]?.provider_id
+
+        if (cart && providerId) {
+          await initiatePaymentSession(cart as any, {
+            provider_id: providerId,
+            data: {
+              wompi_status: "APPROVED",
+              transaction_id: transactionId,
+            },
+          } as any)
+        }
+      }
+
       await placeOrder(cartId || undefined)
     } catch (e: any) {
       const digest = typeof e?.digest === "string" ? e.digest : ""
