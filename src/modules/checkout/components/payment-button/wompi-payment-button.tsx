@@ -86,7 +86,7 @@ export const WompiPagoButton: React.FC<WompiPagoButtonProps> = ({
       // Fallback para medios que sacan al usuario del sitio (PSE, Nequi).
       // La orden se crea en onPagoCompletado(), que redirige a la
       // confirmacion con el ID real. Aqui solo volvemos al checkout.
-      redirectUrl: `${window.location.origin}${countryPrefix}/checkout?step=review`,
+      redirectUrl: `${window.location.origin}${countryPrefix}/order/confirmed`,
       signature: { integrity: signature },
     })
 
