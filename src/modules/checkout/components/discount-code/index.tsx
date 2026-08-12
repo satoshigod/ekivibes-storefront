@@ -69,7 +69,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
               Agregar código de descuento
             </button>
 
-            {/* <Tooltip content="You can add multiple promotion codes">
+            {/* <Tooltip content="Puedes agregar varios códigos de promoción">
               <InformationCircleSolid color="var(--fg-muted)" />
             </Tooltip> */}
           </Label>
@@ -141,7 +141,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                           )}
                         )
                         {/* {promotion.is_automatic && (
-                          <Tooltip content="This promotion is automatically applied">
+                          <Tooltip content="Esta promoción se aplica automáticamente">
                             <InformationCircleSolid className="inline text-zinc-400" />
                           </Tooltip>
                         )} */}

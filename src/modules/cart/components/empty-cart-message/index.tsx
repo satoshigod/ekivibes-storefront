@@ -4,19 +4,22 @@ import InteractiveLink from "@modules/common/components/interactive-link"
 
 const EmptyCarritoMessage = () => {
   return (
-    <div className="py-48 px-2 flex flex-col justify-center items-start" data-testid="empty-cart-message">
-      <Heading
-        level="h1"
-        className="flex flex-row text-3xl-regular gap-x-2 items-baseline"
-      >
-        Carrito
+    <div
+      className="py-20 px-6 flex flex-col justify-center items-center text-center max-w-2xl mx-auto"
+      data-testid="empty-cart-message"
+    >
+      <Heading level="h1" className="text-3xl-regular mb-3">
+        Tu carrito está vacío
       </Heading>
-      <Text className="text-base-regular mt-4 mb-6 max-w-[32rem]">
-        You don&apos;t have anything in your cart. Let&apos;s change that, use
-        the link below to start browsing our products.
+      <Text className="text-base-regular mb-8 max-w-[32rem] text-ui-fg-subtle">
+        Todavía no has agregado ningún producto. Explora nuestros chalecos
+        airbag Hit-Air y accesorios para equitación.
       </Text>
-      <div>
-        <InteractiveLink href="/store">Explore products</InteractiveLink>
+      <div className="flex flex-col small:flex-row gap-3 items-center">
+        <InteractiveLink href="/store">Ver todos los productos</InteractiveLink>
+        <InteractiveLink href="/categories/chalecos-airbag">
+          Ver chalecos airbag
+        </InteractiveLink>
       </div>
     </div>
   )
