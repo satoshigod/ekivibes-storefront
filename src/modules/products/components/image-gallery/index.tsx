@@ -16,18 +16,38 @@ const ImageGallery = ({ images, handle }: ImageGalleryProps) => {
     : localImgs
 
   const [active, setActive] = useState(0)
+  const [zoom, setZoom] = useState(false)
+  const [origen, setOrigen] = useState("50% 50%")
+
+  // El zoom sigue al cursor dentro del mismo marco: permite inspeccionar
+  // costuras, cartucho y hebillas sin perder la vista general.
+  const moverLupa = (e: React.MouseEvent<HTMLDivElement>) => {
+    const r = e.currentTarget.getBoundingClientRect()
+    const x = ((e.clientX - r.left) / r.width) * 100
+    const y = ((e.clientY - r.top) / r.height) * 100
+    setOrigen(`${x}% ${y}%`)
+  }
 
   if (!displayImages.length) return null
 
   return (
     <div className="flex flex-col gap-3 w-full">
       {/* Imagen principal */}
-      <div className="ekv-gallery-main relative w-full bg-ui-bg-subtle rounded-large overflow-hidden">
+      <div
+        className="ekv-gallery-main relative w-full bg-ui-bg-subtle rounded-large overflow-hidden"
+        onMouseEnter={() => setZoom(true)}
+        onMouseLeave={() => setZoom(false)}
+        onMouseMove={moverLupa}
+      >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={displayImages[active]}
           alt="Producto"
-          className="w-full h-full object-contain object-center"
+          className="ekv-gallery-img w-full h-full object-contain object-center"
+          style={{
+            transform: zoom ? "scale(2)" : "scale(1)",
+            transformOrigin: origen,
+          }}
         />
         {/* Flechas si hay más de 1 */}
         {displayImages.length > 1 && (

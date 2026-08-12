@@ -451,3 +451,15 @@
   padding: 1.5rem;
   box-sizing: border-box;
 }
+
+/* Zoom solo con mouse: en tactil el gesto natural es pellizcar */
+@media (hover: hover) and (pointer: fine) {
+  .ekv-gallery-main { cursor: zoom-in; }
+  .ekv-gallery-img { transition: transform 0.2s ease-out; }
+}
+@media (hover: none), (pointer: coarse) {
+  .ekv-gallery-img { transform: none !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ekv-gallery-img { transition: none; }
+}
