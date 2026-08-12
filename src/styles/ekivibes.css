@@ -37,7 +37,7 @@ img { max-width:100%; }
 .btn-gold:hover{background:#96814f;}
 
 /* SECTION */
-.section{padding:52px 32px;}
+.section{padding:52px 24px;max-width:1280px;margin-left:auto;margin-right:auto;box-sizing:border-box;}
 .section-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:30px;}
 .section-title{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:500;}
 .section-link{font-size:13px;letter-spacing:.08em;text-transform:uppercase;}

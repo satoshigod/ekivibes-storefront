@@ -72,7 +72,7 @@ export default async function EkivibesInicio({
               Ver todo →
             </LocalizedClientLink>
           </div>
-          <div className="grid">
+          <div className="ekv-grid">
             {products.slice(0, 4).map((p) => (
               <EkivibesProductCard key={p.id} product={p} />
             ))}
@@ -104,7 +104,7 @@ export default async function EkivibesInicio({
               Ver todo →
             </LocalizedClientLink>
           </div>
-          <div className="grid">
+          <div className="ekv-grid">
             {products.map((p) => (
               <EkivibesProductCard key={p.id} product={p} />
             ))}
