@@ -15,10 +15,10 @@ const TiendaTemplate = ({
   const sort = sortBy || "created_at"
 
   return (
-    <div className="flex flex-col py-6 content-container" data-testid="category-container">
+    <div className="ekv-catalog" data-testid="category-container">
       {/* Título + filtros en fila horizontal */}
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-semibold" data-testid="store-page-title">
+      <div className="ekv-catalog-head flex flex-wrap items-end justify-between gap-4">
+        <h1 className="ekv-catalog-title" data-testid="store-page-title">
           Todos los productos
         </h1>
         <RefinementList sortBy={sort} />

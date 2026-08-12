@@ -271,3 +271,84 @@
 @media (max-width: 640px) {
   .ekv-mini-cart { width: 300px; right: -8px; }
 }
+
+
+/* ===== Ekivibes: catalogo (tienda y categorias) ===== */
+.ekv-catalog {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+.ekv-catalog-head {
+  margin-bottom: 2rem;
+}
+.ekv-catalog-title {
+  font-size: 1.875rem;
+  line-height: 1.2;
+  color: #2B2D42;
+  margin: 0 0 0.5rem;
+}
+.ekv-catalog-desc {
+  color: #6b7280;
+  margin: 0;
+  max-width: 44rem;
+}
+
+.ekv-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem 1.5rem;
+  width: 100%;
+}
+@media (max-width: 1024px) {
+  .ekv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .ekv-grid { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+}
+
+/* Tarjeta: la imagen nunca se recorta ni se desborda */
+.ekv-card { display: block; }
+.ekv-card-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background: #f7f7f7;
+  border: 1px solid #ececec;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.ekv-card:hover .ekv-card-media {
+  border-color: #A8935E;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+.ekv-card-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 12%;
+  transition: transform 0.3s ease;
+}
+.ekv-card:hover .ekv-card-media img { transform: scale(1.04); }
+
+.ekv-card-body {
+  padding-top: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.ekv-card-title {
+  font-size: 0.9375rem;
+  line-height: 1.35;
+  color: #2B2D42;
+  margin: 0;
+}
+.ekv-card-price {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #2B2D42;
+}
