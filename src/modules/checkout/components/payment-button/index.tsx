@@ -75,17 +75,13 @@ const WompiPagoButtonWrapper = ({
     return <Button disabled>Realizar pedido</Button>
   }
 
-  // Enriquecer la sesión con payment_collection_id desde el cart
-  // para que wompi-payment-button pueda llamar updatePaymentSession
-  const enrichedSession = {
-    ...session,
-    payment_collection_id: cart.payment_collection?.id,
-  }
-
   return (
     <>
+      {/* Pasamos el cart completo para que reinitPaymentSessionWithData
+          pueda acceder a payment_collection.id y payment_sessions */}
       <WompiPagoButton
-        session={enrichedSession}
+        cart={cart}
+        session={session}
         cartId={cart.id}
         onPagoCompletado={onPagoCompletado}
       />
@@ -162,25 +158,21 @@ const StripePagoButton = ({
       .then(({ error, paymentIntent }) => {
         if (error) {
           const pi = error.payment_intent
-
           if (
             (pi && pi.status === "requires_capture") ||
             (pi && pi.status === "succeeded")
           ) {
             onPagoCompletado()
           }
-
           setErrorMessage(error.message || null)
           return
         }
-
         if (
           (paymentIntent && paymentIntent.status === "requires_capture") ||
           paymentIntent.status === "succeeded"
         ) {
           return onPagoCompletado()
         }
-
         return
       })
   }
@@ -204,7 +196,13 @@ const StripePagoButton = ({
   )
 }
 
-const ManualTestPagoButton = ({ notReady, "data-testid": dataTestId }: { notReady: boolean; "data-testid"?: string }) => {
+const ManualTestPagoButton = ({
+  notReady,
+  "data-testid": dataTestId,
+}: {
+  notReady: boolean
+  "data-testid"?: string
+}) => {
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
