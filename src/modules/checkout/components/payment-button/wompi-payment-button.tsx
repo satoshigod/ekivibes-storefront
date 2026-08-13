@@ -1,15 +1,18 @@
 "use client"
 
 import React, { useState } from "react"
+import { updatePaymentSession } from "@lib/data/payment"
 
 interface WompiPagoButtonProps {
   session: {
+    id: string
     data: {
       amount: number
       currency_code: string
       public_key: string
       env: string
     }
+    payment_collection_id: string
   }
   cartId: string
   onPagoCompletado: () => Promise<void>
@@ -101,11 +104,36 @@ export const WompiPagoButton: React.FC<WompiPagoButtonProps> = ({
       const transaction = result?.transaction
 
       if (transaction?.status === "APPROVED") {
+        // ── PASO 2: registrar transaction_id en Medusa ANTES de completar ──
+        const transactionId =
+          transaction.id || transaction.transaction_id || transaction.reference
+
         try {
+          if (transactionId && session?.id && session?.payment_collection_id) {
+            console.log("[Wompi] Paso 2 – actualizando sesión de pago con transaction_id:", transactionId)
+            await updatePaymentSession(
+              session.payment_collection_id,
+              session.id,
+              { transaction_id: String(transactionId) }
+            )
+            console.log("[Wompi] Sesión de pago actualizada correctamente")
+          } else {
+            console.warn("[Wompi] transaction_id o session IDs no disponibles – continuando sin actualizar sesión",
+              { transactionId, sessionId: session?.id, collectionId: session?.payment_collection_id })
+          }
+        } catch (updateErr: any) {
+          // No bloqueamos el flujo si falla la actualización de sesión,
+          // pero lo registramos para diagnóstico.
+          console.error("[Wompi] Error al actualizar sesión de pago:", updateErr?.message || updateErr)
+        }
+
+        // ── PASO 3: completar carrito solo después de actualizar sesión ──
+        try {
+          console.log("[Wompi] Paso 3 – completando carrito")
           await onPagoCompletado()
         } catch (err: any) {
           setErrorMessage(
-            "El pago fue aprobado por Wompi, pero hubo un problema al confirmar el pedido. Contactoa a soporte."
+            "El pago fue aprobado por Wompi, pero hubo un problema al confirmar el pedido. Contacta a soporte."
           )
         } finally {
           setSubmitting(false)
