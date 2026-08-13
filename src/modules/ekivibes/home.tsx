@@ -28,7 +28,7 @@ export default async function EkivibesInicio({
     <>
       <div className="hero">
         <div className="hero-horse">
-          <Logo color="#ffffff" height={260} />
+          <Logo color="#ffffff" height={200} />
         </div>
         <div className="hero-c">
           <h1>Temporada de Competición</h1>
