@@ -1,7 +1,7 @@
 "use client"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 
 type MiniItem = {
@@ -24,17 +24,16 @@ const formatCOP = (value: number) =>
 /**
  * Carrito del header: contador siempre visible + mini-carrito que se
  * despliega unos segundos al agregar un producto.
- *
- * Todo se resuelve en el cliente porque el nav es un server component
- * y no se re-renderiza cuando cambia el carrito.
  */
 export default function CartMenu() {
   const [count, setCount] = useState(0)
   const [items, setItems] = useState<MiniItem[]>([])
   const [subtotal, setSubtotal] = useState(0)
+  const [checkoutStep, setCheckoutStep] = useState("address")
   const [open, setOpen] = useState(false)
   const timerRef = useRef<number | null>(null)
   const pathname = usePathname()
+  const router = useRouter()
 
   const load = async () => {
     try {
@@ -43,6 +42,7 @@ export default function CartMenu() {
       setCount(Number(data?.count) || 0)
       setItems(Array.isArray(data?.items) ? data.items : [])
       setSubtotal(Number(data?.subtotal) || 0)
+      setCheckoutStep(data?.checkout_step || "address")
     } catch {
       // silencioso
     }
@@ -63,12 +63,9 @@ export default function CartMenu() {
     }
 
     window.addEventListener("ekv:cart-updated", onUpdated)
-    // Cambios desde la pagina del carrito: actualizar sin desplegar el panel
     window.addEventListener("ekv:cart-updated-silent", load)
     window.addEventListener("focus", load)
 
-    // Respaldo: si la navegacion remonto este componente, el evento
-    // pudo perderse. La marca sobrevive al remonte.
     try {
       if (sessionStorage.getItem("ekv:open-cart") === "1") {
         sessionStorage.removeItem("ekv:open-cart")
@@ -85,13 +82,20 @@ export default function CartMenu() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Resincronizar al navegar: cubre vaciar el carrito o eliminar
-  // productos desde la pagina del carrito.
   useEffect(() => {
     load()
     setOpen(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])
+
+  // Extraer el countryCode del pathname (/co/...) para construir la URL correcta
+  const countryCode = pathname.split("/")[1] || "co"
+
+  const handleCheckout = () => {
+    setOpen(false)
+    if (timerRef.current) window.clearTimeout(timerRef.current)
+    router.push(`/${countryCode}/checkout?step=${checkoutStep}`)
+  }
 
   return (
     <div
@@ -159,9 +163,12 @@ export default function CartMenu() {
             <LocalizedClientLink href="/cart" className="ekv-btn-secondary">
               Ver carrito
             </LocalizedClientLink>
-            <LocalizedClientLink href="/checkout" className="ekv-btn-primary">
+            <button
+              onClick={handleCheckout}
+              className="ekv-btn-primary"
+            >
               Ir a pagar
-            </LocalizedClientLink>
+            </button>
           </div>
         </div>
       )}
