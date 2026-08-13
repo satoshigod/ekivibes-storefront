@@ -9,6 +9,19 @@ import React, { useState } from "react"
 import ErrorMessage from "../error-message"
 import { WompiPagoButton } from "./wompi-payment-button"
 
+// `placeOrder` (server action) llama a `redirect()` de Next.js cuando el
+// pedido se completa. `redirect()` funciona lanzando un error especial
+// (digest que empieza con "NEXT_REDIRECT") que el framework intercepta
+// para hacer la navegación real. Si ese error se captura con un simple
+// `.catch()` como si fuera un error normal, Next.js nunca completa la
+// redirección de inmediato — el componente vuelve a su estado normal
+// (el botón "Pagar" reaparece un instante) antes de que la navegación
+// termine de asentarse. Por eso el checkout "parpadea" de vuelta a la
+// pantalla de pago después de un pago aprobado.
+const isNextRedirectError = (err: unknown): boolean =>
+  typeof (err as any)?.digest === "string" &&
+  (err as any).digest.startsWith("NEXT_REDIRECT")
+
 type PagoButtonProps = {
   cart: HttpTypes.StoreCart
   "data-testid": string
@@ -66,9 +79,17 @@ const WompiPagoButtonWrapper = ({
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const onPagoCompletado = async () => {
-    await placeOrder().catch((err) => {
+    try {
+      await placeOrder()
+    } catch (err: any) {
+      if (isNextRedirectError(err)) {
+        // No es un error real: es la señal de Next.js para navegar a la
+        // pantalla de confirmación. Se relanza sin tocar el estado del
+        // componente para que la redirección se complete de una.
+        throw err
+      }
       setErrorMessage(err.message)
-    })
+    }
   }
 
   if (notReady) {
@@ -106,15 +127,18 @@ const StripePagoButton = ({
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const onPagoCompletado = async () => {
-    await placeOrder()
-      .catch((err) => {
-        setErrorMessage(err.message)
-      })
-      .finally(() => {
-        setSubmitting(false)
-      })
+    try {
+      await placeOrder()
+      // Si placeOrder() resuelve sin redirigir (caso raro), reactivamos el botón.
+      setSubmitting(false)
+    } catch (err: any) {
+      if (isNextRedirectError(err)) {
+        throw err
+      }
+      setErrorMessage(err.message)
+      setSubmitting(false)
+    }
   }
-
   const stripe = useStripe()
   const elements = useElements()
   const card = elements?.getElement("card")
@@ -207,13 +231,17 @@ const ManualTestPagoButton = ({
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const onPagoCompletado = async () => {
-    await placeOrder()
-      .catch((err) => {
-        setErrorMessage(err.message)
-      })
-      .finally(() => {
-        setSubmitting(false)
-      })
+    try {
+      await placeOrder()
+      // Si placeOrder() resuelve sin redirigir (caso raro), reactivamos el botón.
+      setSubmitting(false)
+    } catch (err: any) {
+      if (isNextRedirectError(err)) {
+        throw err
+      }
+      setErrorMessage(err.message)
+      setSubmitting(false)
+    }
   }
 
   const handlePago = () => {

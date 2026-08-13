@@ -4,6 +4,19 @@ import React, { useState } from "react"
 import { reinitPaymentSessionWithData } from "@lib/data/payment"
 import { HttpTypes } from "@medusajs/types"
 
+// `placeOrder` (server action, en @lib/data/cart) llama a `redirect()` de
+// Next.js cuando el pedido se completa. `redirect()` funciona lanzando un
+// error especial (digest que empieza con "NEXT_REDIRECT") que el
+// framework intercepta para hacer la navegación real. Si ese error se
+// captura con un `catch`/`finally` genérico como si fuera un error normal,
+// Next.js no completa la redirección de inmediato — el componente vuelve
+// a su estado normal (el botón "Pagar" reaparece un instante) antes de
+// que la navegación termine de asentarse. Por eso el checkout "parpadea"
+// de vuelta a la pantalla de pago después de un pago aprobado.
+export const isNextRedirectError = (err: unknown): boolean =>
+  typeof (err as any)?.digest === "string" &&
+  (err as any).digest.startsWith("NEXT_REDIRECT")
+
 interface WompiPagoButtonProps {
   cart: HttpTypes.StoreCart
   session: {
@@ -116,11 +129,19 @@ export const WompiPagoButton: React.FC<WompiPagoButtonProps> = ({
         try {
           console.log("[Wompi] Paso 3 – completando carrito")
           await onPagoCompletado()
+          // Si onPagoCompletado() resuelve sin redirigir (caso raro), reactivamos el botón.
+          setSubmitting(false)
         } catch (err: any) {
+          if (isNextRedirectError(err)) {
+            // No es un error real: es la señal de Next.js para navegar a
+            // la pantalla de confirmación. Se deja seguir su curso sin
+            // tocar el estado del botón, para que la redirección se
+            // complete sin el parpadeo de vuelta a "Pagar con Wompi".
+            return
+          }
           setErrorMessage(
             "El pago fue aprobado por Wompi, pero hubo un problema al confirmar el pedido. Contacta a soporte."
           )
-        } finally {
           setSubmitting(false)
         }
       } else {
