@@ -12,11 +12,22 @@ type ItemProps = {
 }
 
 const Item = ({ item, currencyCode }: ItemProps) => {
+  // Medusa no guarda imágenes en los productos del backend aún,
+  // así que resolvemos el handle para que Thumbnail pueda usar PRODUCT_IMAGES
+  const handle =
+    (item as any).variant?.product?.handle ??
+    (item as any).product_handle ??
+    null
+
   return (
     <Table.Row className="w-full" data-testid="product-row">
       <Table.Cell className="!pl-0 p-4 w-24">
         <div className="flex w-16">
-          <Thumbnail thumbnail={item.thumbnail} size="square" />
+          <Thumbnail
+            thumbnail={item.thumbnail}
+            size="square"
+            handle={handle}
+          />
         </div>
       </Table.Cell>
 
