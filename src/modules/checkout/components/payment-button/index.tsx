@@ -75,10 +75,17 @@ const WompiPagoButtonWrapper = ({
     return <Button disabled>Realizar pedido</Button>
   }
 
+  // Enriquecer la sesión con payment_collection_id desde el cart
+  // para que wompi-payment-button pueda llamar updatePaymentSession
+  const enrichedSession = {
+    ...session,
+    payment_collection_id: cart.payment_collection?.id,
+  }
+
   return (
     <>
       <WompiPagoButton
-        session={session}
+        session={enrichedSession}
         cartId={cart.id}
         onPagoCompletado={onPagoCompletado}
       />
@@ -197,7 +204,7 @@ const StripePagoButton = ({
   )
 }
 
-const ManualTestPagoButton = ({ notReady }: { notReady: boolean }) => {
+const ManualTestPagoButton = ({ notReady, "data-testid": dataTestId }: { notReady: boolean; "data-testid"?: string }) => {
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
@@ -213,7 +220,6 @@ const ManualTestPagoButton = ({ notReady }: { notReady: boolean }) => {
 
   const handlePago = () => {
     setSubmitting(true)
-
     onPagoCompletado()
   }
 
