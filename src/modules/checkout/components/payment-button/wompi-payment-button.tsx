@@ -1,24 +1,27 @@
 "use client"
 
 import React, { useState } from "react"
-import { updatePaymentSession } from "@lib/data/payment"
+import { reinitPaymentSessionWithData } from "@lib/data/payment"
+import { HttpTypes } from "@medusajs/types"
 
 interface WompiPagoButtonProps {
+  cart: HttpTypes.StoreCart
   session: {
     id: string
+    provider_id: string
     data: {
       amount: number
       currency_code: string
       public_key: string
       env: string
     }
-    payment_collection_id: string
   }
   cartId: string
   onPagoCompletado: () => Promise<void>
 }
 
 export const WompiPagoButton: React.FC<WompiPagoButtonProps> = ({
+  cart,
   session,
   cartId,
   onPagoCompletado,
@@ -38,27 +41,20 @@ export const WompiPagoButton: React.FC<WompiPagoButtonProps> = ({
 
     setSubmitting(true)
 
-    // La app usa rutas con prefijo de pais (/co/...)
     const countryPrefix = window.location.pathname.split("/")[1]
       ? `/${window.location.pathname.split("/")[1]}`
       : ""
 
     const sessionData = session?.data
-    // El peso colombiano NO tiene decimales en Medusa v2: amount viene en
-    // pesos (1750000 = $1.750.000). Wompi espera centavos, asi que x100.
-    // Sin esto Wompi cobraba $17.500 en vez de $1.750.000.
+    // COP en Medusa v2 viene en pesos enteros; Wompi espera centavos → ×100
     const amountInCents = Math.round((sessionData?.amount || 0) * 100)
     const currency = (sessionData?.currency_code || "COP").toUpperCase()
-    // Referencia unica por intento: Wompi rechaza reusar una referencia
-    // ("El token de aceptacion ya fue usado") si se reintenta el pago.
+    // Referencia única por intento para evitar "token ya usado" en reintentos
     const unique = `${Date.now()}${Math.random().toString(36).slice(2, 8)}`
-    // La referencia empieza con el session_id porque es el unico dato que
-    // el backend tiene garantizado al autorizar el pago (Medusa no le pasa
-    // el cart_id al provider). Asi puede buscar la transaccion en Wompi.
     const sessionId = session?.id || cartId
     const reference = `${sessionId}_${unique}`
 
-    // Wompi exige una firma de integridad SHA256 generada en el servidor
+    // Generar firma de integridad en servidor
     let signature: string
     let signedAmount = amountInCents
     let signedCurrency = currency
@@ -75,16 +71,12 @@ export const WompiPagoButton: React.FC<WompiPagoButtonProps> = ({
       signature = data.signature
       signedAmount = data.amountInCents
       signedCurrency = data.currency
-      // Diagnostico: el ambiente del secreto debe coincidir con el de la llave publica
-      console.log("[Wompi] ambiente del secreto:", data?.debug?.secretEnv,
-                  "| llave publica:", (sessionData?.public_key || "").slice(0, 9),
-                  "| monto firmado:", data.amountInCents,
-                  "| moneda:", data.currency)
+      console.log("[Wompi] firma generada | env:", data?.debug?.secretEnv,
+                  "| llave:", (sessionData?.public_key || "").slice(0, 9),
+                  "| monto:", data.amountInCents, "| moneda:", data.currency)
     } catch (err: any) {
       setSubmitting(false)
-      setErrorMessage(
-        err?.message || "No se pudo iniciar el pago. Intenta de nuevo."
-      )
+      setErrorMessage(err?.message || "No se pudo iniciar el pago. Intenta de nuevo.")
       return
     }
 
@@ -93,9 +85,6 @@ export const WompiPagoButton: React.FC<WompiPagoButtonProps> = ({
       amountInCents: signedAmount,
       reference,
       publicKey: sessionData?.public_key || process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY,
-      // Fallback para medios que sacan al usuario del sitio (PSE, Nequi).
-      // La orden se crea en onPagoCompletado(), que redirige a la
-      // confirmacion con el ID real. Aqui solo volvemos al checkout.
       redirectUrl: `${window.location.origin}${countryPrefix}/order/confirmed`,
       signature: { integrity: signature },
     })
@@ -104,30 +93,26 @@ export const WompiPagoButton: React.FC<WompiPagoButtonProps> = ({
       const transaction = result?.transaction
 
       if (transaction?.status === "APPROVED") {
-        // ── PASO 2: registrar transaction_id en Medusa ANTES de completar ──
-        const transactionId =
-          transaction.id || transaction.transaction_id || transaction.reference
+        // transaction.id es el ID de Wompi (e.g. "166198-1738363241-74381")
+        const transactionId = transaction.id ?? transaction.transaction_id ?? reference
 
+        // ── PASO 2: re-crear sesión con transaction_id para que authorizePayment lo reciba ──
         try {
-          if (transactionId && session?.id && session?.payment_collection_id) {
-            console.log("[Wompi] Paso 2 – actualizando sesión de pago con transaction_id:", transactionId)
-            await updatePaymentSession(
-              session.payment_collection_id,
-              session.id,
-              { transaction_id: String(transactionId) }
-            )
-            console.log("[Wompi] Sesión de pago actualizada correctamente")
-          } else {
-            console.warn("[Wompi] transaction_id o session IDs no disponibles – continuando sin actualizar sesión",
-              { transactionId, sessionId: session?.id, collectionId: session?.payment_collection_id })
-          }
-        } catch (updateErr: any) {
-          // No bloqueamos el flujo si falla la actualización de sesión,
-          // pero lo registramos para diagnóstico.
-          console.error("[Wompi] Error al actualizar sesión de pago:", updateErr?.message || updateErr)
+          console.log("[Wompi] Paso 2 – re-inicializando sesión con transaction_id:", transactionId)
+          await reinitPaymentSessionWithData(
+            cart,
+            session.provider_id,          // e.g. "pp_wompi_wompi"
+            { transaction_id: String(transactionId) }
+          )
+          console.log("[Wompi] Paso 2 completado – sesión actualizada")
+        } catch (reinitErr: any) {
+          // Si falla el reinit, intentamos igual con completeCart.
+          // El provider tiene fallback por referencia en findApprovedByReference.
+          console.warn("[Wompi] Paso 2 falló – continuando con completeCart de todas formas:",
+            reinitErr?.message || reinitErr)
         }
 
-        // ── PASO 3: completar carrito solo después de actualizar sesión ──
+        // ── PASO 3: completar carrito SOLO después del Paso 2 ──
         try {
           console.log("[Wompi] Paso 3 – completando carrito")
           await onPagoCompletado()
