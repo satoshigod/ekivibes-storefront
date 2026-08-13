@@ -1,8 +1,9 @@
 "use server"
 
 import { sdk } from "@lib/config"
-import { getAuthHeaders, getCacheOptions, getCartId } from "./cookies"
+import { getAuthHeaders, getCacheOptions, getCartId, getCacheTag } from "./cookies"
 import { HttpTypes } from "@medusajs/types"
+import { revalidateTag } from "next/cache"
 
 export const listCartPaymentMethods = async (regionId: string) => {
   const headers = {
@@ -35,29 +36,46 @@ export const listCartPaymentMethods = async (regionId: string) => {
 }
 
 /**
- * Actualiza la sesión de pago activa con datos adicionales del proveedor.
- * Para Wompi: se llama con { transaction_id } ANTES de completar el carrito.
+ * Inyecta transaction_id en la sesión de pago de Wompi ANTES de completar el carrito.
+ *
+ * Medusa v2 Store API NO tiene PATCH/PUT para una sesión existente.
+ * La única forma de pasar datos extra al provider es re-crear la sesión con
+ * initiatePaymentSession (provider_id + data) — Medusa reemplaza la sesión
+ * activa y el campo `data` queda disponible en authorizePayment().
+ *
+ * @param cart       - El objeto StoreCart completo (necesitamos payment_collection.id)
+ * @param providerId - El provider id, e.g. "pp_wompi_wompi" o "wompi"
+ * @param extraData  - Datos a inyectar, e.g. { transaction_id: "wompi_tx_123" }
  */
-export async function updatePaymentSession(
-  paymentCollectionId: string,
-  paymentSessionId: string,
-  data: Record<string, unknown>
-) {
+export async function reinitPaymentSessionWithData(
+  cart: HttpTypes.StoreCart,
+  providerId: string,
+  extraData: Record<string, unknown>
+): Promise<void> {
   const headers = {
     ...(await getAuthHeaders()),
   }
 
-  return sdk.client
-    .fetch(
-      `/store/payment-collections/${paymentCollectionId}/payment-sessions/${paymentSessionId}`,
-      {
-        method: "POST",
-        headers,
-        body: { data },
-      }
-    )
-    .catch((err) => {
-      console.error("[updatePaymentSession] error:", err?.message || err)
-      throw err
-    })
+  // Preservar los datos existentes de la sesión activa y añadir los nuevos
+  const existingSession = cart.payment_collection?.payment_sessions?.find(
+    (s) => s.provider_id === providerId || s.provider_id?.includes("wompi")
+  )
+  const mergedData = {
+    ...(existingSession?.data as Record<string, unknown> | undefined ?? {}),
+    ...extraData,
+  }
+
+  console.log("[reinitPaymentSession] provider:", providerId, "| extra:", JSON.stringify(extraData))
+
+  await sdk.store.payment.initiatePaymentSession(
+    cart,
+    { provider_id: providerId, data: mergedData },
+    {},
+    headers
+  )
+
+  const cartCacheTag = await getCacheTag("carts")
+  revalidateTag(cartCacheTag)
+
+  console.log("[reinitPaymentSession] sesión re-creada con transaction_id OK")
 }
