@@ -15,8 +15,18 @@ import LineItemPrice from "@modules/common/components/line-item-price"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartCountBadge from "../cart-count-badge"
 import Thumbnail from "@modules/products/components/thumbnail"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { Fragment, useEffect, useRef, useState } from "react"
+
+function getCheckoutStep(cart: HttpTypes.StoreCart) {
+  if (!cart?.shipping_address?.address_1 || !cart.email) {
+    return "address"
+  } else if ((cart.shipping_methods?.length ?? 0) === 0) {
+    return "delivery"
+  } else {
+    return "payment"
+  }
+}
 
 const CarritoDropdown = ({
   cart: cartState,
@@ -27,6 +37,8 @@ const CarritoDropdown = ({
     undefined
   )
   const [cartDropdownOpen, setCarritoDropdownOpen] = useState(false)
+  const pathname = usePathname()
+  const router = useRouter()
 
   const open = () => setCarritoDropdownOpen(true)
   const close = () => setCarritoDropdownOpen(false)
@@ -41,32 +53,21 @@ const CarritoDropdown = ({
 
   const timedOpen = () => {
     open()
-
     const timer = setTimeout(close, 5000)
-
     setActiveTimer(timer)
   }
 
   const openAndCancelar = () => {
-    if (activeTimer) {
-      clearTimeout(activeTimer)
-    }
-
+    if (activeTimer) clearTimeout(activeTimer)
     open()
   }
 
-  // Clean up the timer when the component unmounts
   useEffect(() => {
     return () => {
-      if (activeTimer) {
-        clearTimeout(activeTimer)
-      }
+      if (activeTimer) clearTimeout(activeTimer)
     }
   }, [activeTimer])
 
-  const pathname = usePathname()
-
-  // open cart dropdown when modifying the cart items, but only if we're not on the cart page
   useEffect(() => {
     if (itemRef.current !== totalItems && !pathname.includes("/cart")) {
       timedOpen()
@@ -74,19 +75,12 @@ const CarritoDropdown = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalItems, itemRef.current])
 
-  // El componente es server-rendered y se remonta con el total ya actualizado,
-  // por eso la comparacion de arriba no siempre detecta el cambio.
-  // El boton "Agregar al carrito" emite este evento para abrir el mini-carrito.
   useEffect(() => {
     const onCartUpdated = () => {
-      if (!pathname.includes("/cart")) {
-        timedOpen()
-      }
+      if (!pathname.includes("/cart")) timedOpen()
     }
     window.addEventListener("ekv:cart-updated", onCartUpdated)
 
-    // Respaldo: si el refresh remonto este componente, el evento pudo
-    // perderse. La marca en sessionStorage sobrevive al remonte.
     try {
       if (sessionStorage.getItem("ekv:open-cart") === "1") {
         sessionStorage.removeItem("ekv:open-cart")
@@ -97,6 +91,15 @@ const CarritoDropdown = ({
     return () => window.removeEventListener("ekv:cart-updated", onCartUpdated)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])
+
+  const checkoutStep = cartState ? getCheckoutStep(cartState) : "address"
+  const countryCode = pathname.split("/")[1] || "co"
+
+  const handleCheckout = () => {
+    close()
+    if (activeTimer) clearTimeout(activeTimer)
+    router.push(`/${countryCode}/checkout?step=${checkoutStep}`)
+  }
 
   return (
     <div
@@ -154,8 +157,8 @@ const CarritoDropdown = ({
                         >
                           <Thumbnail
                             thumbnail={item.thumbnail}
-                            handle={item.product_handle || item.variant?.product?.handle}
-                            images={item.variant?.product?.images}
+                            handle={item.product_handle || (item.variant as any)?.product?.handle}
+                            images={(item.variant as any)?.product?.images}
                             size="square"
                           />
                         </LocalizedClientLink>
@@ -180,7 +183,7 @@ const CarritoDropdown = ({
                                   data-testid="cart-item-quantity"
                                   data-value={item.quantity}
                                 >
-                                  Quantity: {item.quantity}
+                                  Cantidad: {item.quantity}
                                 </span>
                               </div>
                               <div className="flex justify-end">
@@ -207,7 +210,7 @@ const CarritoDropdown = ({
                   <div className="flex items-center justify-between">
                     <span className="text-ui-fg-base font-semibold">
                       Subtotal{" "}
-                      <span className="font-normal">(excl. taxes)</span>
+                      <span className="font-normal">(excl. impuestos)</span>
                     </span>
                     <span
                       className="text-large-semi"
@@ -220,9 +223,18 @@ const CarritoDropdown = ({
                       })}
                     </span>
                   </div>
+                  <Button
+                    className="w-full"
+                    size="large"
+                    data-testid="go-to-checkout-button"
+                    onClick={handleCheckout}
+                  >
+                    Ir a pagar
+                  </Button>
                   <LocalizedClientLink href="/cart" passHref>
                     <Button
                       className="w-full"
+                      variant="secondary"
                       size="large"
                       data-testid="go-to-cart-button"
                     >
@@ -237,12 +249,12 @@ const CarritoDropdown = ({
                   <div className="bg-gray-900 text-small-regular flex items-center justify-center w-6 h-6 rounded-full text-white">
                     <span>0</span>
                   </div>
-                  <span>Your shopping bag is empty.</span>
+                  <span>Tu bolsa de compras está vacía.</span>
                   <div>
                     <LocalizedClientLink href="/store">
                       <>
-                        <span className="sr-only">Go to all products page</span>
-                        <Button onClick={close}>Explore products</Button>
+                        <span className="sr-only">Ver todos los productos</span>
+                        <Button onClick={close}>Explorar productos</Button>
                       </>
                     </LocalizedClientLink>
                   </div>
