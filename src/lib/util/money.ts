@@ -11,16 +11,24 @@ type ConvertToLocaleParams = {
 export const convertToLocale = ({
   amount,
   currency_code,
-  minimumFractionDigits,
-  maximumFractionDigits,
-  locale = "en-US",
+  minimumFractionDigits = 0,
+  maximumFractionDigits = 0,
+  locale = "es-CO",
 }: ConvertToLocaleParams) => {
-  return currency_code && !isEmpty(currency_code)
-    ? new Intl.NumberFormat(locale, {
-        style: "currency",
-        currency: currency_code,
-        minimumFractionDigits,
-        maximumFractionDigits,
-      }).format(amount)
-    : amount.toString()
+  if (!currency_code || isEmpty(currency_code)) {
+    return amount.toString()
+  }
+
+  const formatted = new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: currency_code,
+    currencyDisplay: "narrowSymbol",
+    minimumFractionDigits,
+    maximumFractionDigits,
+  }).format(amount)
+
+  // Sanitización cosmética visual: fuerza "$" en vez del código ISO
+  // (algunos motores JS no resuelven un narrowSymbol para "COP").
+  // No altera `amount` ni `currency_code`, solo el string renderizado.
+  return formatted.replace(/COP\s?/, "$ ").trim()
 }
