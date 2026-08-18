@@ -116,8 +116,8 @@ export async function middleware(request: NextRequest) {
 
   const countryCode = regionMap && (await getPaísCode(request, regionMap))
 
-  const urlHasPaísCode =
-    countryCode && request.nextUrl.pathname.split("/")[1].includes(countryCode)
+  const urlFirstSegment = request.nextUrl.pathname.split("/")[1]?.toLowerCase()
+  const urlHasPaísCode = !!urlFirstSegment && regionMap.has(urlFirstSegment)
 
   // if one of the country codes is in the url and the cache id is set, return next
   if (urlHasPaísCode && cacheIdCookie) {
