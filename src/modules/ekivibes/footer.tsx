@@ -30,6 +30,7 @@ export default function Footer() {
             <li>Envíos y devoluciones</li>
             <li>Contacto</li>
             <li><a href="/compras-empresariales" className="footer-link">Compras empresariales</a></li>
+            <li><a href="/hazte-distribuidor" className="footer-link">Hazte distribuidor</a></li>
           </ul>
         </div>
         <div className="footer-col">
