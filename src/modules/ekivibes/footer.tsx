@@ -29,16 +29,16 @@ export default function Footer() {
           <ul>
             <li>Envíos y devoluciones</li>
             <li>Contacto</li>
-            <li><a href="/compras-empresariales" className="footer-link">Compras empresariales</a></li>
-            <li><a href="/hazte-distribuidor" className="footer-link">Hazte distribuidor</a></li>
+            <li><LocalizedClientLink href="/compras-empresariales" className="footer-link">Compras empresariales</LocalizedClientLink></li>
+            <li><LocalizedClientLink href="/hazte-distribuidor" className="footer-link">Hazte distribuidor</LocalizedClientLink></li>
           </ul>
         </div>
         <div className="footer-col">
           <h5>Hit-Air Airbags</h5>
           <ul>
-            <li><a href="/acerca-de-hit-air" className="footer-link">Acerca de Hit-Air</a></li>
-            <li><a href="/guia-de-tallas" className="footer-link">Guía de tallas</a></li>
-            <li><a href="/preguntas-frecuentes" className="footer-link">Preguntas frecuentes</a></li>
+            <li><LocalizedClientLink href="/acerca-de-hit-air" className="footer-link">Acerca de Hit-Air</LocalizedClientLink></li>
+            <li><LocalizedClientLink href="/guia-de-tallas" className="footer-link">Guía de tallas</LocalizedClientLink></li>
+            <li><LocalizedClientLink href="/preguntas-frecuentes" className="footer-link">Preguntas frecuentes</LocalizedClientLink></li>
           </ul>
         </div>
         <div className="footer-col">
