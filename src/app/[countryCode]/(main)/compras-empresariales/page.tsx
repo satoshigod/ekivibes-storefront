@@ -1,4 +1,5 @@
 import { Metadata } from "next"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import BusinessRegistrationForm from "@modules/business/components/registration-form"
 
 export const metadata: Metadata = {
@@ -25,9 +26,9 @@ export default function ComprasEmpresariales() {
             acceder directamente con tu cuenta. No es necesario registrarte de nuevo.
           </p>
           <div style={{ marginTop: "1rem" }}>
-            <a href="/account" className="ekv-btn-primary">
+            <LocalizedClientLink href="/account" className="ekv-btn-primary">
               Iniciar sesión
-            </a>
+            </LocalizedClientLink>
           </div>
         </section>
 
