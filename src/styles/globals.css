@@ -778,6 +778,46 @@ details[open] .ekv-faq-q { color: #A8935E; }
   margin: 0 0 1.25rem;
 }
 
+/* Formulario compras empresariales */
+.ekv-form-success {
+  text-align: center;
+  padding: 2rem;
+  background: #fafaf9;
+  border: 1px solid #e8e4dc;
+  border-radius: 8px;
+}
+.ekv-form-success h3 {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.5rem;
+  color: #2B2D42;
+  margin: 0 0 0.75rem;
+}
+.ekv-form-success p {
+  font-family: "Jost", system-ui, sans-serif;
+  font-size: 0.9375rem;
+  color: #555;
+  line-height: 1.6;
+  margin: 0;
+}
+.ekv-form-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-family: "Jost", system-ui, sans-serif;
+  font-size: 0.8125rem;
+  color: #555;
+  line-height: 1.4;
+  cursor: pointer;
+}
+.ekv-form-check input[type="checkbox"] {
+  margin-top: 0.15rem;
+  width: 16px;
+  height: 16px;
+  accent-color: #A8935E;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
 /* Tablas de tallas */
 .ekv-table-wrap { overflow-x: auto; }
 .ekv-table {
