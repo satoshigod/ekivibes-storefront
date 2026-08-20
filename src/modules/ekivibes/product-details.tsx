@@ -14,10 +14,22 @@ export default function EkivibesProductDetails({
         {det.sections.map((s) => (
           <div key={s.title}>
             <h2 className="pdp-d-title">{s.title}</h2>
-            {s.imgs.map((src) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img key={src} src={src} alt={s.title} className="pdp-d-img" />
-            ))}
+            {s.imgs.map((img, i) => {
+              const src = typeof img === "string" ? img : img.src
+              const caption = typeof img === "string" ? undefined : img.caption
+              return (
+                <div key={src}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={src} alt={caption || s.title} className="pdp-d-img" />
+                  {caption && (
+                    <p className="pdp-d-caption">
+                      {i + 1}. {caption}
+                    </p>
+                  )}
+                </div>
+              )
+            })}
+            {s.text && <p className="pdp-d-text">{s.text}</p>}
           </div>
         ))}
 
@@ -51,6 +63,7 @@ export default function EkivibesProductDetails({
             <div className="pdp-d-fine">{t.fine}</div>
           </div>
         ))}
+
       </div>
     </div>
   )
