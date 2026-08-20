@@ -2,6 +2,7 @@ import { getProductPrice } from "@lib/util/get-product-price"
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { PRODUCT_IMAGES } from "@modules/ekivibes/product-images-data"
+import { normalizeSpanishText } from "@lib/util/normalize-spanish-text"
 
 const formatCOP = (value: number) =>
   new Intl.NumberFormat("es-CO", {
@@ -90,7 +91,7 @@ export default function EkivibesProductCard({
           <img
             className="ekv-card-img"
             src={principal}
-            alt={product.title}
+            alt={normalizeSpanishText(product.title)}
             loading="lazy"
           />
           {alterna && (
@@ -107,7 +108,7 @@ export default function EkivibesProductCard({
         </div>
 
         <div className="ekv-card-body">
-          <h3 className="ekv-card-title">{product.title}</h3>
+          <h3 className="ekv-card-title">{normalizeSpanishText(product.title)}</h3>
 
           {tallas.length > 0 && (
             <ul className="ekv-card-sizes" aria-label="Tallas disponibles">
