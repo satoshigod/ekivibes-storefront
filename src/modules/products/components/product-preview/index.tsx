@@ -2,6 +2,7 @@ import { getProductPrice } from "@lib/util/get-product-price"
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { PRODUCT_IMAGES } from "@modules/ekivibes/product-images-data"
+import { normalizeSpanishText } from "@lib/util/normalize-spanish-text"
 
 const formatCOP = (value: number) =>
   new Intl.NumberFormat("es-CO", {
@@ -92,7 +93,7 @@ export default async function ProductPreview({
           <img
             className="ekv-card-img"
             src={principal}
-            alt={product.title}
+            alt={normalizeSpanishText(product.title)}
             loading="lazy"
           />
           {alterna && (
@@ -110,7 +111,7 @@ export default async function ProductPreview({
 
         <div className="ekv-card-body">
           <h3 className="ekv-card-title" data-testid="product-title">
-            {product.title}
+            {normalizeSpanishText(product.title)}
           </h3>
 
           {tallas.length > 0 && (
