@@ -1,9 +1,62 @@
 // Detalles de producto (URLs /public/ + tablas). Sin base64 — sin crashes.
-export type DetailSection = { title: string; imgs: string[] }
+export type DetailImage = { src: string; caption?: string }
+export type DetailSection = { title: string; imgs: (string | DetailImage)[]; text?: string }
 export type DetailTable = { title: string; img?: string; head: string[]; rows: string[][]; fine: string }
 export type ProductDetail = { sections: DetailSection[]; note?: string; tables?: DetailTable[] }
 
 const PRODUCT_DETAILS: Record<string, ProductDetail> = {
+  "llave-de-resina-tipo-b-hit-air": {
+    sections: [
+      {
+        title: "Pensada para jinetes de poco peso",
+        imgs: [
+          {
+            src: "/product-details/resin-keyball-main.jpg",
+            caption: "Llave de resina Tipo B con su conector de un toque (hembra).",
+          },
+        ],
+        text:
+          "La llave estándar es metálica y necesita cierta fuerza para salir de la Key Box. En un jinete " +
+          "liviano, una caída puede no generar ese tirón, y el airbag no se activaría. Esta llave de " +
+          "resina está calibrada para liberarse con menos tensión y resolver justamente ese caso.",
+      },
+      {
+        title: "Verifica la inserción antes de cada salida",
+        imgs: [
+          {
+            src: "/product-details/resin-keyball-02.jpg",
+            caption:
+              "La llave tiene un punto a cada lado. Si los puntos quedan a la vista, no está bien " +
+              "insertada y el sistema puede soltarse solo.",
+          },
+        ],
+        text:
+          "Insértala en la Key Box hasta que los puntos laterales queden ocultos. Es una revisión de dos " +
+          "segundos que conviene hacer cada vez que te montas, porque al ser más sensible puede " +
+          "liberarse con un tirón leve del lazo del cable o del conector durante el uso normal: al " +
+          "montar, desmontar o ajustarte el chaleco.",
+      },
+    ],
+    note:
+      "Esta llave de resina NO se puede usar en chalecos que de fábrica traen llave metálica: no son " +
+      "intercambiables entre sí. Si tu chaleco vino con llave metálica, ese es el repuesto que necesitas.",
+    tables: [
+      {
+        title: "Especificaciones",
+        head: ["Característica", "Detalle"],
+        rows: [
+          ["Tipo", "B (conector de un toque, hembra)"],
+          ["Material", "Resina"],
+          ["Indicada para", "Jinetes de poco peso"],
+          ["Tensión de liberación", "Menor que la de la llave metálica estándar"],
+          ["Verificación", "Los puntos laterales deben quedar ocultos"],
+          ["Compatibilidad", "Solo chalecos que usan llave de resina"],
+        ],
+        fine: "No es compatible con chalecos cuya llave original es metálica. Especificaciones sujetas a cambio por el fabricante.",
+      },
+    ],
+  },
+
   "chaleco-airbag-vh-ninos": {
     "sections": [
       {
@@ -294,3 +347,4 @@ const PRODUCT_DETAILS: Record<string, ProductDetail> = {
 }
 
 export default PRODUCT_DETAILS
+
