@@ -1,6 +1,7 @@
 import { HttpTypes } from "@medusajs/types"
 import { Heading, Text } from "@medusajs/ui"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { normalizeSpanishText } from "@lib/util/normalize-spanish-text"
 
 type ProductInfoProps = {
   product: HttpTypes.StoreProduct
@@ -23,14 +24,14 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
           className="text-3xl leading-10 text-ui-fg-base"
           data-testid="product-title"
         >
-          {product.title}
+          {normalizeSpanishText(product.title)}
         </Heading>
 
         <Text
           className="text-medium text-ui-fg-subtle whitespace-pre-line"
           data-testid="product-description"
         >
-          {product.description}
+          {normalizeSpanishText(product.description)}
         </Text>
         {(product.metadata?.official_brand_url as string) && (
           <a
